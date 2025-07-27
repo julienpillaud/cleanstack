@@ -1,10 +1,20 @@
 from collections.abc import Iterator
 from contextlib import contextmanager
+from typing import Protocol
 from unittest.mock import Mock
 
 import pytest
 
-from cleanstack.domain import BaseDomain, CommandHandler, ContextProtocol
+from cleanstack.domain import BaseContextProtocol, BaseDomain, CommandHandler
+
+
+class ContextProtocol(BaseContextProtocol, Protocol): ...
+
+
+class MockContext(ContextProtocol):
+    transaction: Mock
+    commit: Mock
+    rollback: Mock
 
 
 def successful_command(context: ContextProtocol, x: str) -> str:
@@ -15,13 +25,7 @@ def failed_command(context: ContextProtocol) -> str:
     raise ValueError("command failed")
 
 
-class MockContext(ContextProtocol):
-    transaction: Mock
-    commit: Mock
-    rollback: Mock
-
-
-class DomainTest(BaseDomain):
+class DomainTest(BaseDomain[ContextProtocol]):
     successful_command = CommandHandler(successful_command)
     failed_command = CommandHandler(failed_command)
 

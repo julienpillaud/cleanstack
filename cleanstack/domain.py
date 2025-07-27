@@ -6,36 +6,35 @@ from typing import Concatenate, Generic, ParamSpec, Protocol, TypeVar
 
 from cleanstack.logger import logger
 
+C = TypeVar("C", bound="BaseContextProtocol")
 P = ParamSpec("P")
 R = TypeVar("R")
 
 
-class ContextProtocol(Protocol):
+class BaseContextProtocol(Protocol):
     @contextmanager
     def transaction(self) -> Iterator[None]: ...
     def commit(self) -> None: ...
     def rollback(self) -> None: ...
 
 
-class CommandHandler(Generic[P, R]):
-    def __init__(self, func: Callable[Concatenate[ContextProtocol, P], R]) -> None:
+class CommandHandler(Generic[C, P, R]):
+    def __init__(self, func: Callable[Concatenate[C, P], R]) -> None:
         self.func = func
 
     def __get__(
-        self, instance: "BaseDomain", owner: type["BaseDomain"]
+        self, instance: "BaseDomain[C]", owner: type["BaseDomain[C]"]
     ) -> Callable[P, R]:
         logger.debug(f"Command '{self.func.__name__}' bound")
         return instance.command_handler(self.func)
 
 
-class BaseDomain:
-    def __init__(self, context: ContextProtocol):
+class BaseDomain(Generic[C]):
+    def __init__(self, context: C):
         logger.debug("Instantiate 'Domain'")
         self.context = context
 
-    def command_handler(
-        self, func: Callable[Concatenate[ContextProtocol, P], R]
-    ) -> Callable[P, R]:
+    def command_handler(self, func: Callable[Concatenate[C, P], R]) -> Callable[P, R]:
         @wraps(func)
         def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
             start_time = time.perf_counter()
