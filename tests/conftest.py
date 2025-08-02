@@ -5,10 +5,10 @@ from unittest.mock import Mock
 
 import pytest
 
-from cleanstack.domain import BaseContextProtocol, BaseDomain, CommandHandler
+from cleanstack.domain import BaseDomain, CommandHandler, UnitOfWorkProtocol
 
 
-class ContextProtocol(BaseContextProtocol, Protocol): ...
+class ContextProtocol(UnitOfWorkProtocol, Protocol): ...
 
 
 class MockContext(ContextProtocol):

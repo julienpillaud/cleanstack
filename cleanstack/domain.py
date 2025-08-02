@@ -6,12 +6,12 @@ from typing import Concatenate, Generic, ParamSpec, Protocol, TypeVar
 
 from cleanstack.logger import logger
 
-C = TypeVar("C", bound="BaseContextProtocol")
+C = TypeVar("C", bound="UnitOfWorkProtocol")
 P = ParamSpec("P")
 R = TypeVar("R")
 
 
-class BaseContextProtocol(Protocol):
+class UnitOfWorkProtocol(Protocol):
     @contextmanager
     def transaction(self) -> Iterator[None]: ...
     def commit(self) -> None: ...
