@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/julienpillaud/cleanstack/compare/0.2.0...v0.3.0) (2025-08-02)
+
+
+### Features
+
+* rename ContextProtocol to UnitOfWorkProtocol and update dependencies ([#10](https://github.com/julienpillaud/cleanstack/issues/10)) ([906ec4b](https://github.com/julienpillaud/cleanstack/commit/906ec4bb83461d4c521e799f28bccb14479d9138))
+
 ## [0.2.0](https://github.com/julienpillaud/cleanstack/compare/v0.1.0...v0.2.0) (2025-07-27)
 
 
