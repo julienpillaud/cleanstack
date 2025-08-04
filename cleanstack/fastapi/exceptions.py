@@ -1,10 +1,14 @@
 import traceback
 from typing import ClassVar
 
-from fastapi import FastAPI
-from fastapi.requests import Request
-from fastapi.responses import JSONResponse, PlainTextResponse, Response
-from starlette import status
+try:
+    from fastapi import FastAPI, status
+    from fastapi.requests import Request
+    from fastapi.responses import JSONResponse, PlainTextResponse, Response
+except ImportError as e:
+    raise RuntimeError(
+        'To use FastAPI utilities, you need to install "cleanstack[fastapi]"'
+    ) from e
 
 from cleanstack.exceptions import AlreadyExistsError, DomainError, NotFoundError
 from cleanstack.logger import logger
