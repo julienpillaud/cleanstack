@@ -26,27 +26,23 @@ class InMemoryBaseFactory(BaseFactory[T], Generic[T]):
         return entity.model_dump()
 
 
-class PostBaseFactory(InMemoryBaseFactory[Post]):
-    def _build_entity(self, **kwargs: Any) -> Post:
-        if "author_id" not in kwargs:
-            kwargs["author_id"] = self.user_factory.create_one().id
-        return PostEntityFactory.build(**kwargs)
+class PostFactory(InMemoryBaseFactory[Post]):
+    def __init__(self, collection: list[DBEntity]):
+        super().__init__(collection=collection)
 
     @property
     def user_factory(self) -> "UserFactory":
         return UserFactory(collection=self.collection)
 
+    def _build_entity(self, **kwargs: Any) -> Post:
+        if "author_id" not in kwargs:
+            kwargs["author_id"] = self.user_factory.create_one().id
+        return PostEntityFactory.build(**kwargs)
 
-class UserBaseFactory(InMemoryBaseFactory[User]):
+
+class UserFactory(InMemoryBaseFactory[User]):
+    def __init__(self, collection: list[DBEntity]):
+        super().__init__(collection=collection)
+
     def _build_entity(self, **kwargs: Any) -> User:
         return UserEntityFactory.build(**kwargs)
-
-
-class PostFactory(PostBaseFactory):
-    def __init__(self, collection: list[DBEntity]):
-        super().__init__(collection=collection)
-
-
-class UserFactory(UserBaseFactory):
-    def __init__(self, collection: list[DBEntity]):
-        super().__init__(collection=collection)
