@@ -10,11 +10,18 @@ dependencies = [
 fastapi = [
     "fastapi>=0.116.1",
 ]
+sql = [
+    "sqlalchemy>=2.0.42",
+]
+mongo = [
+    "pymongo>=4.13.2",
+]
 
 [dependency-groups]
 dev = [
     "httpx>=0.28.1",
     "mypy>=1.17.1",
+    "polyfactory>=2.22.1",
     "pre-commit>=4.2.0",
     "pytest>=8.4.1",
     "ruff>=0.12.7",
