@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.4.0](https://github.com/julienpillaud/cleanstack/compare/0.3.0...0.4.0) (2025-08-04)
+
+
+### Features
+
+* implement factories ([#14](https://github.com/julienpillaud/cleanstack/issues/14)) ([1d9f0c6](https://github.com/julienpillaud/cleanstack/commit/1d9f0c604426c3364b96eafc32b1f3538d145af0))
+
+
+### Bug Fixes
+
+* add release please manifest ([#16](https://github.com/julienpillaud/cleanstack/issues/16)) ([ed52877](https://github.com/julienpillaud/cleanstack/commit/ed52877c4fa7ca91a3d13ffe8a2d7444436a6549))
+* move release-please configuration to a separate JSON file ([#15](https://github.com/julienpillaud/cleanstack/issues/15)) ([40c33c0](https://github.com/julienpillaud/cleanstack/commit/40c33c096b09eb891adffa70cd35d83d2bb7d463))
+
 ## [0.3.0](https://github.com/julienpillaud/cleanstack/compare/0.2.0...v0.3.0) (2025-08-02)
 
 
