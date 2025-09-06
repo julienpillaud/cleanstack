@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/julienpillaud/cleanstack/compare/0.4.0...0.5.0) (2025-09-06)
+
+
+### Features
+
+* add domain exceptions ([#18](https://github.com/julienpillaud/cleanstack/issues/18)) ([a9aa64f](https://github.com/julienpillaud/cleanstack/commit/a9aa64ffeb652caa08891f8ef4baa83db5bce0f1))
+
 ## [0.4.0](https://github.com/julienpillaud/cleanstack/compare/0.3.0...0.4.0) (2025-08-04)
 
 
