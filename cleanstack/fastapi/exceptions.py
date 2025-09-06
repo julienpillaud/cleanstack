@@ -10,14 +10,24 @@ except ImportError as e:
         'To use FastAPI utilities, you need to install "cleanstack[fastapi]"'
     ) from e
 
-from cleanstack.exceptions import AlreadyExistsError, DomainError, NotFoundError
+from cleanstack.exceptions import (
+    BadRequestError,
+    ConflictError,
+    DomainError,
+    ForbiddenError,
+    NotFoundError,
+    UnprocessableEntityError,
+)
 from cleanstack.logger import logger
 
 
 class ExceptionRegistry:
     _exc_mapping: ClassVar[dict[type[Exception], int]] = {
+        BadRequestError: status.HTTP_400_BAD_REQUEST,
+        ForbiddenError: status.HTTP_403_FORBIDDEN,
         NotFoundError: status.HTTP_404_NOT_FOUND,
-        AlreadyExistsError: status.HTTP_409_CONFLICT,
+        ConflictError: status.HTTP_409_CONFLICT,
+        UnprocessableEntityError: status.HTTP_422_UNPROCESSABLE_ENTITY,
     }
 
     @classmethod
