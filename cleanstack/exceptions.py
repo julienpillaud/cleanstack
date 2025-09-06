@@ -2,9 +2,21 @@ class DomainError(Exception):
     pass
 
 
+class BadRequestError(DomainError):
+    pass
+
+
+class ForbiddenError(DomainError):
+    pass
+
+
 class NotFoundError(DomainError):
     pass
 
 
-class AlreadyExistsError(DomainError):
+class ConflictError(DomainError):
+    pass
+
+
+class UnprocessableEntityError(DomainError):
     pass
