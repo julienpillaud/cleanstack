@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/julienpillaud/cleanstack/compare/0.5.0...0.5.1) (2025-10-27)
+
+
+### Bug Fixes
+
+* update dependencies ([#20](https://github.com/julienpillaud/cleanstack/issues/20)) ([3a26b2f](https://github.com/julienpillaud/cleanstack/commit/3a26b2ffad76a409ce46b04d94b93f4ec390da2a))
+
 ## [0.5.0](https://github.com/julienpillaud/cleanstack/compare/0.4.0...0.5.0) (2025-09-06)
 
 
