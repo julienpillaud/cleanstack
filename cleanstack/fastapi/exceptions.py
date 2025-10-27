@@ -27,7 +27,7 @@ class ExceptionRegistry:
         ForbiddenError: status.HTTP_403_FORBIDDEN,
         NotFoundError: status.HTTP_404_NOT_FOUND,
         ConflictError: status.HTTP_409_CONFLICT,
-        UnprocessableEntityError: status.HTTP_422_UNPROCESSABLE_ENTITY,
+        UnprocessableEntityError: status.HTTP_422_UNPROCESSABLE_CONTENT,
     }
 
     @classmethod
