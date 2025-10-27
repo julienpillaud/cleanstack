@@ -3,28 +3,28 @@ name = "cleanstack"
 version = "0.5.0"
 requires-python = ">=3.10"
 dependencies = [
-    "pydantic>=2.11.7",
+    "pydantic>=2.12",
 ]
 
 [project.optional-dependencies]
 fastapi = [
-    "fastapi>=0.116.1",
+    "fastapi>=0.120",
 ]
 sql = [
-    "sqlalchemy>=2.0.42",
+    "sqlalchemy>=2.0",
 ]
 mongo = [
-    "pymongo>=4.13.2",
+    "pymongo>=4.15",
 ]
 
 [dependency-groups]
 dev = [
-    "httpx>=0.28.1",
-    "mypy>=1.17.1",
-    "polyfactory>=2.22.1",
-    "pre-commit>=4.2.0",
-    "pytest>=8.4.1",
-    "ruff>=0.12.7",
+    "httpx>=0.28",
+    "mypy==1.18.2",
+    "polyfactory>=2.22",
+    "pre-commit>=4.3",
+    "pytest>=8.4",
+    "ruff==0.14.2",
 ]
 
 [tool.ruff]
