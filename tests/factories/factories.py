@@ -1,4 +1,4 @@
-from typing import Any, Generic, TypeVar
+from typing import Any
 
 from cleanstack.entities import DomainModel
 from cleanstack.factories.base import BaseFactory
@@ -10,10 +10,8 @@ from tests.factories.entities import (
     UserEntityFactory,
 )
 
-T = TypeVar("T", bound=DomainModel)
 
-
-class InMemoryBaseFactory(BaseFactory[T], Generic[T]):
+class InMemoryBaseFactory[T: DomainModel](BaseFactory[T]):
     def __init__(self, collection: list[DBEntity]) -> None:
         self.collection = collection
 

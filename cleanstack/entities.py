@@ -1,9 +1,8 @@
 import uuid
-from typing import TypeAlias
 
 from pydantic import BaseModel, ConfigDict
 
-EntityId: TypeAlias = uuid.UUID
+type EntityId = uuid.UUID
 
 
 class DomainModel(BaseModel):

@@ -1,5 +1,3 @@
-from typing import Generic, TypeVar
-
 try:
     from pymongo.collection import Collection
 except ImportError as e:
@@ -11,10 +9,8 @@ from cleanstack.entities import DomainModel
 from cleanstack.factories.base import BaseFactory
 from cleanstack.infrastructure.mongo.entities import MongoDocument
 
-T = TypeVar("T", bound=DomainModel)
 
-
-class MongoBaseFactory(BaseFactory[T], Generic[T]):
+class MongoBaseFactory[T: DomainModel](BaseFactory[T]):
     def __init__(self, collection: Collection[MongoDocument]):
         self.collection = collection
 
