@@ -1,3 +1,3 @@
-from typing import Any, TypeAlias
+from typing import Any
 
-MongoDocument: TypeAlias = dict[str, Any]
+type MongoDocument = dict[str, Any]

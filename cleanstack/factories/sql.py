@@ -1,5 +1,3 @@
-from typing import Generic, TypeVar
-
 try:
     from sqlalchemy.orm import Session
 except ImportError as e:
@@ -11,11 +9,8 @@ from cleanstack.entities import DomainModel
 from cleanstack.factories.base import BaseFactory
 from cleanstack.infrastructure.sql.entities import OrmBase
 
-T = TypeVar("T", bound=DomainModel)
-P = TypeVar("P", bound=OrmBase)
 
-
-class SqlBaseFactory(BaseFactory[T], Generic[T, P]):
+class SqlBaseFactory[T: DomainModel, P: OrmBase](BaseFactory[T]):
     orm_model: type[P]
 
     def __init__(self, session: Session):

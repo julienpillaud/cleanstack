@@ -1,7 +1,7 @@
 [project]
 name = "cleanstack"
 version = "0.5.1"
-requires-python = ">=3.10"
+requires-python = ">=3.13"
 dependencies = [
     "pydantic>=2.12",
 ]
@@ -24,7 +24,7 @@ dev = [
     "polyfactory>=2.22",
     "pre-commit>=4.3",
     "pytest>=8.4",
-    "ruff==0.14.2",
+    "ruff==0.14.4",
 ]
 
 [tool.ruff]

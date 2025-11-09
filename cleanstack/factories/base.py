@@ -1,11 +1,9 @@
-from typing import Any, Generic, TypeVar
+from typing import Any
 
 from cleanstack.entities import DomainModel
 
-T = TypeVar("T", bound=DomainModel)
 
-
-class BaseFactory(Generic[T]):
+class BaseFactory[T: DomainModel]:
     def create_one(self, **kwargs: Any) -> T:
         entity = self._build_entity(**kwargs)
         self._insert_one(entity)

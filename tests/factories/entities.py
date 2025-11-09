@@ -1,10 +1,10 @@
-from typing import Any, ClassVar, TypeAlias
+from typing import Any, ClassVar
 
 from polyfactory.factories.pydantic_factory import ModelFactory
 
 from cleanstack.entities import DomainModel, EntityId
 
-DBEntity: TypeAlias = dict[str, Any]
+type DBEntity = dict[str, Any]
 
 
 class Post(DomainModel):

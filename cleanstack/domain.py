@@ -2,13 +2,9 @@ import time
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from functools import wraps
-from typing import Concatenate, Generic, ParamSpec, Protocol, TypeVar
+from typing import Concatenate, Protocol
 
 from cleanstack.logger import logger
-
-C = TypeVar("C", bound="UnitOfWorkProtocol")
-P = ParamSpec("P")
-R = TypeVar("R")
 
 
 class UnitOfWorkProtocol(Protocol):
@@ -18,23 +14,26 @@ class UnitOfWorkProtocol(Protocol):
     def rollback(self) -> None: ...
 
 
-class CommandHandler(Generic[C, P, R]):
-    def __init__(self, func: Callable[Concatenate[C, P], R]) -> None:
+class CommandHandler[T: UnitOfWorkProtocol, **P, R]:
+    def __init__(self, func: Callable[Concatenate[T, P], R]) -> None:
         self.func = func
 
     def __get__(
-        self, instance: "BaseDomain[C]", owner: type["BaseDomain[C]"]
+        self,
+        instance: "BaseDomain[T]",
+        owner: type["BaseDomain[T]"],
     ) -> Callable[P, R]:
-        logger.debug(f"Command '{self.func.__name__}' bound")
         return instance.command_handler(self.func)
 
 
-class BaseDomain(Generic[C]):
-    def __init__(self, context: C):
-        logger.debug("Instantiate 'Domain'")
+class BaseDomain[T: UnitOfWorkProtocol]:
+    def __init__(self, context: T):
         self.context = context
 
-    def command_handler(self, func: Callable[Concatenate[C, P], R]) -> Callable[P, R]:
+    def command_handler[**P, R](
+        self,
+        func: Callable[Concatenate[T, P], R],
+    ) -> Callable[P, R]:
         @wraps(func)
         def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
             start_time = time.perf_counter()
