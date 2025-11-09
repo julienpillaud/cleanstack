@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/julienpillaud/cleanstack/compare/0.5.1...0.6.0) (2025-11-09)
+
+
+### Features
+
+* update Python version and refactor type aliasing ([#22](https://github.com/julienpillaud/cleanstack/issues/22)) ([bbf07ee](https://github.com/julienpillaud/cleanstack/commit/bbf07ee958f6b2458de25e5059eaa2d663ba91a1))
+
 ## [0.5.1](https://github.com/julienpillaud/cleanstack/compare/0.5.0...0.5.1) (2025-10-27)
 
 
