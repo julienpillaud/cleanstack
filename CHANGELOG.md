@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/julienpillaud/cleanstack/compare/0.6.0...0.7.0) (2025-11-26)
+
+
+### Features
+
+* bump to python 3.14 ([ab0c6ac](https://github.com/julienpillaud/cleanstack/commit/ab0c6ac3b8b76e2c7d2aaa944967f7a8baab2de2))
+
 ## [0.6.0](https://github.com/julienpillaud/cleanstack/compare/0.5.1...0.6.0) (2025-11-09)
 
 
