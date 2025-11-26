@@ -20,8 +20,8 @@ class CommandHandler[T: UnitOfWorkProtocol, **P, R]:
 
     def __get__(
         self,
-        instance: "BaseDomain[T]",
-        owner: type["BaseDomain[T]"],
+        instance: BaseDomain[T],
+        owner: type[BaseDomain[T]],
     ) -> Callable[P, R]:
         return instance.command_handler(self.func)
 
