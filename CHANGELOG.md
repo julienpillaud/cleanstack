@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/julienpillaud/cleanstack/compare/0.7.0...0.8.0) (2026-01-05)
+
+
+### Features
+
+* update `DomainError` ([#26](https://github.com/julienpillaud/cleanstack/issues/26)) ([7cf4c97](https://github.com/julienpillaud/cleanstack/commit/7cf4c97f052728eddf4d6b238d04245d17d5016d))
+
 ## [0.7.0](https://github.com/julienpillaud/cleanstack/compare/0.6.0...0.7.0) (2025-11-26)
 
 
