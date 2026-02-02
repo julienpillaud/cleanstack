@@ -2,7 +2,7 @@ import time
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from functools import wraps
-from typing import Concatenate, Protocol
+from typing import Concatenate, Protocol, cast
 
 from cleanstack.logger import logger
 
@@ -15,15 +15,42 @@ class UnitOfWorkProtocol(Protocol):
 
 
 class CommandHandler[T: UnitOfWorkProtocol, **P, R]:
+    """Descriptor for binding a command to a Domain instance.
+
+    It applies a decorator to wrap the command in a unit-of-work transaction.
+    The binding occurs lazily when the command is accessed but then cached in the
+    instance's `__dict__` for the following accesses.
+
+    It allows declaring commands in a simple way as class attribute:
+
+    ```python
+    class Domain(BaseDomain[ContextProtocol]):
+        get_users = CommandHandler(get_users_command)
+    ```
+    """
+
     def __init__(self, func: Callable[Concatenate[T, P], R]) -> None:
         self.func = func
+
+    def __set_name__(self, owner: type[BaseDomain[T]], name: str) -> None:
+        self.name = name
 
     def __get__(
         self,
         instance: BaseDomain[T],
         owner: type[BaseDomain[T]],
     ) -> Callable[P, R]:
-        return instance.command_handler(self.func)
+        if instance is None:
+            return self
+
+        if self.name in instance.__dict__:
+            return cast(Callable[P, R], instance.__dict__[self.name])
+
+        bound = instance.command_handler(self.func)
+        logger.debug(f"Bound command '{self.name}'")
+
+        instance.__dict__[self.name] = bound
+        return bound
 
 
 class BaseDomain[T: UnitOfWorkProtocol]:

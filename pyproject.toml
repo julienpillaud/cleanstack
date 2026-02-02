@@ -12,7 +12,8 @@ dev = [
     "mypy==1.19.1",
     "pre-commit==4.5.1",
     "pytest==9.0.2",
-    "ruff==0.14.10",
+    "ruff==0.14.14",
+    "ty==0.0.14",
 ]
 
 [tool.ruff]
@@ -28,6 +29,9 @@ select = [
     "PL",  # Pylint
     "RUF",
 ]
+
+[tool.ty.terminal]
+output-format = "concise"
 
 [tool.mypy]
 strict = true
