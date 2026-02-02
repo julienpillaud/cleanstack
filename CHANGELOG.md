@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/julienpillaud/cleanstack/compare/0.8.0...0.9.0) (2026-02-02)
+
+
+### Features
+
+* enhance `CommandHandler` descriptor with caching ([#28](https://github.com/julienpillaud/cleanstack/issues/28)) ([dbe4a75](https://github.com/julienpillaud/cleanstack/commit/dbe4a758f33a9dc54ce8ab024a8f9b6540c00a5f))
+
 ## [0.8.0](https://github.com/julienpillaud/cleanstack/compare/0.7.0...0.8.0) (2026-01-05)
 
 
