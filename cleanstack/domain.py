@@ -1,17 +1,10 @@
 import time
-from collections.abc import Callable, Iterator
-from contextlib import contextmanager
+from collections.abc import Callable
 from functools import wraps
-from typing import Concatenate, Protocol, cast
+from typing import Concatenate
 
 from cleanstack.logger import logger
-
-
-class UnitOfWorkProtocol(Protocol):
-    @contextmanager
-    def transaction(self) -> Iterator[None]: ...
-    def commit(self) -> None: ...
-    def rollback(self) -> None: ...
+from cleanstack.uow import UnitOfWorkProtocol
 
 
 class CommandHandler[T: UnitOfWorkProtocol, **P, R]:
@@ -44,7 +37,7 @@ class CommandHandler[T: UnitOfWorkProtocol, **P, R]:
             return self
 
         if self.name in instance.__dict__:
-            return cast(Callable[P, R], instance.__dict__[self.name])
+            return instance.__dict__[self.name]  # type: ignore
 
         bound = instance.command_handler(self.func)
         logger.debug(f"Bound command '{self.name}'")

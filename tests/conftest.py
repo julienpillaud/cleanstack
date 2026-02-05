@@ -1,47 +1,28 @@
-from collections.abc import Iterator
-from contextlib import contextmanager
-from typing import Protocol
-from unittest.mock import Mock
+from unittest.mock import MagicMock
 
 import pytest
 
-from cleanstack.domain import BaseDomain, CommandHandler, UnitOfWorkProtocol
-
-
-class ContextProtocol(UnitOfWorkProtocol, Protocol): ...
-
-
-class MockContext(ContextProtocol):
-    transaction: Mock
-    commit: Mock
-    rollback: Mock
-
-
-def successful_command(context: ContextProtocol, x: str) -> str:
-    return f"command executed with {x}"
-
-
-def failed_command(context: ContextProtocol) -> str:
-    raise ValueError("command failed")
-
-
-class DomainTest(BaseDomain[ContextProtocol]):
-    successful_command = CommandHandler(successful_command)
-    failed_command = CommandHandler(failed_command)
+from tests.init.context import Context, ContextProtocol
+from tests.init.domain import Domain
+from tests.init.registry import (
+    Settings,
+)
 
 
 @pytest.fixture
-def context() -> MockContext:
-    mock_context = Mock(spec=ContextProtocol)
+def context() -> ContextProtocol:
+    mock_sql_uow = MagicMock()
+    mock_mongo_uow = MagicMock()
 
-    @contextmanager
-    def mock_transaction() -> Iterator[None]:
-        yield
+    real_context = Context(settings=Settings())
 
-    mock_context.transaction = mock_transaction
-    return mock_context
+    real_context.sql_uow = mock_sql_uow
+    real_context.mongo_uow = mock_mongo_uow
+    real_context.members = [mock_sql_uow, mock_mongo_uow]
+
+    return real_context
 
 
 @pytest.fixture
-def domain(context: ContextProtocol) -> DomainTest:
-    return DomainTest(context=context)
+def domain(context: ContextProtocol) -> Domain:
+    return Domain(context=context)
