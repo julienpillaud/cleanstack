@@ -7,7 +7,7 @@ from tests.init.adapters import (
     UserAdapter,
     UserAdapterProtocol,
 )
-from tests.init.registry import (
+from tests.init.uow import (
     MongoUnitOfWork,
     Settings,
     SQLUnitOfWork,

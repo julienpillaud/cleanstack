@@ -4,7 +4,7 @@ import pytest
 
 from tests.init.context import Context, ContextProtocol
 from tests.init.domain import Domain
-from tests.init.registry import (
+from tests.init.uow import (
     Settings,
 )
 

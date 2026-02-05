@@ -1,11 +1,11 @@
 from collections.abc import Iterator
 from contextlib import contextmanager
-from unittest.mock import Mock
+from unittest.mock import MagicMock
 
 from cleanstack.uow import UnitOfWorkProtocol
 
 
-class Settings(Mock):
+class Settings(MagicMock):
     pass
 
 
@@ -15,7 +15,9 @@ class SQLUnitOfWork(UnitOfWorkProtocol):
 
     @contextmanager
     def transaction(self) -> Iterator[None]:
+        print("SQL before transaction")
         yield
+        print("SQL after transaction")
 
     def commit(self) -> None:
         print("SQL commit")
@@ -30,7 +32,9 @@ class MongoUnitOfWork(UnitOfWorkProtocol):
 
     @contextmanager
     def transaction(self) -> Iterator[None]:
+        print("Mongo before transaction")
         yield
+        print("Mongo after transaction")
 
     def commit(self) -> None:
         print("Mongo commit")
