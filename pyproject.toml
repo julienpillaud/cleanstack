@@ -8,25 +8,25 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "httpx==0.28.1",
-    "mypy==1.19.1",
-    "pre-commit==4.5.1",
-    "pytest==9.0.2",
-    "ruff==0.14.14",
-    "ty==0.0.14",
+    "httpx>=0.28",
+    "mypy>=1.19",
+    "pre-commit>=4.5",
+    "pytest>=9.0",
+    "ruff>=0.15",
+    "ty>=0.0",
 ]
 
 [tool.ruff]
 output-format = "concise"
 [tool.ruff.lint]
 select = [
-    "E", "W",  # pycodestyle
-    "F",  # Pyflakes
-    "UP",  # pyupgrade
-    "B",  # flake8-bugbear
-    "SIM",  # flake8-simplify
-    "I",  # isort
-    "PL",  # Pylint
+    "E", "W", # pycodestyle
+    "F", # Pyflakes
+    "UP", # pyupgrade
+    "B", # flake8-bugbear
+    "SIM", # flake8-simplify
+    "I", # isort
+    "PL", # Pylint
     "RUF",
 ]
 
