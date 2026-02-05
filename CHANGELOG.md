@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.0](https://github.com/julienpillaud/cleanstack/compare/0.9.0...0.10.0) (2026-02-05)
+
+
+### Features
+
+* introduce composite unit of work ([#30](https://github.com/julienpillaud/cleanstack/issues/30)) ([1fec2d1](https://github.com/julienpillaud/cleanstack/commit/1fec2d1369a49977529406d6c4167ce1c7aaaae5))
+
 ## [0.9.0](https://github.com/julienpillaud/cleanstack/compare/0.8.0...0.9.0) (2026-02-02)
 
 
