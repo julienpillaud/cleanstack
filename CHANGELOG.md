@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.0](https://github.com/julienpillaud/cleanstack/compare/0.10.0...0.11.0) (2026-02-06)
+
+
+### Features
+
+* introduce BaseHandler with specialized QueryHandler and CommandHandler ([#32](https://github.com/julienpillaud/cleanstack/issues/32)) ([d4bc94b](https://github.com/julienpillaud/cleanstack/commit/d4bc94bdf2afcb174eb9c3718232ba66c4945aa1))
+
 ## [0.10.0](https://github.com/julienpillaud/cleanstack/compare/0.9.0...0.10.0) (2026-02-05)
 
 
