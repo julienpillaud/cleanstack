@@ -1,6 +1,6 @@
 from typing import Protocol
 
-from cleanstack.uow import CompositeUniOfWork, UnitOfWorkProtocol
+from cleanstack.context import BaseContextProtocol
 from tests.init.adapters import (
     ItemAdapter,
     ItemAdapterProtocol,
@@ -8,13 +8,11 @@ from tests.init.adapters import (
     UserAdapterProtocol,
 )
 from tests.init.uow import (
-    MongoUnitOfWork,
-    Settings,
-    SQLUnitOfWork,
+    UnitOfWork,
 )
 
 
-class ContextProtocol(UnitOfWorkProtocol, Protocol):
+class ContextProtocol(BaseContextProtocol, Protocol):
     @property
     def user_adapter(self) -> UserAdapterProtocol: ...
 
@@ -22,16 +20,14 @@ class ContextProtocol(UnitOfWorkProtocol, Protocol):
     def item_adapter(self) -> ItemAdapterProtocol: ...
 
 
-class Context(CompositeUniOfWork, ContextProtocol):
-    def __init__(self, settings: Settings) -> None:
-        self.sql_uow = SQLUnitOfWork(settings=settings)
-        self.mongo_uow = MongoUnitOfWork(settings=settings)
-        self.members = [self.sql_uow, self.mongo_uow]
+class Context(ContextProtocol):
+    def __init__(self, uow: UnitOfWork):
+        self.uow = uow
 
     @property
     def user_adapter(self) -> UserAdapterProtocol:
-        return UserAdapter(session=self.sql_uow.session)
+        return UserAdapter(session=self.uow.sql.session)
 
     @property
     def item_adapter(self) -> ItemAdapterProtocol:
-        return ItemAdapter(client=self.mongo_uow.client)
+        return ItemAdapter(client=self.uow.mongo.client)

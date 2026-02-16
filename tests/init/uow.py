@@ -2,7 +2,7 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from unittest.mock import MagicMock
 
-from cleanstack.uow import UnitOfWorkProtocol
+from cleanstack.uow import CompositeUniOfWork, UnitOfWorkProtocol
 
 
 class Settings(MagicMock):
@@ -41,3 +41,10 @@ class MongoUnitOfWork(UnitOfWorkProtocol):
 
     def rollback(self) -> None:
         print("Mongo rollback")
+
+
+class UnitOfWork(CompositeUniOfWork):
+    def __init__(self, sql: SQLUnitOfWork, mongo: MongoUnitOfWork) -> None:
+        self.sql = sql
+        self.mongo = mongo
+        super().__init__([self.sql, self.mongo])

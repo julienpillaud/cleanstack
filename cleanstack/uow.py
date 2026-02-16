@@ -11,7 +11,8 @@ class UnitOfWorkProtocol(Protocol):
 
 
 class CompositeUniOfWork(UnitOfWorkProtocol):
-    members: list[UnitOfWorkProtocol]
+    def __init__(self, members: list[UnitOfWorkProtocol]) -> None:
+        self.members = members
 
     @contextmanager
     def transaction(self) -> Iterator[None]:
