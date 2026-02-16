@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.0](https://github.com/julienpillaud/cleanstack/compare/0.11.0...0.12.0) (2026-02-16)
+
+
+### Features
+
+* restructure domain context and command handling ([#34](https://github.com/julienpillaud/cleanstack/issues/34)) ([95c3e12](https://github.com/julienpillaud/cleanstack/commit/95c3e129e4bc78c151bb39622c7707276fbb3f60))
+
 ## [0.11.0](https://github.com/julienpillaud/cleanstack/compare/0.10.0...0.11.0) (2026-02-06)
 
 
