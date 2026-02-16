@@ -1,28 +1,36 @@
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, Mock
 
 import pytest
 
-from tests.init.context import Context, ContextProtocol
+from tests.init.context import Context
 from tests.init.domain import Domain
 from tests.init.uow import (
-    Settings,
+    MongoUnitOfWork,
+    SQLUnitOfWork,
+    UnitOfWork,
 )
 
 
 @pytest.fixture
-def context() -> ContextProtocol:
-    mock_sql_uow = MagicMock()
-    mock_mongo_uow = MagicMock()
-
-    real_context = Context(settings=Settings())
-
-    real_context.sql_uow = mock_sql_uow
-    real_context.mongo_uow = mock_mongo_uow
-    real_context.members = [mock_sql_uow, mock_mongo_uow]
-
-    return real_context
+def uow() -> UnitOfWork:
+    sql_uow = Mock(
+        spec=SQLUnitOfWork,
+        session="session",
+        transaction=MagicMock(),
+    )
+    mongo_uow = Mock(
+        spec=MongoUnitOfWork,
+        client="client",
+        transaction=MagicMock(),
+    )
+    return UnitOfWork(sql=sql_uow, mongo=mongo_uow)
 
 
 @pytest.fixture
-def domain(context: ContextProtocol) -> Domain:
-    return Domain(context=context)
+def context(uow: UnitOfWork) -> Context:
+    return Context(uow=uow)
+
+
+@pytest.fixture
+def domain(uow: UnitOfWork, context: Context) -> Domain:
+    return Domain(uow=uow, context=context)
