@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.0](https://github.com/julienpillaud/cleanstack/compare/0.12.0...0.13.0) (2026-02-28)
+
+
+### Features
+
+* add unit of work pattern ([#36](https://github.com/julienpillaud/cleanstack/issues/36)) ([2c9ed47](https://github.com/julienpillaud/cleanstack/commit/2c9ed479c6062f49b425b931b3fa5a5b88c8c962))
+
 ## [0.12.0](https://github.com/julienpillaud/cleanstack/compare/0.11.0...0.12.0) (2026-02-16)
 
 
