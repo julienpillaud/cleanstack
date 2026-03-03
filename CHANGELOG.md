@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.0](https://github.com/julienpillaud/cleanstack/compare/0.13.0...0.14.0) (2026-03-03)
+
+
+### Features
+
+* refactoring ([#38](https://github.com/julienpillaud/cleanstack/issues/38)) ([356b22f](https://github.com/julienpillaud/cleanstack/commit/356b22fd769ad610d05a24e63eca7b1258c2d4ba))
+
 ## [0.13.0](https://github.com/julienpillaud/cleanstack/compare/0.12.0...0.13.0) (2026-02-28)
 
 
