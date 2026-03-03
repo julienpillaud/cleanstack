@@ -6,7 +6,9 @@ from typing import Protocol
 class UnitOfWorkProtocol(Protocol):
     @contextmanager
     def transaction(self) -> Iterator[None]: ...
+
     def commit(self) -> None: ...
+
     def rollback(self) -> None: ...
 
 

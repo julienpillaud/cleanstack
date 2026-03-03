@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from starlette import status
 
-from cleanstack.exceptions import DomainError, NotFoundError
+from cleanstack.domain.exceptions import DomainError, NotFoundError
 from cleanstack.fastapi.exceptions import ExceptionRegistry, add_exception_handler
 
 
