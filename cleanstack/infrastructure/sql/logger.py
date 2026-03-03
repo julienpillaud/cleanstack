@@ -1,3 +1,3 @@
 import logging
 
-logger = logging.getLogger("infrastructure.sql")
+logger = logging.getLogger("app.infrastructure.sql")

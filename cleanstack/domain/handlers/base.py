@@ -2,10 +2,10 @@ import time
 from collections.abc import Callable
 from typing import Concatenate, Self, overload
 
-from cleanstack.context import BaseContextProtocol
-from cleanstack.domain import BaseDomain
-from cleanstack.logger import logger
-from cleanstack.uow import UnitOfWorkProtocol
+from cleanstack.domain.context import BaseContextProtocol
+from cleanstack.domain.domain import BaseDomain
+from cleanstack.domain.logger import logger
+from cleanstack.domain.uow import UnitOfWorkProtocol
 
 
 class BaseHandler[C: BaseContextProtocol, **P, R]:

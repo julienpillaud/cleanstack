@@ -5,8 +5,8 @@ from pydantic import BaseModel, ConfigDict
 from sqlalchemy import Engine, create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
+from cleanstack.domain.uow import UnitOfWorkProtocol
 from cleanstack.infrastructure.sql.logger import logger
-from cleanstack.uow import UnitOfWorkProtocol
 
 
 class SQLContext(BaseModel):

@@ -1,5 +1,5 @@
-from cleanstack.context import BaseContextProtocol
-from cleanstack.uow import UnitOfWorkProtocol
+from cleanstack.domain.context import BaseContextProtocol
+from cleanstack.domain.uow import UnitOfWorkProtocol
 
 
 class BaseDomain[U: UnitOfWorkProtocol, C: BaseContextProtocol]:

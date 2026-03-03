@@ -6,19 +6,19 @@ from pymongo import MongoClient
 from pymongo.client_session import ClientSession
 from pymongo.database import Database
 
-from cleanstack.infrastructure.mongodb.logger import logger
-from cleanstack.infrastructure.mongodb.types import MongoDocument
-from cleanstack.uow import UnitOfWorkProtocol
+from cleanstack.domain.uow import UnitOfWorkProtocol
+from cleanstack.infrastructure.mongo.logger import logger
+from cleanstack.infrastructure.mongo.types import MongoDocument
 
 
-class MongoDBContext(BaseModel):
+class MongoContext(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     client: MongoClient[MongoDocument]
     database: Database[MongoDocument]
 
     @classmethod
-    def from_settings(cls, host: str, database_name: str) -> MongoDBContext:
+    def from_settings(cls, host: str, database_name: str) -> MongoContext:
         logger.debug("Creating MongoDB client")
         client: MongoClient[MongoDocument] = MongoClient(
             host=host,
@@ -28,8 +28,8 @@ class MongoDBContext(BaseModel):
         return cls(client=client, database=database)
 
 
-class MongoDBUnitOfWork(UnitOfWorkProtocol):
-    def __init__(self, context: MongoDBContext) -> None:
+class MongoUnitOfWork(UnitOfWorkProtocol):
+    def __init__(self, context: MongoContext) -> None:
         self._session: ClientSession | None = None
         self.client = context.client
 

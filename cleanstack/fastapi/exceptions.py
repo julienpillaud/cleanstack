@@ -5,7 +5,7 @@ from fastapi import FastAPI, status
 from fastapi.requests import Request
 from fastapi.responses import JSONResponse, PlainTextResponse, Response
 
-from cleanstack.exceptions import (
+from cleanstack.domain.exceptions import (
     BadRequestError,
     ConflictError,
     DomainError,
@@ -13,7 +13,7 @@ from cleanstack.exceptions import (
     NotFoundError,
     UnprocessableEntityError,
 )
-from cleanstack.logger import logger
+from cleanstack.fastapi.logger import logger
 
 
 class ExceptionRegistry:
