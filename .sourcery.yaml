@@ -1,0 +1,6 @@
+rule_settings:
+  disable:
+    - use-named-expression
+    - reintroduce-else
+    - swap-if-else-branches
+    - dont-import-test-modules
