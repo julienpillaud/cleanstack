@@ -3,8 +3,9 @@ name = "cleanstack"
 version = "0.14.0"
 requires-python = ">=3.14"
 dependencies = [
-    "faker>=40.5",
+    "faker>=40.8",
     "fastapi>=0.135",
+    "pydantic-settings>=2.13",
 ]
 
 [project.optional-dependencies]
@@ -23,7 +24,11 @@ dev = [
     "pre-commit>=4.5",
     "pytest>=9.0",
     "ruff>=0.15",
+    "uvicorn>=0.41.0",
 ]
+
+[tool.setuptools.packages.find]
+include = ["cleanstack*"]
 
 [tool.ruff]
 output-format = "concise"
@@ -38,14 +43,20 @@ select = [
     "PL", # Pylint
     "RUF",
 ]
+ignore = [
+    "PLR0911", # Too many return statements (7 > 6)
+    "PLR0913", # Too many arguments in function definition (6 > 5)
+]
 
 [tool.ty.terminal]
 output-format = "concise"
 
 [tool.mypy]
 strict = true
+plugins = ['pydantic.mypy']
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 log_cli = true
+log_cli_level = "info"
 log_cli_format = "%(asctime)s [%(levelname)8s] %(name)30s - %(message)s"
