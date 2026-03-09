@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.0](https://github.com/julienpillaud/cleanstack/compare/0.14.0...0.15.0) (2026-03-09)
+
+
+### Features
+
+* add infrastructure layers for mongodb and sql ([#40](https://github.com/julienpillaud/cleanstack/issues/40)) ([dc75b9c](https://github.com/julienpillaud/cleanstack/commit/dc75b9c5860d608f058b090d22831db8ffac40f7))
+
 ## [0.14.0](https://github.com/julienpillaud/cleanstack/compare/0.13.0...0.14.0) (2026-03-03)
 
 
