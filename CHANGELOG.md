@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.0](https://github.com/julienpillaud/cleanstack/compare/0.15.0...0.16.0) (2026-03-13)
+
+
+### Features
+
+* add support for lookup and load options in repository builders ([#42](https://github.com/julienpillaud/cleanstack/issues/42)) ([f4fbbf4](https://github.com/julienpillaud/cleanstack/commit/f4fbbf427b6f6bc078cd6398a60ec90645ef7584))
+
 ## [0.15.0](https://github.com/julienpillaud/cleanstack/compare/0.14.0...0.15.0) (2026-03-09)
 
 
