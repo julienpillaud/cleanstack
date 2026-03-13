@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+import datetime
 
 import pytest
 from fastapi import status
@@ -31,11 +31,11 @@ def test_sort_datetime(
     expected_indices: list[int],
     repository_type: RepositoryType,
 ) -> None:
-    base_time = datetime(2026, 1, 1, 12, 0, 0)
+    base_time = datetime.datetime(2026, 1, 1, 12, 0, 0, tzinfo=datetime.UTC)
     dates = [
         base_time,
-        base_time + timedelta(hours=1),
-        base_time + timedelta(hours=2),
+        base_time + datetime.timedelta(hours=1),
+        base_time + datetime.timedelta(hours=2),
     ]
     item_factory.create_many(1, datetime_field=dates[1])
     item_factory.create_many(1, datetime_field=dates[2])
@@ -49,6 +49,9 @@ def test_sort_datetime(
 
     assert response.status_code == status.HTTP_200_OK
     result = response.json()
-    expected_dates = [dates[i].isoformat() for i in expected_indices]
-    result_dates = [item["datetime_field"] for item in result["items"]]
+    expected_dates = [dates[i] for i in expected_indices]
+    result_dates = [
+        datetime.datetime.fromisoformat(item["datetime_field"])
+        for item in result["items"]
+    ]
     assert result_dates == expected_dates

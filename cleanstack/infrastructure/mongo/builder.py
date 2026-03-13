@@ -24,9 +24,11 @@ class PipelineBuilder[T: DomainEntity]:
         self,
         domain_entity_type: type[T],
         searchable_fields: tuple[str, ...],
+        lookup: list[MongoDocument],
     ) -> None:
         self.domain_entity_type = domain_entity_type
         self.searchable_fields = searchable_fields
+        self.lookup = lookup
 
         self._pipeline: list[MongoDocument] = []
         self._count_pipeline: list[MongoDocument] = [{"$count": "total"}]
@@ -42,6 +44,7 @@ class PipelineBuilder[T: DomainEntity]:
         self._apply_search(search)
         self._apply_filters(filters)
         self._count_pipeline = [*self._pipeline, {"$count": "total"}]
+        self._pipeline.extend(self.lookup)
         self._apply_sort(sort)
         self._apply_pagination(pagination)
         return self
