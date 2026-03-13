@@ -1,5 +1,6 @@
 from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
+from sqlalchemy.sql.base import ExecutableOption
 
 from cleanstack.domain import RepositoryProtocol
 from cleanstack.entities import (
@@ -40,6 +41,7 @@ class SQLRepository[T: DomainEntity, OrmT: OrmEntity](
         statement = StatementBuilder(
             self.orm_model_type,
             self.searchable_fields,
+            load_options=self._load_options,
         ).apply(
             search=search,
             filters=filters,
@@ -90,4 +92,12 @@ class SQLRepository[T: DomainEntity, OrmT: OrmEntity](
         return self.domain_entity_type.model_validate(orm_entity)
 
     def _to_database_entity(self, entity: T, /) -> OrmT:
+        """Convert a domain entity to an ORM entity to be saved to the database.
+
+        Can be overridden to take into account relationships.
+        """
         return self.orm_model_type(**entity.model_dump())
+
+    @property
+    def _load_options(self) -> list[ExecutableOption]:
+        return []

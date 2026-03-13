@@ -1,3 +1,5 @@
+import datetime
+import random
 import uuid
 from typing import Any
 
@@ -7,6 +9,7 @@ from app.domain.items.entities import Item
 from app.infrastructure.mongo.items import ItemMongoRepository
 from app.infrastructure.sql.items import ItemSQLRepository
 from cleanstack.factories import BaseMongoFactory, BaseSQLFactory
+from tests.factories.tags import TagMongoFactory, TagSQLFactory
 
 
 def generate_item(faker: Faker, **kwargs: Any) -> Item:
@@ -23,15 +26,22 @@ def generate_item(faker: Faker, **kwargs: Any) -> Item:
         bool_field=kwargs["bool_field"] if "bool_field" in kwargs else faker.pybool(),
         datetime_field=kwargs["datetime_field"]
         if "datetime_field" in kwargs
-        else faker.date_time(),
+        else datetime.datetime.now(datetime.UTC),
         optional_field=kwargs["optional_field"]
         if "optional_field" in kwargs
         else (faker.name() if faker.pybool() else None),
+        tags=kwargs["tags"],
     )
 
 
 class ItemMongoFactory(BaseMongoFactory[Item]):
+    @property
+    def tag_factory(self) -> TagMongoFactory:
+        return TagMongoFactory(faker=self.faker, context=self.context)
+
     def build(self, **kwargs: Any) -> Item:
+        if "tags" not in kwargs:
+            kwargs["tags"] = self.tag_factory.create_many(random.randint(1, 3))
         return generate_item(faker=self.faker, **kwargs)
 
     @property
@@ -43,7 +53,13 @@ class ItemMongoFactory(BaseMongoFactory[Item]):
 
 
 class ItemSQLFactory(BaseSQLFactory[Item]):
+    @property
+    def tag_factory(self) -> TagSQLFactory:
+        return TagSQLFactory(faker=self.faker, context=self.context)
+
     def build(self, **kwargs: Any) -> Item:
+        if "tags" not in kwargs:
+            kwargs["tags"] = self.tag_factory.create_many(random.randint(1, 3))
         return generate_item(faker=self.faker, **kwargs)
 
     @property

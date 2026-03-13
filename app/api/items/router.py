@@ -12,7 +12,7 @@ from app.dependencies.fastapi.dependencies import (
 from app.domain.domain import Domain
 from app.domain.items.entities import Item
 from app.domain.items.repository import RepositoryType
-from cleanstack.entities import FilterEntity, Pagination, SortEntity
+from cleanstack.entities import EntityId, FilterEntity, Pagination, SortEntity
 
 router = APIRouter(prefix="/items", tags=["items"])
 
@@ -33,3 +33,12 @@ def get_items(
         sort=sort,
         pagination=pagination,
     )
+
+
+@router.get("/{item_id}")
+def get_item(
+    domain: Annotated[Domain, Depends(get_domain)],
+    repository: RepositoryType,
+    item_id: EntityId,
+) -> Any:
+    return domain.get_item(repository=repository, item_id=item_id)

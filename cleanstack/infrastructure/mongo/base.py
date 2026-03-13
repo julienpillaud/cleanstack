@@ -45,6 +45,7 @@ class MongoRepository[T: DomainEntity](RepositoryProtocol[T]):
         pipeline = PipelineBuilder(
             self.domain_entity_type,
             self.searchable_fields,
+            lookup=self._lookup,
         ).apply(
             search=search,
             filters=filters,
@@ -74,6 +75,7 @@ class MongoRepository[T: DomainEntity](RepositoryProtocol[T]):
 
     def get_by_id(self, entity_id: EntityId, /) -> T | None:
         pipeline = [{"$match": {"_id": entity_id}}]
+        pipeline.extend(self._lookup)
         cursor = self.collection.aggregate(
             pipeline=pipeline,
             session=self.session,
@@ -118,8 +120,16 @@ class MongoRepository[T: DomainEntity](RepositoryProtocol[T]):
 
     @staticmethod
     def _to_database_entity(entity: T, /) -> MongoDocument:
+        """Convert a domain entity to a MongoDB document to be saved to the database.
+
+        Can be overridden to take into account relationships.
+        """
         # Use the entity's id as the document's _id
         # Don't let mongo generate an ObjectId for us
         document = entity.model_dump(exclude={"id"})
         document["_id"] = entity.id
         return document
+
+    @property
+    def _lookup(self) -> list[MongoDocument]:
+        return []

@@ -1,6 +1,7 @@
 from typing import Any, Self
 
 from sqlalchemy import Column, Select, func, or_, select
+from sqlalchemy.sql.base import ExecutableOption
 
 from cleanstack.entities import FilterEntity, Pagination, SortEntity, SortOrder
 from cleanstack.infrastructure.exceptions import InvalidFilterError
@@ -14,11 +15,14 @@ class StatementBuilder[T: OrmEntity]:
         self,
         orm_model_type: type[T],
         searchable_fields: tuple[str, ...],
+        load_options: list[ExecutableOption],
     ) -> None:
         self.orm_model_type = orm_model_type
         self.searchable_fields = searchable_fields
 
         self._stmt = select(self.orm_model_type)
+        if load_options:
+            self._stmt = self._stmt.options(*load_options)
         self._count_stmt = self._get_count_stmt()
 
     def apply(

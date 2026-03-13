@@ -1,6 +1,7 @@
-import datetime
 import uuid
 
+from app.domain.entities import DateTime
+from app.domain.tags.entities import Tag
 from cleanstack.entities import DomainEntity
 
 
@@ -10,5 +11,6 @@ class Item(DomainEntity):
     int_field: int
     float_field: float
     bool_field: bool
-    datetime_field: datetime.datetime
+    datetime_field: DateTime
     optional_field: str | None
+    tags: list[Tag]

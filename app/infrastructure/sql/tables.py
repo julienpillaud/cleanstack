@@ -1,9 +1,25 @@
 import datetime
 import uuid
 
-from sqlalchemy.orm import Mapped
+from sqlalchemy import Column, ForeignKey, Table
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from cleanstack.infrastructure.sql.entities import OrmEntity
+
+item_tag_association = Table(
+    "item_tag",
+    OrmEntity.metadata,
+    Column[uuid.UUID](
+        "item_id",
+        ForeignKey("item.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
+    Column[uuid.UUID](
+        "tag_id",
+        ForeignKey("tag.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
+)
 
 
 class OrmItem(OrmEntity):
@@ -16,3 +32,11 @@ class OrmItem(OrmEntity):
     bool_field: Mapped[bool]
     datetime_field: Mapped[datetime.datetime]
     optional_field: Mapped[str | None]
+
+    tags: Mapped[list[OrmTag]] = relationship(secondary=item_tag_association)
+
+
+class OrmTag(OrmEntity):
+    __tablename__ = "tag"
+
+    name: Mapped[str] = mapped_column(unique=True)
