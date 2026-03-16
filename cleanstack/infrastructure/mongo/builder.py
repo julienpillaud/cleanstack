@@ -1,6 +1,6 @@
 from typing import Self
 
-from pydantic.fields import FieldInfo
+from pydantic.fields import ComputedFieldInfo, FieldInfo
 
 from cleanstack.entities import (
     DomainEntity,
@@ -9,7 +9,7 @@ from cleanstack.entities import (
     SortEntity,
     SortOrder,
 )
-from cleanstack.infrastructure.exceptions import InvalidFilterError
+from cleanstack.infrastructure.exceptions import InvalidFieldError
 from cleanstack.infrastructure.mongo.types import MongoDocument
 from cleanstack.infrastructure.mongo.utils import (
     apply_operator,
@@ -57,11 +57,16 @@ class PipelineBuilder[T: DomainEntity]:
     def data(self) -> list[MongoDocument]:
         return self._pipeline
 
-    def _get_field(self, field: str, /) -> FieldInfo:
+    def _get_field(self, field: str, /) -> FieldInfo | ComputedFieldInfo:
         field_info = self.domain_entity_type.model_fields.get(field)
-        if not field_info:
-            raise InvalidFilterError("Invalid field")
-        return field_info
+        if field_info:
+            return field_info
+
+        computed_field_info = self.domain_entity_type.model_computed_fields.get(field)
+        if computed_field_info:
+            return computed_field_info
+
+        raise InvalidFieldError("Invalid field")
 
     def _apply_search(self, search: str | None) -> None:
         if not search:
@@ -98,7 +103,9 @@ class PipelineBuilder[T: DomainEntity]:
         order_map = {SortOrder.ASC: 1, SortOrder.DESC: -1}
         sort_pipeline = {}
         for sort_entity in sort:
+            # Check if the field exists in the model
             self._get_field(sort_entity.field)
+
             sort_pipeline[sort_entity.field] = order_map[sort_entity.order]
 
         self._pipeline.append({"$sort": sort_pipeline})

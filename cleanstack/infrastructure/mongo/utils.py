@@ -3,7 +3,7 @@ import uuid
 from collections.abc import Iterator
 from typing import Any, TypeAliasType, Union, get_args, get_origin
 
-from pydantic.fields import FieldInfo
+from pydantic.fields import ComputedFieldInfo, FieldInfo
 
 from cleanstack.entities import (
     FilterOperator,
@@ -78,8 +78,12 @@ def resolve_annotation(field_info: FieldInfo) -> Any:
     return annotation
 
 
-def get_filter_metadata(field_info: FieldInfo, /) -> FilterMetadata:
-    resolved_type = resolve_annotation(field_info)
+def get_filter_metadata(field_info: FieldInfo | ComputedFieldInfo, /) -> FilterMetadata:
+    if isinstance(field_info, ComputedFieldInfo):
+        resolved_type = field_info.return_type
+    else:
+        resolved_type = resolve_annotation(field_info)
+
     converter = CONVERTERS.get(resolved_type)
     if not converter:
         raise InvalidFilterError("Unsupported type")

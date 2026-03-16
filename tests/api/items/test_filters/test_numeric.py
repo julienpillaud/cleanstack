@@ -130,3 +130,31 @@ def test_wrong_value(client: TestClient, repository_type: RepositoryType) -> Non
     assert response.status_code == status.HTTP_422_UNPROCESSABLE_CONTENT
     result = response.json()
     assert result == {"detail": "Invalid value format"}
+
+
+@pytest.mark.parametrize(
+    "repository_type",
+    [
+        RepositoryType.DOCUMENT,
+        RepositoryType.RELATIONAL,
+    ],
+)
+def test_computed_field(
+    item_factory: ItemFactory,
+    client: TestClient,
+    repository_type: RepositoryType,
+) -> None:
+    count = 1
+    value = 2
+    item_factory.create_many(3, float_field=1)
+    item_factory.create_many(count, float_field=value)
+
+    params = {
+        "repository": repository_type,
+        "filter": f"computed_field={value * 2}",
+    }
+    response = client.get(base_url, params=params)
+
+    assert response.status_code == status.HTTP_200_OK
+    result = response.json()
+    assert len(result["items"]) == count
