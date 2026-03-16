@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.2](https://github.com/julienpillaud/cleanstack/compare/0.16.1...0.16.2) (2026-03-16)
+
+
+### Bug Fixes
+
+* restructure factory modules to improve imports ([#46](https://github.com/julienpillaud/cleanstack/issues/46)) ([8437b13](https://github.com/julienpillaud/cleanstack/commit/8437b13787e54317b530cc005679071aec841a4e))
+
 ## [0.16.1](https://github.com/julienpillaud/cleanstack/compare/0.16.0...0.16.1) (2026-03-16)
 
 
