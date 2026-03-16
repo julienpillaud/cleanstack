@@ -40,7 +40,9 @@ def test_get_item(
     assert (
         datetime.datetime.fromisoformat(result["datetime_field"]) == item.datetime_field
     )
+    assert result["strenum_field"] == item.strenum_field
     assert result["optional_field"] == item.optional_field
+    assert result["computed_field"] == item.computed_field
 
     result_tags = sorted(result["tags"], key=lambda x: x["id"])
     assert len(result_tags) == len(tags)

@@ -1,5 +1,13 @@
 from cleanstack.domain import UnprocessableEntityError
 
 
-class InvalidFilterError(UnprocessableEntityError):
+class RepositoryError(Exception):
+    pass
+
+
+class InvalidFieldError(RepositoryError, UnprocessableEntityError):
+    pass
+
+
+class InvalidFilterError(RepositoryError, UnprocessableEntityError):
     pass
