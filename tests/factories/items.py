@@ -8,7 +8,8 @@ from faker import Faker
 from app.domain.items.entities import Item, ItemStatus
 from app.infrastructure.mongo.items import ItemMongoRepository
 from app.infrastructure.sql.items import ItemSQLRepository
-from cleanstack.factories import BaseMongoFactory, BaseSQLFactory
+from cleanstack.factories.mongo import BaseMongoFactory
+from cleanstack.factories.sql import BaseSQLFactory
 from tests.factories.tags import TagMongoFactory, TagSQLFactory
 
 
