@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.3](https://github.com/julienpillaud/cleanstack/compare/0.16.2...0.16.3) (2026-03-16)
+
+
+### Bug Fixes
+
+* add support for computed fields ([#48](https://github.com/julienpillaud/cleanstack/issues/48)) ([74ade9e](https://github.com/julienpillaud/cleanstack/commit/74ade9e8b89441edb3d513db20c24bc6824aeb7b))
+
 ## [0.16.2](https://github.com/julienpillaud/cleanstack/compare/0.16.1...0.16.2) (2026-03-16)
 
 
