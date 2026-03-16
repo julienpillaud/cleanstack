@@ -6,7 +6,8 @@ from faker import Faker
 from app.domain.tags.entities import Tag
 from app.infrastructure.mongo.tags import TagMongoRepository
 from app.infrastructure.sql.tags import TagSQLRepository
-from cleanstack.factories import BaseMongoFactory, BaseSQLFactory
+from cleanstack.factories.mongo import BaseMongoFactory
+from cleanstack.factories.sql import BaseSQLFactory
 
 
 def generate_tag(faker: Faker, **kwargs: Any) -> Tag:
