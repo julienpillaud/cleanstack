@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.1](https://github.com/julienpillaud/cleanstack/compare/0.16.0...0.16.1) (2026-03-16)
+
+
+### Bug Fixes
+
+* add support for primitive subclasses in filters ([#44](https://github.com/julienpillaud/cleanstack/issues/44)) ([dae15a6](https://github.com/julienpillaud/cleanstack/commit/dae15a67450438be89de65825065f41e10749997))
+
 ## [0.16.0](https://github.com/julienpillaud/cleanstack/compare/0.15.0...0.16.0) (2026-03-13)
 
 
