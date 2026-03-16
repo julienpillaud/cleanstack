@@ -4,6 +4,7 @@ import uuid
 from sqlalchemy import Column, ForeignKey, Table
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from app.domain.items.entities import ItemStatus
 from cleanstack.infrastructure.sql.entities import OrmEntity
 
 item_tag_association = Table(
@@ -31,6 +32,7 @@ class OrmItem(OrmEntity):
     float_field: Mapped[float]
     bool_field: Mapped[bool]
     datetime_field: Mapped[datetime.datetime]
+    strenum_field: Mapped[ItemStatus]
     optional_field: Mapped[str | None]
 
     tags: Mapped[list[OrmTag]] = relationship(secondary=item_tag_association)

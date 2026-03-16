@@ -5,4 +5,10 @@ lint:
     uv run pre-commit run --all-files
 
 tests *options="--log-cli-level=INFO":
-    uv run pytest {{options}}
+    uv run pytest {{ options }}
+
+dev:
+    docker compose up -d
+
+dev-down:
+    docker compose down
