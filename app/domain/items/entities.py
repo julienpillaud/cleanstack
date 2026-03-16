@@ -1,8 +1,14 @@
 import uuid
+from enum import StrEnum
 
 from app.domain.entities import DateTime
 from app.domain.tags.entities import Tag
 from cleanstack.entities import DomainEntity
+
+
+class ItemStatus(StrEnum):
+    ACTIVE = "active"
+    INACTIVE = "inactive"
 
 
 class Item(DomainEntity):
@@ -12,5 +18,6 @@ class Item(DomainEntity):
     float_field: float
     bool_field: bool
     datetime_field: DateTime
+    strenum_field: ItemStatus
     optional_field: str | None
     tags: list[Tag]

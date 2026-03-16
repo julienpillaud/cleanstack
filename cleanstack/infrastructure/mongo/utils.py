@@ -58,12 +58,22 @@ def resolve_annotation(field_info: FieldInfo) -> Any:
 
     # Case: str | None
     if get_origin(annotation) is Union:
-        args = get_args(annotation)
-        type_count = 2
-        if len(args) != type_count:
-            raise InvalidFilterError("Unsupported type")
+        args = [arg for arg in get_args(annotation) if arg is not type(None)]
+        if len(args) != 1:
+            raise InvalidFilterError("Multiple union types are not supported")
 
-        return next(arg for arg in args if arg is not type(None))
+        return args[0]
+
+    # Case : primitive subclasses
+    if isinstance(annotation, type):
+        if issubclass(annotation, bool):
+            return bool
+        if issubclass(annotation, str):
+            return str
+        if issubclass(annotation, int):
+            return int
+        if issubclass(annotation, float):
+            return float
 
     return annotation
 

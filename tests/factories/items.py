@@ -5,7 +5,7 @@ from typing import Any
 
 from faker import Faker
 
-from app.domain.items.entities import Item
+from app.domain.items.entities import Item, ItemStatus
 from app.infrastructure.mongo.items import ItemMongoRepository
 from app.infrastructure.sql.items import ItemSQLRepository
 from cleanstack.factories import BaseMongoFactory, BaseSQLFactory
@@ -27,6 +27,9 @@ def generate_item(faker: Faker, **kwargs: Any) -> Item:
         datetime_field=kwargs["datetime_field"]
         if "datetime_field" in kwargs
         else datetime.datetime.now(datetime.UTC),
+        strenum_field=kwargs["strenum_field"]
+        if "strenum_field" in kwargs
+        else random.choice(list(ItemStatus)),
         optional_field=kwargs["optional_field"]
         if "optional_field" in kwargs
         else (faker.name() if faker.pybool() else None),
