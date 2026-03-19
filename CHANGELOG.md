@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.0](https://github.com/julienpillaud/cleanstack/compare/0.16.3...0.17.0) (2026-03-19)
+
+
+### Features
+
+* improve filter type handling logic ([#50](https://github.com/julienpillaud/cleanstack/issues/50)) ([bd128b1](https://github.com/julienpillaud/cleanstack/commit/bd128b1264dadef2943a5a8d8f7be8a0417efaab))
+
 ## [0.16.3](https://github.com/julienpillaud/cleanstack/compare/0.16.2...0.16.3) (2026-03-16)
 
 
