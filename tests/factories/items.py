@@ -33,7 +33,7 @@ def generate_item(faker: Faker, **kwargs: Any) -> Item:
         else random.choice(list(ItemStatus)),
         optional_field=kwargs["optional_field"]
         if "optional_field" in kwargs
-        else (faker.name() if faker.pybool() else None),
+        else (random.choice(list(ItemStatus)) if faker.pybool() else None),
         tags=kwargs["tags"],
     )
 

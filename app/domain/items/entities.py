@@ -21,7 +21,7 @@ class Item(DomainEntity):
     bool_field: bool
     datetime_field: DateTime
     strenum_field: ItemStatus
-    optional_field: str | None
+    optional_field: ItemStatus | None
     tags: list[Tag]
 
     @computed_field
