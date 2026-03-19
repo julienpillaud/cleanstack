@@ -33,7 +33,7 @@ class OrmItem(OrmEntity):
     bool_field: Mapped[bool]
     datetime_field: Mapped[datetime.datetime]
     strenum_field: Mapped[ItemStatus]
-    optional_field: Mapped[str | None]
+    optional_field: Mapped[ItemStatus | None]
     computed_field: Mapped[float]
 
     tags: Mapped[list[OrmTag]] = relationship(secondary=item_tag_association)

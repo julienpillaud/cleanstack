@@ -2,6 +2,7 @@ import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
 
+from app.domain.items.entities import ItemStatus
 from app.domain.items.repository import RepositoryType
 from tests.api.items import base_url
 from tests.factories.items import ItemFactory
@@ -20,8 +21,8 @@ def test_operator_eq(
     repository_type: RepositoryType,
 ) -> None:
     count = 2
-    field = "included"
-    item_factory.create_many(1, optional_field="excluded")
+    field = ItemStatus.ACTIVE
+    item_factory.create_many(1, optional_field=ItemStatus.INACTIVE)
     item_factory.create_many(count, optional_field=field)
 
     params = {

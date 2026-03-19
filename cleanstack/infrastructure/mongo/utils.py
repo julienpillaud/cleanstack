@@ -52,19 +52,19 @@ def resolve_annotation(field_info: FieldInfo) -> Any:
     if not annotation:
         raise InvalidFilterError("Unsupported type")
 
-    # Case : type EntityId = uuid.UUID
+    # Extract type alias (type EntityId = uuid.UUID)
     if isinstance(annotation, TypeAliasType):
-        return annotation.__value__
+        annotation = annotation.__value__
 
-    # Case: str | None
+    # Extract union type (Type | None)
     if get_origin(annotation) is Union:
         args = [arg for arg in get_args(annotation) if arg is not type(None)]
         if len(args) != 1:
             raise InvalidFilterError("Multiple union types are not supported")
 
-        return args[0]
+        annotation = args[0]
 
-    # Case : primitive subclasses
+    # Resolve subclassed
     if isinstance(annotation, type):
         if issubclass(annotation, bool):
             return bool
