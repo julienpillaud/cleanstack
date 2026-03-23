@@ -40,14 +40,23 @@ class MongoUnitOfWork(UnitOfWorkProtocol):
         return self._session
 
     @contextmanager
-    def transaction(self) -> Iterator[None]:
+    def scope(self) -> Iterator[None]:
         logger.debug("Starting MongoDB session")
+        self._session = self.client.start_session()
+        try:
+            yield
+        finally:
+            self._session.end_session()
+            self._session = None
+
+    @contextmanager
+    def transaction(self) -> Iterator[None]:
+        logger.debug("Starting MongoDB transaction")
         self._session = self.client.start_session()
         self._session.start_transaction()
         try:
             yield
         finally:
-            logger.debug("Closing MongoDB session")
             self._session.end_session()
             self._session = None
 

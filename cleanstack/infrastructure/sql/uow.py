@@ -35,15 +35,24 @@ class SQLUnitOfWork(UnitOfWorkProtocol):
         return self._session
 
     @contextmanager
-    def transaction(self) -> Iterator[None]:
-        logger.debug("Starting SQLAlchemy session")
+    def _base_context(self) -> Iterator[None]:
+        logger.debug("Starting SQLAlchemy transaction")
         self._session = self._session_factory()
         try:
             yield
         finally:
-            logger.debug("Closing SQLAlchemy session")
             self._session.close()
             self._session = None
+
+    @contextmanager
+    def scope(self) -> Iterator[None]:
+        with self._base_context():
+            yield
+
+    @contextmanager
+    def transaction(self) -> Iterator[None]:
+        with self._base_context():
+            yield
 
     def commit(self) -> None:
         self.session.commit()
