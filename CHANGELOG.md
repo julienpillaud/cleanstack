@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.0](https://github.com/julienpillaud/cleanstack/compare/0.17.0...0.18.0) (2026-03-23)
+
+
+### Features
+
+* add scope method to unit of work for improved context management ([#52](https://github.com/julienpillaud/cleanstack/issues/52)) ([cf39206](https://github.com/julienpillaud/cleanstack/commit/cf392061f15fabaf85ec0a886dddf924c4ce95aa))
+
 ## [0.17.0](https://github.com/julienpillaud/cleanstack/compare/0.16.3...0.17.0) (2026-03-19)
 
 
