@@ -12,7 +12,7 @@ class QueryBound[U: UnitOfWorkProtocol, C: BaseContextProtocol, **P, R](
 ):
     def __call__(self, *args: P.args, **kwargs: P.kwargs) -> R:
         uow = self.instance.uow
-        with uow.transaction():
+        with uow.scope():
             try:
                 result = self.func(self.instance.context, *args, **kwargs)
             except Exception as error:

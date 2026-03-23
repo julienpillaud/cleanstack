@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
 from app.api.items.router import router as items_router
+from app.api.tags.router import router as tags_router
 from app.core.config import Settings
 from cleanstack.fastapi.exceptions import add_exception_handler
 
@@ -18,4 +19,5 @@ def create_fastapi_app(settings: Settings) -> FastAPI:
 
     add_exception_handler(app=app)
     app.include_router(items_router)
+    app.include_router(tags_router)
     return app
