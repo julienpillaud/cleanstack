@@ -3,12 +3,12 @@ from sqlalchemy.orm import selectinload
 from sqlalchemy.sql.base import ExecutableOption
 
 from app.domain.items.entities import Item
-from app.domain.items.repository import ItemRepositoryProtocol
+from app.domain.items.repository import SyncItemRepositoryProtocol
 from app.infrastructure.sql.tables import OrmItem, OrmTag
 from cleanstack.infrastructure.sql.base import SQLRepository
 
 
-class ItemSQLRepository(SQLRepository[Item, OrmItem], ItemRepositoryProtocol):
+class ItemSQLRepository(SQLRepository[Item, OrmItem], SyncItemRepositoryProtocol):
     domain_entity_type = Item
     orm_model_type = OrmItem
     searchable_fields = ("string_field",)

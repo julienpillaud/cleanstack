@@ -1,7 +1,7 @@
 from typing import Protocol
 
 from app.domain.tags.entities import Tag
-from cleanstack.domain import RepositoryProtocol
+from cleanstack.domain.repository import SyncRepositoryProtocol
 
 
-class TagRepositoryProtocol(RepositoryProtocol[Tag], Protocol): ...
+class TagRepositoryProtocol(SyncRepositoryProtocol[Tag], Protocol): ...

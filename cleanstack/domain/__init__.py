@@ -6,6 +6,7 @@ from .exceptions import DomainError as DomainError
 from .exceptions import ForbiddenError as ForbiddenError
 from .exceptions import NotFoundError as NotFoundError
 from .exceptions import UnprocessableEntityError as UnprocessableEntityError
-from .repository import RepositoryProtocol as RepositoryProtocol
+from .repository import AsyncRepositoryProtocol as AsyncRepositoryProtocol
+from .repository import SyncRepositoryProtocol as SyncRepositoryProtocol
 from .uow import CompositeUniOfWork as CompositeUniOfWork
 from .uow import UnitOfWorkProtocol as UnitOfWorkProtocol

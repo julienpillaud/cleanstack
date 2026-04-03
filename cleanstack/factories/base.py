@@ -3,7 +3,7 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from typing import Any
 
-from cleanstack.domain.repository import RepositoryProtocol
+from cleanstack.domain.repository import SyncRepositoryProtocol
 from cleanstack.entities.base import DomainEntity
 
 
@@ -37,4 +37,4 @@ class _BaseFactory[T: DomainEntity](ABC):
 
     @property
     @abstractmethod
-    def _repository(self) -> RepositoryProtocol[T]: ...
+    def _repository(self) -> SyncRepositoryProtocol[T]: ...
