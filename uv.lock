@@ -52,12 +52,10 @@ wheels = [
 
 [[package]]
 name = "cleanstack"
-version = "0.18.0"
+version = "0.19.0"
 source = { virtual = "." }
 dependencies = [
-    { name = "faker" },
     { name = "fastapi", extra = ["standard"] },
-    { name = "protest" },
 ]
 
 [package.optional-dependencies]
@@ -73,15 +71,14 @@ sql = [
 dev = [
     { name = "mypy" },
     { name = "pre-commit" },
+    { name = "protest" },
     { name = "pytest" },
     { name = "ruff" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "faker", specifier = ">=40.12.0" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.135.3" },
-    { name = "protest", git = "https://github.com/renaudcepre/protest.git?tag=protest-v0.1.2" },
     { name = "psycopg", extras = ["binary"], marker = "extra == 'sql'", specifier = ">=3.3.3" },
     { name = "pymongo", marker = "extra == 'mongo'", specifier = ">=4.16.0" },
     { name = "sqlalchemy", marker = "extra == 'sql'", specifier = ">=2.0.48" },
@@ -92,6 +89,7 @@ provides-extras = ["mongo", "sql"]
 dev = [
     { name = "mypy", specifier = ">=1.20.0" },
     { name = "pre-commit", specifier = ">=4.5.1" },
+    { name = "protest", git = "https://github.com/renaudcepre/protest.git?tag=protest-v0.1.2" },
     { name = "pytest", specifier = ">=9.0.2" },
     { name = "ruff", specifier = ">=0.15.9" },
 ]
@@ -146,18 +144,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/f5/22/900cb125c76b7aaa450ce02fd727f452243f2e91a61af068b40adba60ea9/email_validator-2.3.0.tar.gz", hash = "sha256:9fc05c37f2f6cf439ff414f8fc46d917929974a82244c20eb10231ba60c54426", size = 51238, upload-time = "2025-08-26T13:09:06.831Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/de/15/545e2b6cf2e3be84bc1ed85613edd75b8aea69807a71c26f4ca6a9258e82/email_validator-2.3.0-py3-none-any.whl", hash = "sha256:80f13f623413e6b197ae73bb10bf4eb0908faf509ad8362c5edeb0be7fd450b4", size = 35604, upload-time = "2025-08-26T13:09:05.858Z" },
-]
-
-[[package]]
-name = "faker"
-version = "40.12.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "tzdata", marker = "sys_platform == 'win32'" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/66/c1/f8224fe97fea2f98d455c22438c1b09b10e14ef2cb95ae4f7cec9aa59659/faker-40.12.0.tar.gz", hash = "sha256:58b5a9054c367bd5fb2e948634105364cc570e78a98a8e5161a74691c45f158f", size = 1962003, upload-time = "2026-03-30T18:00:56.596Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/2b/5c/39452a6b6aa76ffa518fa7308e1975b37e9ba77caa6172a69d61e7180221/faker-40.12.0-py3-none-any.whl", hash = "sha256:6238a4058a8b581892e3d78fe5fdfa7568739e1c8283e4ede83f1dde0bfc1a3b", size = 1994601, upload-time = "2026-03-30T18:00:54.804Z" },
 ]
 
 [[package]]
