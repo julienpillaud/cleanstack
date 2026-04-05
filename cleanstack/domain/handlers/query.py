@@ -1,3 +1,4 @@
+import time
 from collections.abc import Callable
 from typing import Concatenate
 
@@ -11,6 +12,7 @@ class QueryBound[U: UnitOfWorkProtocol, C: BaseContextProtocol, **P, R](
     BaseBound[U, C, P, R]
 ):
     def __call__(self, *args: P.args, **kwargs: P.kwargs) -> R:
+        start_time = time.perf_counter()
         uow = self.instance.uow
         with uow.scope():
             try:
@@ -18,6 +20,8 @@ class QueryBound[U: UnitOfWorkProtocol, C: BaseContextProtocol, **P, R](
             except Exception as error:
                 self._log_error(error)
                 raise
+
+            self._log_success(start_time)
             return result
 
 

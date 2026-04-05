@@ -2,7 +2,7 @@ from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.base import ExecutableOption
 
-from cleanstack.domain import RepositoryProtocol
+from cleanstack.domain.repository import SyncRepositoryProtocol
 from cleanstack.entities import (
     DomainEntity,
     EntityId,
@@ -20,7 +20,7 @@ class SQLRepositoryError(Exception):
 
 
 class SQLRepository[T: DomainEntity, OrmT: OrmEntity](
-    RepositoryProtocol[T],
+    SyncRepositoryProtocol[T],
 ):
     domain_entity_type: type[T]
     orm_model_type: type[OrmT]

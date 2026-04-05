@@ -3,29 +3,30 @@ name = "cleanstack"
 version = "0.18.0"
 requires-python = ">=3.14"
 dependencies = [
-    "faker>=40.11",
-    "fastapi>=0.135",
-    "pydantic-settings>=2.13",
+    "faker>=40.12.0",
+    "fastapi[standard]>=0.135.3",
+    "protest",
 ]
 
 [project.optional-dependencies]
 mongo = [
-    "pymongo>=4.16",
+    "pymongo>=4.16.0",
 ]
 sql = [
-    "psycopg[binary]>=3.3",
-    "sqlalchemy>=2.0",
+    "psycopg[binary]>=3.3.3",
+    "sqlalchemy>=2.0.48",
 ]
 
 [dependency-groups]
 dev = [
-    "httpx>=0.28",
-    "mypy>=1.19",
-    "pre-commit>=4.5",
-    "pytest>=9.0",
-    "ruff>=0.15",
-    "uvicorn>=0.41",
+    "mypy>=1.20.0",
+    "pre-commit>=4.5.1",
+    "pytest>=9.0.2",
+    "ruff>=0.15.9",
 ]
+
+[tool.uv.sources]
+protest = { git = "https://github.com/renaudcepre/protest.git", tag = "protest-v0.1.2" }
 
 [tool.setuptools.packages.find]
 include = ["cleanstack*"]
@@ -47,9 +48,6 @@ ignore = [
     "PLR0911", # Too many return statements (7 > 6)
     "PLR0913", # Too many arguments in function definition (6 > 5)
 ]
-
-[tool.ty.terminal]
-output-format = "concise"
 
 [tool.mypy]
 strict = true

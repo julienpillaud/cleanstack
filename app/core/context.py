@@ -1,14 +1,14 @@
 from pymongo.client_session import ClientSession
 
 from app.domain.context import ContextProtocol
-from app.domain.items.repository import ItemRepositoryProtocol
+from app.domain.items.repository import SyncItemRepositoryProtocol
 from app.domain.tags.repository import TagRepositoryProtocol
-from app.infrastructure.mongo.items import ItemMongoRepository
+from app.infrastructure.mongo.items import SyncItemMongoRepository
 from app.infrastructure.mongo.tags import TagMongoRepository
 from app.infrastructure.sql.items import ItemSQLRepository
 from app.infrastructure.sql.tags import TagSQLRepository
 from cleanstack.domain import UnitOfWorkProtocol
-from cleanstack.infrastructure.mongo.uow import MongoContext, MongoUnitOfWork
+from cleanstack.infrastructure.mongo import MongoContext, MongoUnitOfWork
 from cleanstack.infrastructure.sql.uow import SQLUnitOfWork
 
 
@@ -35,12 +35,12 @@ class Context(ContextProtocol):
         return self.mongo_uow.session if self.mongo_uow else None
 
     @property
-    def item_relational_repository(self) -> ItemRepositoryProtocol:
+    def item_relational_repository(self) -> SyncItemRepositoryProtocol:
         return ItemSQLRepository(session=self.sql_uow.session)
 
     @property
-    def item_document_repository(self) -> ItemRepositoryProtocol:
-        return ItemMongoRepository(
+    def item_document_repository(self) -> SyncItemRepositoryProtocol:
+        return SyncItemMongoRepository(
             database=self.mongo_context.database,
             session=self._mongo_session,
         )

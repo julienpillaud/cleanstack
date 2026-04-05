@@ -6,7 +6,7 @@ from cleanstack.entities.pagination import PaginatedResponse, Pagination
 from cleanstack.entities.sort import SortEntity
 
 
-class RepositoryProtocol[T: DomainEntity](Protocol):
+class SyncRepositoryProtocol[T: DomainEntity](Protocol):
     def get_all(
         self,
         search: str | None = None,
@@ -22,3 +22,21 @@ class RepositoryProtocol[T: DomainEntity](Protocol):
     def update(self, entity: T, /) -> T: ...
 
     def delete(self, entity: T, /) -> None: ...
+
+
+class AsyncRepositoryProtocol[T: DomainEntity](Protocol):
+    async def get_all(
+        self,
+        search: str | None = None,
+        filters: list[FilterEntity] | None = None,
+        sort: list[SortEntity] | None = None,
+        pagination: Pagination | None = None,
+    ) -> PaginatedResponse[T]: ...
+
+    async def get_by_id(self, entity_id: EntityId, /) -> T | None: ...
+
+    async def create(self, entity: T, /) -> T: ...
+
+    async def update(self, entity: T, /) -> T: ...
+
+    async def delete(self, entity: T, /) -> None: ...

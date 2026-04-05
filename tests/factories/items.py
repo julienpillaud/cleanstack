@@ -6,7 +6,7 @@ from typing import Any
 from faker import Faker
 
 from app.domain.items.entities import Item, ItemStatus
-from app.infrastructure.mongo.items import ItemMongoRepository
+from app.infrastructure.mongo.items import SyncItemMongoRepository
 from app.infrastructure.sql.items import ItemSQLRepository
 from cleanstack.factories.mongo import BaseMongoFactory
 from cleanstack.factories.sql import BaseSQLFactory
@@ -49,8 +49,8 @@ class ItemMongoFactory(BaseMongoFactory[Item]):
         return generate_item(faker=self.faker, **kwargs)
 
     @property
-    def _repository(self) -> ItemMongoRepository:
-        return ItemMongoRepository(
+    def _repository(self) -> SyncItemMongoRepository:
+        return SyncItemMongoRepository(
             database=self.context.database,
             session=self.uow.session,
         )

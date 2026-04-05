@@ -1,10 +1,13 @@
 from app.domain.items.entities import Item
-from app.domain.items.repository import ItemRepositoryProtocol
-from cleanstack.infrastructure.mongo.base import MongoRepository
-from cleanstack.infrastructure.mongo.types import MongoDocument
+from cleanstack.infrastructure.mongo import (
+    AsyncMongoRepository,
+    MongoDocument,
+    MongoRepositoryMixin,
+    SyncMongoRepository,
+)
 
 
-class ItemMongoRepository(MongoRepository[Item], ItemRepositoryProtocol):
+class ItemMongoRepositoryMixin(MongoRepositoryMixin[Item]):
     domain_entity_type = Item
     collection_name = "items"
     searchable_fields = ("string_field",)
@@ -28,3 +31,11 @@ class ItemMongoRepository(MongoRepository[Item], ItemRepositoryProtocol):
                 }
             }
         ]
+
+
+class SyncItemMongoRepository(ItemMongoRepositoryMixin, SyncMongoRepository[Item]):
+    pass
+
+
+class AsyncItemMongoRepository(ItemMongoRepositoryMixin, AsyncMongoRepository[Item]):
+    pass

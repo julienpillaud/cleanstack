@@ -2,7 +2,7 @@ from enum import StrEnum
 from typing import Protocol
 
 from app.domain.items.entities import Item
-from cleanstack.domain import RepositoryProtocol
+from cleanstack.domain.repository import AsyncRepositoryProtocol, SyncRepositoryProtocol
 
 
 class RepositoryType(StrEnum):
@@ -10,4 +10,7 @@ class RepositoryType(StrEnum):
     DOCUMENT = "document"
 
 
-class ItemRepositoryProtocol(RepositoryProtocol[Item], Protocol): ...
+class SyncItemRepositoryProtocol(SyncRepositoryProtocol[Item], Protocol): ...
+
+
+class AsyncItemRepositoryProtocol(AsyncRepositoryProtocol[Item], Protocol): ...
