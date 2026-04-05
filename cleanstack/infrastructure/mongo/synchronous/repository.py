@@ -1,7 +1,6 @@
 from pymongo.synchronous.client_session import ClientSession
 from pymongo.synchronous.database import Database
 
-from cleanstack.domain.repository import SyncRepositoryProtocol
 from cleanstack.entities import (
     DomainEntity,
     EntityId,
@@ -18,10 +17,7 @@ from cleanstack.infrastructure.mongo.builder import PipelineBuilder
 from cleanstack.infrastructure.mongo.types import MongoDocument
 
 
-class SyncMongoRepository[T: DomainEntity](
-    SyncRepositoryProtocol[T],
-    MongoRepositoryMixin[T],
-):
+class SyncMongoRepository[T: DomainEntity](MongoRepositoryMixin[T]):
     def __init__(
         self,
         database: Database[MongoDocument],

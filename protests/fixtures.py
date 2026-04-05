@@ -6,7 +6,7 @@ from app.core.config import Settings
 
 # Session scoped fixtures
 @fixture()
-def settings() -> Settings:
+def get_settings() -> Settings:
     return Settings(
         environment="test",
         postgres_user="user",

@@ -1,7 +1,6 @@
 from pymongo.asynchronous.client_session import AsyncClientSession
 from pymongo.asynchronous.database import AsyncDatabase
 
-from cleanstack.domain.repository import AsyncRepositoryProtocol
 from cleanstack.entities import (
     DomainEntity,
     EntityId,
@@ -18,10 +17,7 @@ from cleanstack.infrastructure.mongo.builder import PipelineBuilder
 from cleanstack.infrastructure.mongo.types import MongoDocument
 
 
-class AsyncMongoRepository[T: DomainEntity](
-    AsyncRepositoryProtocol[T],
-    MongoRepositoryMixin[T],
-):
+class AsyncMongoRepository[T: DomainEntity](MongoRepositoryMixin[T]):
     def __init__(
         self,
         database: AsyncDatabase[MongoDocument],

@@ -5,7 +5,7 @@ from fastapi import Depends
 
 from app.core.config import Settings
 from app.dependencies.settings import get_settings
-from cleanstack.infrastructure.mongo.uow import MongoContext, MongoUnitOfWork
+from cleanstack.infrastructure.mongo import MongoContext, MongoUnitOfWork
 
 
 @lru_cache(maxsize=1)

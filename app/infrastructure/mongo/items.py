@@ -1,12 +1,10 @@
 from app.domain.items.entities import Item
-from app.domain.items.repository import (
-    AsyncItemRepositoryProtocol,
-    SyncItemRepositoryProtocol,
+from cleanstack.infrastructure.mongo import (
+    AsyncMongoRepository,
+    MongoDocument,
+    MongoRepositoryMixin,
+    SyncMongoRepository,
 )
-from cleanstack.infrastructure.mongo.asynchronous.repository import AsyncMongoRepository
-from cleanstack.infrastructure.mongo.base import MongoRepositoryMixin
-from cleanstack.infrastructure.mongo.synchronous.repository import SyncMongoRepository
-from cleanstack.infrastructure.mongo.types import MongoDocument
 
 
 class ItemMongoRepositoryMixin(MongoRepositoryMixin[Item]):
@@ -35,17 +33,9 @@ class ItemMongoRepositoryMixin(MongoRepositoryMixin[Item]):
         ]
 
 
-class SyncItemMongoRepository(
-    SyncMongoRepository[Item],
-    SyncItemRepositoryProtocol,
-    ItemMongoRepositoryMixin,
-):
+class SyncItemMongoRepository(ItemMongoRepositoryMixin, SyncMongoRepository[Item]):
     pass
 
 
-class AsyncItemMongoRepository(
-    AsyncMongoRepository[Item],
-    AsyncItemRepositoryProtocol,
-    ItemMongoRepositoryMixin,
-):
+class AsyncItemMongoRepository(ItemMongoRepositoryMixin, AsyncMongoRepository[Item]):
     pass

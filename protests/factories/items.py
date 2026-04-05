@@ -9,7 +9,7 @@ from protests.factories.utils import gen_datetime, optional_choice
 
 
 @factory()
-def item(**kwargs: Any) -> Item:
+def get_item(**kwargs: Any) -> Item:
     return Item(
         id=kwargs["id"] if "id" in kwargs else uuid.uuid7(),
         uuid_field=kwargs["uuid_field"] if "uuid_field" in kwargs else uuid.uuid7(),

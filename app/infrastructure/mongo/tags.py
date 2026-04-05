@@ -1,6 +1,6 @@
 from app.domain.tags.entities import Tag
 from app.domain.tags.repository import TagRepositoryProtocol
-from cleanstack.infrastructure.mongo.synchronous.repository import SyncMongoRepository
+from cleanstack.infrastructure.mongo import SyncMongoRepository
 
 
 class TagMongoRepository(SyncMongoRepository[Tag], TagRepositoryProtocol):

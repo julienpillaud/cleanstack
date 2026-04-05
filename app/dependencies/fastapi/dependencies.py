@@ -10,7 +10,7 @@ from app.dependencies.fastapi.sql import get_sql_uow
 from app.domain.domain import Domain
 from cleanstack.domain import CompositeUniOfWork
 from cleanstack.entities import FilterEntity, SortEntity
-from cleanstack.infrastructure.mongo.uow import MongoContext, MongoUnitOfWork
+from cleanstack.infrastructure.mongo import MongoContext, MongoUnitOfWork
 from cleanstack.infrastructure.sql.uow import SQLUnitOfWork
 
 

@@ -8,7 +8,7 @@ from app.infrastructure.mongo.tags import TagMongoRepository
 from app.infrastructure.sql.items import ItemSQLRepository
 from app.infrastructure.sql.tags import TagSQLRepository
 from cleanstack.domain import UnitOfWorkProtocol
-from cleanstack.infrastructure.mongo.uow import MongoContext, MongoUnitOfWork
+from cleanstack.infrastructure.mongo import MongoContext, MongoUnitOfWork
 from cleanstack.infrastructure.sql.uow import SQLUnitOfWork
 
 
