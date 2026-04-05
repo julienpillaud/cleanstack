@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.0](https://github.com/julienpillaud/cleanstack/compare/0.18.0...0.19.0) (2026-04-05)
+
+
+### Features
+
+* add asynchronous MongoDB repository and Protest integration ([#54](https://github.com/julienpillaud/cleanstack/issues/54)) ([c68cea6](https://github.com/julienpillaud/cleanstack/commit/c68cea6028eec42356186fc5bbf4580502ee4310))
+
 ## [0.18.0](https://github.com/julienpillaud/cleanstack/compare/0.17.0...0.18.0) (2026-03-23)
 
 
