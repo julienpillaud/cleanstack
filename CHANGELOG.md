@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.20.0](https://github.com/julienpillaud/cleanstack/compare/0.19.0...0.20.0) (2026-04-05)
+
+
+### Features
+
+* remove faker dependency ([#56](https://github.com/julienpillaud/cleanstack/issues/56)) ([122964c](https://github.com/julienpillaud/cleanstack/commit/122964c944875a9419ac8fec274748e1cba78fba))
+
 ## [0.19.0](https://github.com/julienpillaud/cleanstack/compare/0.18.0...0.19.0) (2026-04-05)
 
 
