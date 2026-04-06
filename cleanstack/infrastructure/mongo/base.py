@@ -7,7 +7,7 @@ class MongoRepositoryError(Exception):
     pass
 
 
-class MongoRepositoryMixin[T: DomainEntity]:
+class MongoMixin[T: DomainEntity]:
     domain_entity_type: type[T]
     collection_name: str
     searchable_fields: tuple[str, ...] = ()

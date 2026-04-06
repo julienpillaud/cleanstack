@@ -9,15 +9,12 @@ from cleanstack.entities import (
     Pagination,
     SortEntity,
 )
-from cleanstack.infrastructure.mongo.base import (
-    MongoRepositoryError,
-    MongoRepositoryMixin,
-)
+from cleanstack.infrastructure.mongo.base import MongoMixin, MongoRepositoryError
 from cleanstack.infrastructure.mongo.builder import PipelineBuilder
 from cleanstack.infrastructure.mongo.types import MongoDocument
 
 
-class SyncMongoRepository[T: DomainEntity](MongoRepositoryMixin[T]):
+class SyncMongoRepository[T: DomainEntity](MongoMixin[T]):
     def __init__(
         self,
         database: Database[MongoDocument],
