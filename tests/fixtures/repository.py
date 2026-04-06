@@ -18,7 +18,12 @@ def repo_config(settings: Settings) -> MongoConfig | SQLConfig:
                 database_name=settings.mongo_database,
             )
         case RepositoryType.SQL:
-            return SQLConfig.from_settings(url=str(settings.postgres_dsn))
+            sql_config = SQLConfig.from_settings(url=str(settings.postgres_dsn))
+
+            OrmEntity.metadata.drop_all(sql_config.engine)
+            OrmEntity.metadata.create_all(sql_config.engine)
+
+            return sql_config
 
 
 @pytest.fixture(autouse=True)
