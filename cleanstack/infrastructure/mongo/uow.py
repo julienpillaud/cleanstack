@@ -11,14 +11,14 @@ from cleanstack.infrastructure.mongo.logger import logger
 from cleanstack.infrastructure.mongo.types import MongoDocument
 
 
-class MongoContext(BaseModel):
+class MongoConfig(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     client: MongoClient[MongoDocument]
     database: Database[MongoDocument]
 
     @classmethod
-    def from_settings(cls, host: str, database_name: str) -> MongoContext:
+    def from_settings(cls, host: str, database_name: str) -> MongoConfig:
         logger.debug("Creating MongoDB client")
         client: MongoClient[MongoDocument] = MongoClient(
             host=host,
@@ -29,9 +29,10 @@ class MongoContext(BaseModel):
 
 
 class MongoUnitOfWork(UnitOfWorkProtocol):
-    def __init__(self, context: MongoContext) -> None:
+    def __init__(self, config: MongoConfig) -> None:
         self._session: ClientSession | None = None
-        self.client = context.client
+        self.client = config.client
+        self.database = config.database
 
     @property
     def session(self) -> ClientSession:

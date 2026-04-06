@@ -1,4 +1,7 @@
 import re
+from typing import Annotated
+
+from fastapi import HTTPException, Query, status
 
 from cleanstack.entities import FilterEntity, FilterOperator
 
@@ -42,3 +45,21 @@ def parse_filters(filters: list[str], /) -> list[FilterEntity]:
         )
 
     return entities
+
+
+def get_filters(
+    filters: Annotated[
+        list[str] | None,
+        Query(alias="filter"),
+    ] = None,
+) -> list[FilterEntity]:
+    if not filters:
+        return []
+
+    try:
+        return parse_filters(filters)
+    except ValueError as error:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            detail="Invalid filter format",
+        ) from error

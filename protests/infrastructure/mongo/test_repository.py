@@ -14,7 +14,7 @@ from protests.infrastructure.mongo.fixtures import (
     get_mongo_session,
 )
 
-mongo_repo_suite = ProTestSuite("MongoRepo", tags=["repository"])
+mongo_repo_suite = ProTestSuite("Mongo repository", tags=["repository"])
 
 
 @mongo_repo_suite.test()
@@ -25,13 +25,11 @@ async def test_create_item(
     repository: Annotated[AsyncItemMongoRepository, Use(get_item_repository)],
 ) -> None:
     new_item = await item_factory()
-    print(new_item)
 
     await repository.create(new_item)
     await session.commit_transaction()
 
     result = await database["items"].find_one({"_id": new_item.id})
-    print(result)
     assert result
     assert result["_id"] == new_item.id
     assert result["uuid_field"] == new_item.uuid_field

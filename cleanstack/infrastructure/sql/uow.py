@@ -9,24 +9,24 @@ from cleanstack.domain.uow import UnitOfWorkProtocol
 from cleanstack.infrastructure.sql.logger import logger
 
 
-class SQLContext(BaseModel):
+class SQLConfig(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     engine: Engine
     session_factory: sessionmaker[Session]
 
     @classmethod
-    def from_settings(cls, url: str) -> SQLContext:
-        logger.info("Creating SQLAlchemy engine")
+    def from_settings(cls, url: str) -> SQLConfig:
+        logger.debug("Creating SQLAlchemy engine")
         engine = create_engine(url=url)
         session_factory = sessionmaker(bind=engine)
         return cls(engine=engine, session_factory=session_factory)
 
 
 class SQLUnitOfWork(UnitOfWorkProtocol):
-    def __init__(self, context: SQLContext) -> None:
+    def __init__(self, config: SQLConfig) -> None:
         self._session: Session | None = None
-        self._session_factory = context.session_factory
+        self._session_factory = config.session_factory
 
     @property
     def session(self) -> Session:

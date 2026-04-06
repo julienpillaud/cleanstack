@@ -1,14 +1,14 @@
 from protest import fixture
 from pydantic import SecretStr
 
-from app.core.config import Settings
+from app.core.config import AppEnvironment, Settings
 
 
 # Session scoped fixtures
 @fixture()
 def get_settings() -> Settings:
     return Settings(
-        environment="test",
+        environment=AppEnvironment.TESTING,
         postgres_user="user",
         postgres_password=SecretStr("password"),
         postgres_database="test",

@@ -1,51 +1,128 @@
-import datetime
+from typing import Any
 
 import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
-from pytest import FixtureRequest
 
-from app.domain.items.repository import RepositoryType
-from tests.api.items import base_url
+from app.domain.items.entities import ItemStatus
+from tests.fixtures.factories import ItemFactory
+from tests.utils import assert_datetime, assert_uuid
 
 
-@pytest.mark.parametrize(
-    "factory_name, repository_type",
-    [
-        ("item_mongo_factory", RepositoryType.DOCUMENT),
-        ("item_sql_factory", RepositoryType.RELATIONAL),
-    ],
-)
-def test_get_item(
+def test_get_items(
+    item_factory: ItemFactory,
     client: TestClient,
-    factory_name: str,
-    repository_type: RepositoryType,
-    request: FixtureRequest,
 ) -> None:
-    factory = request.getfixturevalue(factory_name)
-    item = factory.create_one()
-    tags = sorted(item.tags, key=lambda x: x.id)
+    count = 3
+    item_factory.create_many(count)
 
-    params = {"repository": repository_type}
-    response = client.get(f"{base_url}/{item.id}", params=params)
+    response = client.get("/items")
 
     assert response.status_code == status.HTTP_200_OK
     result = response.json()
-    assert result["id"] == str(item.id)
-    assert result["uuid_field"] == str(item.uuid_field)
+    assert result["total"] == count
+    assert len(result["items"]) == count
+
+
+def test_get_item(
+    item_factory: ItemFactory,
+    client: TestClient,
+) -> None:
+    item = item_factory.create_one()
+
+    response = client.get(f"/items/{item.id}")
+
+    assert response.status_code == status.HTTP_200_OK
+    result = response.json()
+    assert_uuid(result["id"], item.id)
+    assert_uuid(result["uuid_field"], item.uuid_field)
     assert result["string_field"] == item.string_field
     assert result["int_field"] == item.int_field
     assert result["float_field"] == item.float_field
     assert result["bool_field"] == item.bool_field
-    assert (
-        datetime.datetime.fromisoformat(result["datetime_field"]) == item.datetime_field
-    )
+    assert_datetime(result["datetime_field"], item.datetime_field)
     assert result["strenum_field"] == item.strenum_field
     assert result["optional_field"] == item.optional_field
     assert result["computed_field"] == item.computed_field
 
-    result_tags = sorted(result["tags"], key=lambda x: x["id"])
-    assert len(result_tags) == len(tags)
-    for tag, result_tag in zip(tags, result_tags, strict=True):
-        assert result_tag["id"] == str(tag.id)
-        assert result_tag["name"] == tag.name
+
+def test_create_item(
+    item_factory: ItemFactory,
+    client: TestClient,
+) -> None:
+    item = item_factory.build()
+    item_data = item.model_dump(
+        exclude={
+            "id",
+            "uuid_field",
+            "datetime_field",
+            "computed_field",
+        }
+    )
+
+    response = client.post("/items", json=item_data)
+
+    assert response.status_code == status.HTTP_201_CREATED
+    result = response.json()
+    item_id = result["id"]
+    assert result["string_field"] == item.string_field
+    assert result["int_field"] == item.int_field
+    assert result["float_field"] == item.float_field
+    assert result["bool_field"] == item.bool_field
+    assert result["strenum_field"] == item.strenum_field
+    assert result["optional_field"] == item.optional_field
+    assert result["computed_field"] == item.computed_field
+
+    get_response = client.get(f"/items/{item_id}")
+    assert get_response.status_code == status.HTTP_200_OK
+    get_result = get_response.json()
+    assert get_result["id"] == item_id
+
+
+@pytest.mark.parametrize(
+    "field, previous_value, new_value",
+    [
+        ("string_field", "old", "new"),
+        ("int_field", 1, 2),
+        ("float_field", 1.1, 1.2),
+        ("bool_field", False, True),
+        ("bool_field", True, False),
+        ("strenum_field", ItemStatus.INACTIVE, ItemStatus.ACTIVE),
+        ("optional_field", None, ItemStatus.ACTIVE),
+        ("optional_field", ItemStatus.ACTIVE, None),
+        ("optional_field", ItemStatus.ACTIVE, ItemStatus.INACTIVE),
+    ],
+)
+def test_update_item(
+    item_factory: ItemFactory,
+    client: TestClient,
+    field: str,
+    previous_value: Any,
+    new_value: Any,
+) -> None:
+    item = item_factory.create_one(**{field: previous_value})
+
+    response = client.patch(f"/items/{item.id}", json={field: new_value})
+
+    assert response.status_code == status.HTTP_200_OK
+    result = response.json()
+    assert result[field] == new_value
+
+    get_response = client.get(f"/items/{item.id}")
+    assert get_response.status_code == status.HTTP_200_OK
+    get_result = get_response.json()
+    assert get_result[field] == new_value
+
+
+def test_delete_item(
+    item_factory: ItemFactory,
+    client: TestClient,
+) -> None:
+    item = item_factory.create_one()
+
+    response = client.delete(f"/items/{item.id}")
+
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+
+    get_response = client.get(f"/items/{item.id}")
+    assert get_response.status_code == status.HTTP_404_NOT_FOUND

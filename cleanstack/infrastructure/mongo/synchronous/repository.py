@@ -9,15 +9,12 @@ from cleanstack.entities import (
     Pagination,
     SortEntity,
 )
-from cleanstack.infrastructure.mongo.base import (
-    MongoRepositoryError,
-    MongoRepositoryMixin,
-)
+from cleanstack.infrastructure.mongo.base import MongoMixin, MongoRepositoryError
 from cleanstack.infrastructure.mongo.builder import PipelineBuilder
 from cleanstack.infrastructure.mongo.types import MongoDocument
 
 
-class SyncMongoRepository[T: DomainEntity](MongoRepositoryMixin[T]):
+class SyncMongoRepository[T: DomainEntity](MongoMixin[T]):
     def __init__(
         self,
         database: Database[MongoDocument],
@@ -101,7 +98,9 @@ class SyncMongoRepository[T: DomainEntity](MongoRepositoryMixin[T]):
         return entity
 
     def delete(self, entity: T, /) -> None:
-        self.collection.delete_one(
+        result = self.collection.delete_one(
             filter={"_id": entity.id},
             session=self.session,
         )
+        if not result.acknowledged:
+            raise MongoRepositoryError("Failed to delete entity")

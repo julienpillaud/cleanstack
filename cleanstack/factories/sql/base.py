@@ -4,14 +4,14 @@ from contextlib import contextmanager
 
 from cleanstack.entities.base import DomainEntity
 from cleanstack.factories.base import _BaseFactory
-from cleanstack.infrastructure.sql.uow import SQLContext, SQLUnitOfWork
+from cleanstack.infrastructure.sql.uow import SQLConfig, SQLUnitOfWork
 
 
 class BaseSQLFactory[T: DomainEntity](_BaseFactory[T], ABC):
-    def __init__(self, context: SQLContext) -> None:
+    def __init__(self, context: SQLConfig) -> None:
 
         self.context = context
-        self.uow = SQLUnitOfWork(context=context)
+        self.uow = SQLUnitOfWork(config=context)
 
     @contextmanager
     def _persistence_context(self) -> Iterator[None]:

@@ -12,7 +12,7 @@ mongo = [
 ]
 sql = [
     "psycopg[binary]>=3.3.3",
-    "sqlalchemy>=2.0.48",
+    "sqlalchemy[asyncio]>=2.0.48",
 ]
 
 [dependency-groups]

@@ -4,13 +4,13 @@ from contextlib import contextmanager
 
 from cleanstack.entities.base import DomainEntity
 from cleanstack.factories.base import _BaseFactory
-from cleanstack.infrastructure.mongo.uow import MongoContext, MongoUnitOfWork
+from cleanstack.infrastructure.mongo.uow import MongoConfig, MongoUnitOfWork
 
 
 class BaseMongoFactory[T: DomainEntity](_BaseFactory[T], ABC):
-    def __init__(self, context: MongoContext) -> None:
-        self.context = context
-        self.uow = MongoUnitOfWork(context=context)
+    def __init__(self, config: MongoConfig) -> None:
+        self.config = config
+        self.uow = MongoUnitOfWork(config=config)
 
     @contextmanager
     def _persistence_context(self) -> Iterator[None]:
