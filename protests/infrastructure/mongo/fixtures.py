@@ -14,10 +14,10 @@ from protests.fixtures import get_settings
 
 @fixture()
 async def get_mongo_client(
-    get_settings: Annotated[Settings, Use(get_settings)],
+    settings: Annotated[Settings, Use(get_settings)],
 ) -> AsyncIterator[AsyncMongoClient[MongoDocument]]:
     async with AsyncMongoClient[MongoDocument](
-        host=str(get_settings.mongo_dsn),
+        host=str(settings.mongo_dsn),
         uuidRepresentation="standard",
     ) as client:
         yield client
@@ -25,10 +25,10 @@ async def get_mongo_client(
 
 @fixture()
 async def get_mongo_database(
-    get_settings: Annotated[Settings, Use(get_settings)],
+    settings: Annotated[Settings, Use(get_settings)],
     client: Annotated[AsyncMongoClient[MongoDocument], Use(get_mongo_client)],
 ) -> AsyncIterator[AsyncDatabase[MongoDocument]]:
-    database = client[get_settings.mongo_database]
+    database = client[settings.mongo_database]
 
     yield database
 

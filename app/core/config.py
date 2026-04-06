@@ -1,5 +1,18 @@
+from enum import StrEnum
+
 from pydantic import MongoDsn, PostgresDsn, SecretStr, computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class AppEnvironment(StrEnum):
+    DEVELOPMENT = "development"
+    TESTING = "testing"
+    PRODUCTION = "production"
+
+
+class RepositoryType(StrEnum):
+    MONGO = "mongo"
+    SQL = "sql"
 
 
 class Settings(BaseSettings):
@@ -11,7 +24,8 @@ class Settings(BaseSettings):
 
     project_name: str = "clean-app"
     api_version: str = "1.0.0"
-    environment: str
+    environment: AppEnvironment
+    repository_type: RepositoryType = RepositoryType.MONGO
 
     postgres_user: str
     postgres_password: SecretStr

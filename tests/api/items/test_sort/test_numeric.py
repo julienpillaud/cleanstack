@@ -2,10 +2,8 @@ import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
 
-from app.domain.items.repository import RepositoryType
 from cleanstack.entities import SortOrder
-from tests.api.items import base_url
-from tests.factories.items import ItemMongoFactory
+from tests.fixtures.factories import ItemFactory
 
 
 @pytest.mark.parametrize(
@@ -23,7 +21,7 @@ from tests.factories.items import ItemMongoFactory
     ],
 )
 def test_sort_numeric(
-    item_mongo_factory: ItemMongoFactory,
+    item_factory: ItemFactory,
     client: TestClient,
     field_name: str,
     values: list[int | float],
@@ -32,13 +30,10 @@ def test_sort_numeric(
 ) -> None:
     shuffled_values = [values[1], values[2], values[0]]
     for val in shuffled_values:
-        item_mongo_factory.create_one(**{field_name: val})
+        item_factory.create_one(**{field_name: val})
 
-    params = {
-        "repository": RepositoryType.DOCUMENT,
-        "sort": f"{field_name}[{direction}]",
-    }
-    response = client.get(base_url, params=params)
+    params = {"sort": f"{field_name}[{direction}]"}
+    response = client.get("/items", params=params)
 
     assert response.status_code == status.HTTP_200_OK
     result = response.json()

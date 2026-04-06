@@ -1,10 +1,9 @@
 import uuid
 from enum import StrEnum
 
-from pydantic import computed_field
+from pydantic import BaseModel, computed_field
 
 from app.domain.entities import DateTime
-from app.domain.tags.entities import Tag
 from cleanstack.entities import DomainEntity
 
 
@@ -22,8 +21,25 @@ class Item(DomainEntity):
     datetime_field: DateTime
     strenum_field: ItemStatus
     optional_field: ItemStatus | None
-    tags: list[Tag]
 
     @computed_field
     def computed_field(self) -> float:
         return self.float_field * 2
+
+
+class ItemCreate(BaseModel):
+    string_field: str
+    int_field: int
+    float_field: float
+    bool_field: bool
+    strenum_field: ItemStatus
+    optional_field: ItemStatus | None
+
+
+class ItemUpdate(BaseModel):
+    string_field: str | None = None
+    int_field: int | None = None
+    float_field: float | None = None
+    bool_field: bool | None = None
+    strenum_field: ItemStatus | None = None
+    optional_field: ItemStatus | None = None

@@ -7,3 +7,7 @@ class PaginatedResponseDTO[T: BaseModel](BaseModel):
     pages: NonNegativeInt
     total: NonNegativeInt
     items: list[T]
+
+
+def get_search(search: str | None = None) -> str | None:
+    return search

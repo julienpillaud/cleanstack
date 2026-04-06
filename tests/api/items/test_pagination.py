@@ -1,23 +1,12 @@
-import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
 
-from app.domain.items.repository import RepositoryType
-from tests.api.items import base_url
-from tests.factories.items import ItemFactory
+from tests.fixtures.factories import ItemFactory
 
 
-@pytest.mark.parametrize(
-    "repository_type",
-    [
-        RepositoryType.DOCUMENT,
-        RepositoryType.RELATIONAL,
-    ],
-)
 def test_pagination_request_less_than_total(
     item_factory: ItemFactory,
     client: TestClient,
-    repository_type: RepositoryType,
 ) -> None:
     page = 1
     size = 5
@@ -25,11 +14,10 @@ def test_pagination_request_less_than_total(
     item_factory.create_many(total)
 
     params: dict[str, str | int] = {
-        "repository": repository_type,
         "page": page,
         "size": size,
     }
-    response = client.get(base_url, params=params)
+    response = client.get("/items", params=params)
 
     assert response.status_code == status.HTTP_200_OK
     result = response.json()
@@ -39,17 +27,9 @@ def test_pagination_request_less_than_total(
     assert len(result["items"]) == size
 
 
-@pytest.mark.parametrize(
-    "repository_type",
-    [
-        RepositoryType.DOCUMENT,
-        RepositoryType.RELATIONAL,
-    ],
-)
 def test_pagination_request_more_than_total(
     item_factory: ItemFactory,
     client: TestClient,
-    repository_type: RepositoryType,
 ) -> None:
     page = 2
     size = 5
@@ -57,11 +37,10 @@ def test_pagination_request_more_than_total(
     item_factory.create_many(total)
 
     params: dict[str, str | int] = {
-        "repository": repository_type,
         "page": page,
         "size": size,
     }
-    response = client.get(base_url, params=params)
+    response = client.get("/items", params=params)
 
     assert response.status_code == status.HTTP_200_OK
     result = response.json()
@@ -71,17 +50,9 @@ def test_pagination_request_more_than_total(
     assert len(result["items"]) == total - size
 
 
-@pytest.mark.parametrize(
-    "repository_type",
-    [
-        RepositoryType.DOCUMENT,
-        RepositoryType.RELATIONAL,
-    ],
-)
 def test_pagination_out_of_range(
     item_factory: ItemFactory,
     client: TestClient,
-    repository_type: RepositoryType,
 ) -> None:
     page = 3
     size = 5
@@ -89,11 +60,10 @@ def test_pagination_out_of_range(
     item_factory.create_many(total)
 
     params: dict[str, str | int] = {
-        "repository": repository_type,
         "page": page,
         "size": size,
     }
-    response = client.get(base_url, params=params)
+    response = client.get("/items", params=params)
 
     assert response.status_code == status.HTTP_200_OK
     result = response.json()

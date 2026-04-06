@@ -98,7 +98,9 @@ class SyncMongoRepository[T: DomainEntity](MongoMixin[T]):
         return entity
 
     def delete(self, entity: T, /) -> None:
-        self.collection.delete_one(
+        result = self.collection.delete_one(
             filter={"_id": entity.id},
             session=self.session,
         )
+        if not result.acknowledged:
+            raise MongoRepositoryError("Failed to delete entity")
