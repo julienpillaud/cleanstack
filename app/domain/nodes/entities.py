@@ -1,5 +1,5 @@
 from cleanstack.entities import DomainEntity
 
 
-class Tag(DomainEntity):
-    name: str
+class Node(DomainEntity):
+    label: str

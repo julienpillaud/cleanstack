@@ -1,3 +1,5 @@
+from typing import Any
+
 from sqlalchemy.sql.base import ExecutableOption
 
 from cleanstack.entities import DomainEntity
@@ -19,3 +21,12 @@ class SQLMixin[T: DomainEntity, OrmT: OrmEntity]:
     @property
     def _load_options(self) -> list[ExecutableOption]:
         return []
+
+    def _to_database_values(
+        self,
+        entity: T,
+        /,
+        exclude: set[str] | None = None,
+    ) -> dict[str, Any]:
+        exclude = exclude or set()
+        return entity.model_dump(exclude=exclude)

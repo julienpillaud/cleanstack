@@ -1,5 +1,7 @@
+from app.domain.containers.repository import SyncContainerRepositoryProtocol
 from app.domain.context import ContextProtocol
 from app.domain.items.repository import SyncItemRepositoryProtocol
+from app.infrastructure.sql.containers import SyncContainerSQLRepository
 from app.infrastructure.sql.items import SyncItemSQLRepository
 from cleanstack.domain import UnitOfWorkProtocol
 from cleanstack.infrastructure.sql.uow import SQLUnitOfWork
@@ -13,3 +15,7 @@ class SQLContext(ContextProtocol):
     @property
     def item_repository(self) -> SyncItemRepositoryProtocol:
         return SyncItemSQLRepository(session=self.sql_uow.session)
+
+    @property
+    def container_repository(self) -> SyncContainerRepositoryProtocol:
+        return SyncContainerSQLRepository(session=self.sql_uow.session)

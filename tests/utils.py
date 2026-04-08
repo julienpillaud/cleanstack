@@ -2,6 +2,10 @@ import datetime
 import uuid
 
 
+def assert_is_uuid(actual: str) -> None:
+    assert uuid.UUID(actual)
+
+
 def assert_uuid(actual: str, expected: uuid.UUID) -> None:
     assert uuid.UUID(actual) == expected
 
