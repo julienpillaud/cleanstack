@@ -20,9 +20,7 @@ class StatementBuilder[T: OrmEntity]:
         self.orm_model_type = orm_model_type
         self.searchable_fields = searchable_fields
 
-        self._stmt = select(self.orm_model_type)
-        if load_options:
-            self._stmt = self._stmt.options(*load_options)
+        self._stmt = select(self.orm_model_type).options(*load_options)
         self._count_stmt = self._get_count_stmt()
 
     def apply(

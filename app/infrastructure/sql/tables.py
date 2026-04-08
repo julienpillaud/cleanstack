@@ -1,7 +1,8 @@
 import datetime
 import uuid
 
-from sqlalchemy.orm import Mapped
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.domain.items.entities import ItemStatus
 from cleanstack.infrastructure.sql.entities import OrmEntity
@@ -19,3 +20,17 @@ class OrmItem(OrmEntity):
     strenum_field: Mapped[ItemStatus]
     optional_field: Mapped[ItemStatus | None]
     computed_field: Mapped[float]
+
+
+class OrmNode(OrmEntity):
+    __tablename__ = "node"
+
+    label: Mapped[str]
+    container_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("container.id"))
+
+
+class OrmContainer(OrmEntity):
+    __tablename__ = "container"
+
+    name: Mapped[str]
+    nodes: Mapped[list[OrmNode]] = relationship()

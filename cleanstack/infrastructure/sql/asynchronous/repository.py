@@ -49,37 +49,45 @@ class AsyncSQLRepository[T: DomainEntity, OrmT: OrmEntity](SQLMixin[T, OrmT]):
         )
 
     async def get_by_id(self, entity_id: EntityId, /) -> T | None:
-        stmt = sqlalchemy.select(self.orm_model_type).where(
-            self.orm_model_type.id == entity_id
+        stmt = (
+            sqlalchemy.select(self.orm_model_type)
+            .where(self.orm_model_type.id == entity_id)
+            .options(*self._load_options)
         )
         result = await self.session.execute(stmt)
         db_entity = result.scalar_one_or_none()
         return self._to_domain_entity(db_entity) if db_entity else None
 
     async def create(self, entity: T, /) -> T:
-        orm_entity = await self._to_database_entity(entity)
-        self.session.add(orm_entity)
+        values = self._to_database_values(entity)
+        stmt = sqlalchemy.insert(self.orm_model_type).values(**values)
+        await self.session.execute(stmt)
+        await self._create_relations(entity)
         return entity
 
     async def update(self, entity: T, /) -> T:
+        values = self._to_database_values(entity, exclude={"id"})
         stmt = (
             sqlalchemy.update(self.orm_model_type)
             .where(self.orm_model_type.id == entity.id)
-            .values(**entity.model_dump(exclude={"id"}))
+            .values(**values)
         )
         await self.session.execute(stmt)
-
+        await self._update_relations(entity)
         return entity
 
     async def delete(self, entity: T) -> None:
+        await self._delete_relations(entity)
         stmt = sqlalchemy.delete(self.orm_model_type).where(
             self.orm_model_type.id == entity.id
         )
         await self.session.execute(stmt)
 
-    async def _to_database_entity(self, entity: T, /) -> OrmT:
-        """Convert a domain entity to an ORM entity to be saved to the database.
+    async def _create_relations(self, entity: T, /) -> None:
+        pass
 
-        Can be overridden to take into account relationships.
-        """
-        return self.orm_model_type(**entity.model_dump())
+    async def _update_relations(self, entity: T, /) -> None:
+        pass
+
+    async def _delete_relations(self, entity: T, /) -> None:
+        pass
