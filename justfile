@@ -4,8 +4,11 @@ default:
 lint:
     uv run pre-commit run --all-files
 
-tests *options="--log-cli-level=INFO":
+tests *options="":
     uv run pytest {{ options }}
+
+protests *options="":
+    uv run protest run protests.session:session {{ options }}
 
 dev:
     docker compose up -d
