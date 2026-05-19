@@ -44,6 +44,9 @@ class SQLResourceContext:
         self.engine = self.resource.engine
         self.session_factory = self.resource.session_factory
 
+        OrmEntity.metadata.drop_all(self.engine)
+        OrmEntity.metadata.create_all(self.engine)
+
     def close(self) -> None:
         self.resource.close()
 
