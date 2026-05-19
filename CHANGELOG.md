@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.21.0](https://github.com/julienpillaud/cleanstack/compare/0.20.0...0.21.0) (2026-05-19)
+
+
+### Features
+
+* add container management with CRUD operations, infrastructure support, and tests ([#60](https://github.com/julienpillaud/cleanstack/issues/60)) ([2e177d2](https://github.com/julienpillaud/cleanstack/commit/2e177d2effca951c6e85f52db3ad91aa943a0038))
+* refacto ([#64](https://github.com/julienpillaud/cleanstack/issues/64)) ([6695252](https://github.com/julienpillaud/cleanstack/commit/669525208c58d12123bd15a9a4315682990c9ea2))
+* refactor ([#58](https://github.com/julienpillaud/cleanstack/issues/58)) ([93ed9be](https://github.com/julienpillaud/cleanstack/commit/93ed9be9d384d5f41ba48e98443253ed54455143))
+
 ## [0.20.0](https://github.com/julienpillaud/cleanstack/compare/0.19.0...0.20.0) (2026-04-05)
 
 
