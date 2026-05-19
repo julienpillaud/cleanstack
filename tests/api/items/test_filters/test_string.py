@@ -3,7 +3,7 @@ from fastapi import status
 from fastapi.testclient import TestClient
 
 from cleanstack.entities import FilterOperator
-from tests.fixtures.factories import ItemFactory
+from tests.plugins.database import ItemFactory
 
 
 def test_operator_eq(

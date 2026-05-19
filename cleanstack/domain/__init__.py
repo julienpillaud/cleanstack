@@ -1,5 +1,3 @@
-from .context import BaseContextProtocol as BaseContextProtocol
-from .domain import BaseDomain as BaseDomain
 from .exceptions import BadRequestError as BadRequestError
 from .exceptions import ConflictError as ConflictError
 from .exceptions import DomainError as DomainError
@@ -8,5 +6,3 @@ from .exceptions import NotFoundError as NotFoundError
 from .exceptions import UnprocessableEntityError as UnprocessableEntityError
 from .repository import AsyncRepositoryProtocol as AsyncRepositoryProtocol
 from .repository import SyncRepositoryProtocol as SyncRepositoryProtocol
-from .uow import CompositeUniOfWork as CompositeUniOfWork
-from .uow import UnitOfWorkProtocol as UnitOfWorkProtocol

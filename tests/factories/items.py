@@ -32,10 +32,7 @@ class ItemMongoFactory(BaseMongoFactory[Item]):
 
     @property
     def _repository(self) -> SyncItemMongoRepository:
-        return SyncItemMongoRepository(
-            database=self.config.database,
-            session=self.uow.session,
-        )
+        return SyncItemMongoRepository(database=self.database)
 
 
 class ItemSQLFactory(BaseSQLFactory[Item]):
@@ -44,4 +41,4 @@ class ItemSQLFactory(BaseSQLFactory[Item]):
 
     @property
     def _repository(self) -> SyncItemSQLRepository:
-        return SyncItemSQLRepository(session=self.uow.session)
+        return SyncItemSQLRepository(session=self.session)

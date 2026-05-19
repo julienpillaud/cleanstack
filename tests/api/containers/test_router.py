@@ -2,7 +2,7 @@ import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
 
-from tests.fixtures.factories import ContainerFactory
+from tests.plugins.database import ContainerFactory
 from tests.utils import assert_is_uuid
 
 

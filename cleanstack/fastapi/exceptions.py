@@ -33,7 +33,7 @@ class ExceptionRegistry:
     def get_status_code(cls, exc: Exception) -> int | None:
         return next(
             (
-                cls._exc_mapping[exc_class]
+                cls._exc_mapping[exc_class]  # ty:ignore[invalid-argument-type]
                 for exc_class in type(exc).mro()
                 if exc_class in cls._exc_mapping
             ),

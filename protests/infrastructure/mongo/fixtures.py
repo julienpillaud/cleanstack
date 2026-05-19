@@ -6,7 +6,7 @@ from pymongo import AsyncMongoClient
 from pymongo.asynchronous.client_session import AsyncClientSession
 from pymongo.asynchronous.database import AsyncDatabase
 
-from app.core.config import Settings
+from app.core.settings import Settings
 from app.infrastructure.mongo.items import AsyncItemMongoRepository
 from cleanstack.infrastructure.mongo.types import MongoDocument
 from protests.fixtures import get_settings
@@ -17,7 +17,7 @@ async def get_mongo_client(
     settings: Annotated[Settings, Use(get_settings)],
 ) -> AsyncIterator[AsyncMongoClient[MongoDocument]]:
     async with AsyncMongoClient[MongoDocument](
-        host=str(settings.mongo_dsn),
+        host=str(settings.mongo_uri),
         uuidRepresentation="standard",
     ) as client:
         yield client

@@ -53,15 +53,15 @@ def apply_operator(
 ) -> ColumnElement[bool]:
     match operator:
         case FilterOperator.EQ:
-            return column == value  # type: ignore
+            return column == value  # type: ignore[no-any-return]
         case FilterOperator.GT:
-            return column > value  # type: ignore
+            return column > value  # type: ignore[no-any-return]
         case FilterOperator.LT:
-            return column < value  # type: ignore
+            return column < value  # type: ignore[no-any-return]
         case FilterOperator.GTE:
-            return column >= value  # type: ignore
+            return column >= value  # type: ignore[no-any-return]
         case FilterOperator.LTE:
-            return column <= value  # type: ignore
+            return column <= value  # type: ignore[no-any-return]
         case FilterOperator.IN:
             return column.in_(value)
         case FilterOperator.NIN:

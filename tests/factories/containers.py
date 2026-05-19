@@ -31,10 +31,7 @@ class ContainerMongoFactory(BaseMongoFactory[Container]):
 
     @property
     def _repository(self) -> SyncContainerMongoRepository:
-        return SyncContainerMongoRepository(
-            database=self.config.database,
-            session=self.uow.session,
-        )
+        return SyncContainerMongoRepository(database=self.database)
 
 
 class ContainerSQLFactory(BaseSQLFactory[Container]):
@@ -43,4 +40,4 @@ class ContainerSQLFactory(BaseSQLFactory[Container]):
 
     @property
     def _repository(self) -> SyncContainerSQLRepository:
-        return SyncContainerSQLRepository(session=self.uow.session)
+        return SyncContainerSQLRepository(session=self.session)

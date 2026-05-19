@@ -1,7 +1,7 @@
 from protest import fixture
 from pydantic import SecretStr
 
-from app.core.config import AppEnvironment, Settings
+from app.core.settings import AppEnvironment, Settings
 
 
 # Session scoped fixtures

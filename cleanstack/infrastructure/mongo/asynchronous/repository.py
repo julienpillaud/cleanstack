@@ -19,7 +19,7 @@ class AsyncMongoRepository[T: DomainEntity](MongoMixin[T]):
         self,
         database: AsyncDatabase[MongoDocument],
         session: AsyncClientSession | None = None,
-    ):
+    ) -> None:
         self.collection = database[self.collection_name]
         self.session = session
 
