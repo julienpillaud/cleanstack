@@ -10,26 +10,25 @@ from cleanstack.entities.base import DomainEntity
 class _BaseFactory[T: DomainEntity](ABC):
     def create_one(self, **kwargs: Any) -> T:
         entity = self.build(**kwargs)
+
         with self._persistence_context():
             created = self._repository.create(entity)
-            self._commit()
-            return created
+
+        return created
 
     def create_many(self, count: int, /, **kwargs: Any) -> list[T]:
         entities = [self.build(**kwargs) for _ in range(count)]
         created_entities: list[T] = []
+
         with self._persistence_context():
             for entity in entities:
                 created = self._repository.create(entity)
                 created_entities.append(created)
-            self._commit()
+
         return created_entities
 
     @abstractmethod
     def build(self, **kwargs: Any) -> T: ...
-
-    @abstractmethod
-    def _commit(self) -> None: ...
 
     @contextmanager
     @abstractmethod

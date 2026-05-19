@@ -2,11 +2,17 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, status
 
-from app.api.dependencies.domain import get_domain
+from app.api.dependencies import Context, get_context
 from app.api.filters import get_filters
 from app.api.sort import get_sort_entities
 from app.api.utils import PaginatedResponseDTO, get_search
-from app.domain.domain import Domain
+from app.domain.items.commands import (
+    create_item_command,
+    delete_item_command,
+    get_item_command,
+    get_items_command,
+    update_item_command,
+)
 from app.domain.items.entities import Item, ItemCreate, ItemUpdate
 from cleanstack.entities import EntityId, FilterEntity, Pagination, SortEntity
 
@@ -15,13 +21,14 @@ router = APIRouter(prefix="/items", tags=["items"])
 
 @router.get("", response_model=PaginatedResponseDTO[Item])
 def get_items(
-    domain: Annotated[Domain, Depends(get_domain)],
+    context: Annotated[Context, Depends(get_context)],
     search: Annotated[str | None, Depends(get_search)],
     filters: Annotated[list[FilterEntity], Depends(get_filters)],
     sort: Annotated[list[SortEntity], Depends(get_sort_entities)],
     pagination: Annotated[Pagination, Depends()],
 ) -> Any:
-    return domain.get_items(
+    return get_items_command(
+        context,
         search=search,
         filters=filters,
         sort=sort,
@@ -31,32 +38,32 @@ def get_items(
 
 @router.get("/{item_id}")
 def get_item(
-    domain: Annotated[Domain, Depends(get_domain)],
+    context: Annotated[Context, Depends(get_context)],
     item_id: EntityId,
 ) -> Any:
-    return domain.get_item(item_id=item_id)
+    return get_item_command(context, item_id=item_id)
 
 
 @router.post("", response_model=Item, status_code=status.HTTP_201_CREATED)
 def create_item(
-    domain: Annotated[Domain, Depends(get_domain)],
+    context: Annotated[Context, Depends(get_context)],
     data: ItemCreate,
 ) -> Any:
-    return domain.create_item(data=data)
+    return create_item_command(context, data=data)
 
 
 @router.patch("/{item_id}", response_model=Item)
 def update_item(
-    domain: Annotated[Domain, Depends(get_domain)],
+    context: Annotated[Context, Depends(get_context)],
     item_id: EntityId,
     data: ItemUpdate,
 ) -> Any:
-    return domain.update_item(item_id=item_id, data=data)
+    return update_item_command(context, item_id=item_id, data=data)
 
 
 @router.delete("/{item_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_item(
-    domain: Annotated[Domain, Depends(get_domain)],
+    context: Annotated[Context, Depends(get_context)],
     item_id: EntityId,
 ) -> None:
-    domain.delete_item(item_id=item_id)
+    delete_item_command(context, item_id=item_id)

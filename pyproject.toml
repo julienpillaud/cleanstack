@@ -17,11 +17,11 @@ sql = [
 
 [dependency-groups]
 dev = [
-    "mypy>=1.20",
-    "pre-commit>=4.6",
+    "mypy==2.1.0",
+    "pytest==9.0.3",
+    "ruff==0.15.13",
+    "ty==0.0.37",
     "protest",
-    "pytest>=9.0",
-    "ruff>=0.15",
 ]
 
 [tool.uv.sources]
@@ -42,14 +42,23 @@ select = [
     "I", # isort
     "PL", # Pylint
     "RUF",
+    "ANN", # flake8-annotations
 ]
 ignore = [
+    "ANN401", # any-type
     "PLR0911", # Too many return statements (7 > 6)
     "PLR0913", # Too many arguments in function definition (6 > 5)
+    "SIM117", # multiple-with-statements
 ]
+
+[tool.ty.terminal]
+output-format = "concise"
 
 [tool.mypy]
 strict = true
+disable_error_code = [
+    "prop-decorator",
+]
 plugins = ['pydantic.mypy']
 
 [tool.pytest.ini_options]
@@ -57,3 +66,6 @@ testpaths = ["tests"]
 log_cli = true
 log_cli_level = "info"
 log_cli_format = "%(asctime)s [%(levelname)8s] %(name)30s - %(message)s"
+log_file = ".pytest_cache/tests.log"
+log_file_level = "info"
+log_format = "%(asctime)s [%(levelname)8s] %(name)30s - %(message)s"

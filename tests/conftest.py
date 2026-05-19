@@ -1,6 +1,6 @@
 pytest_plugins = [
-    "tests.fixtures.factories",
-    "tests.fixtures.fastapi",
-    "tests.fixtures.repository",
-    "tests.fixtures.settings",
+    "tests.plugins.database",
+    "tests.plugins.factories",
+    "tests.plugins.http",
+    "tests.plugins.settings",
 ]

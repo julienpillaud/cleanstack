@@ -2,7 +2,9 @@ default:
     just --list
 
 lint:
-    uv run pre-commit run --all-files
+    uv run ruff check --fix
+    uv run ruff format
+    uv run ty check
 
 tests *options="":
     uv run pytest {{ options }}

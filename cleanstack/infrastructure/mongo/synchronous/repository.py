@@ -19,7 +19,7 @@ class SyncMongoRepository[T: DomainEntity](MongoMixin[T]):
         self,
         database: Database[MongoDocument],
         session: ClientSession | None = None,
-    ):
+    ) -> None:
         self.collection = database[self.collection_name]
         self.session = session
 

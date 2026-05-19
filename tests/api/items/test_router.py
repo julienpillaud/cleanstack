@@ -5,7 +5,7 @@ from fastapi import status
 from fastapi.testclient import TestClient
 
 from app.domain.items.entities import ItemStatus
-from tests.fixtures.factories import ItemFactory
+from tests.plugins.database import ItemFactory
 from tests.utils import assert_datetime, assert_uuid
 
 

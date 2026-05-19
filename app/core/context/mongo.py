@@ -1,27 +1,35 @@
+from functools import cached_property
+
+from pymongo.client_session import ClientSession
+from pymongo.database import Database
+
 from app.domain.containers.repository import SyncContainerRepositoryProtocol
 from app.domain.context import ContextProtocol
 from app.domain.items.repository import SyncItemRepositoryProtocol
 from app.infrastructure.mongo.containers import SyncContainerMongoRepository
 from app.infrastructure.mongo.items import SyncItemMongoRepository
-from cleanstack.domain import UnitOfWorkProtocol
-from cleanstack.infrastructure.mongo import MongoUnitOfWork
+from cleanstack.infrastructure.mongo import MongoDocument
 
 
 class MongoContext(ContextProtocol):
-    def __init__(self, mongo_uow: MongoUnitOfWork):
-        self.mongo_uow = mongo_uow
-        self.members: list[UnitOfWorkProtocol] = [self.mongo_uow]
+    def __init__(
+        self,
+        database: Database[MongoDocument],
+        session: ClientSession | None = None,
+    ) -> None:
+        self.database = database
+        self.session = session
 
-    @property
+    @cached_property
     def item_repository(self) -> SyncItemRepositoryProtocol:
         return SyncItemMongoRepository(
-            database=self.mongo_uow.database,
-            session=self.mongo_uow.session,
+            database=self.database,
+            session=self.session,
         )
 
-    @property
+    @cached_property
     def container_repository(self) -> SyncContainerRepositoryProtocol:
         return SyncContainerMongoRepository(
-            database=self.mongo_uow.database,
-            session=self.mongo_uow.session,
+            database=self.database,
+            session=self.session,
         )

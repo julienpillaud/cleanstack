@@ -4,7 +4,7 @@ from functools import lru_cache
 import pytest
 from pydantic import SecretStr
 
-from app.core.config import AppEnvironment, RepositoryType, Settings
+from app.core.settings import AppEnvironment, RepositoryType, Settings
 
 
 @lru_cache

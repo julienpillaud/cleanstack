@@ -6,7 +6,6 @@ from pymongo import MongoClient
 from pymongo.client_session import ClientSession
 from pymongo.database import Database
 
-from cleanstack.domain.uow import UnitOfWorkProtocol
 from cleanstack.infrastructure.mongo.logger import logger
 from cleanstack.infrastructure.mongo.types import MongoDocument
 
@@ -28,7 +27,7 @@ class MongoConfig(BaseModel):
         return cls(client=client, database=database)
 
 
-class MongoUnitOfWork(UnitOfWorkProtocol):
+class MongoUnitOfWork:
     def __init__(self, config: MongoConfig) -> None:
         self._session: ClientSession | None = None
         self.client = config.client

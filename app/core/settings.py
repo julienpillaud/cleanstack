@@ -1,4 +1,5 @@
 from enum import StrEnum
+from typing import Any
 
 from pydantic import MongoDsn, PostgresDsn, SecretStr, computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -32,15 +33,16 @@ class Settings(BaseSettings):
     postgres_host: str = "localhost"
     postgres_port: int = 5432
     postgres_database: str
+    postgres_params: dict[str, Any] = {}
 
     mongo_user: str | None = None
     mongo_password: SecretStr | None = None
     mongo_host: str = "localhost"
     mongo_port: int = 27017
     mongo_rs_name: str = "rs0"
-    mongo_database: str
+    mongo_database: str = "dev"
 
-    @computed_field  # type: ignore
+    @computed_field
     @property
     def postgres_dsn(self) -> PostgresDsn:
         return PostgresDsn.build(
@@ -52,9 +54,9 @@ class Settings(BaseSettings):
             path=self.postgres_database,
         )
 
-    @computed_field  # type: ignore
+    @computed_field
     @property
-    def mongo_dsn(self) -> MongoDsn:
+    def mongo_uri(self) -> MongoDsn:
         query = f"replicaSet={self.mongo_rs_name}" if self.mongo_rs_name else None
         return MongoDsn.build(
             scheme="mongodb",

@@ -2,7 +2,8 @@ from fastapi import FastAPI
 
 from app.api.containers.router import router as containers_router
 from app.api.items.router import router as items_router
-from app.core.config import Settings
+from app.api.lifespan import lifespan_factory
+from app.core.settings import Settings
 from cleanstack.fastapi.exceptions import add_exception_handler
 
 
@@ -15,6 +16,7 @@ def create_fastapi_app(settings: Settings) -> FastAPI:
             "displayRequestDuration": True,
             "persistAuthorization": True,
         },
+        lifespan=lifespan_factory(settings=settings),
     )
 
     add_exception_handler(app=app)
