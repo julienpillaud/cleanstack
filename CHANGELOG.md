@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.21.1](https://github.com/julienpillaud/cleanstack/compare/0.21.0...0.21.1) (2026-05-20)
+
+
+### Bug Fixes
+
+* repository hooks ([#65](https://github.com/julienpillaud/cleanstack/issues/65)) ([a0ad601](https://github.com/julienpillaud/cleanstack/commit/a0ad601890d11a8df1481c67c78c95e593b68a48))
+
 ## [0.21.0](https://github.com/julienpillaud/cleanstack/compare/0.20.0...0.21.0) (2026-05-19)
 
 
