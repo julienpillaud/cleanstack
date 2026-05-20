@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.22.0](https://github.com/julienpillaud/cleanstack/compare/0.21.1...0.22.0) (2026-05-20)
+
+
+### Features
+
+* update repository protocol ([#67](https://github.com/julienpillaud/cleanstack/issues/67)) ([4437905](https://github.com/julienpillaud/cleanstack/commit/4437905b555db444fb885ef5e5c56186647ae108))
+
 ## [0.21.1](https://github.com/julienpillaud/cleanstack/compare/0.21.0...0.21.1) (2026-05-20)
 
 
