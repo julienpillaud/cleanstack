@@ -50,7 +50,8 @@ def create_item_command(context: ContextProtocol, /, data: ItemCreate) -> Item:
         strenum_field=data.strenum_field,
         optional_field=data.optional_field,
     )
-    return context.item_repository.create(item)
+    context.item_repository.save(item)
+    return item
 
 
 def update_item_command(
@@ -66,7 +67,8 @@ def update_item_command(
     for key, value in data.model_dump(exclude_unset=True).items():
         setattr(item, key, value)
 
-    return context.item_repository.update(item)
+    context.item_repository.update(item)
+    return item
 
 
 def delete_item_command(context: ContextProtocol, /, item_id: EntityId) -> None:
@@ -74,4 +76,4 @@ def delete_item_command(context: ContextProtocol, /, item_id: EntityId) -> None:
     if not item:
         raise NotFoundError("Item not found")
 
-    context.item_repository.delete(item)
+    context.item_repository.remove(item)

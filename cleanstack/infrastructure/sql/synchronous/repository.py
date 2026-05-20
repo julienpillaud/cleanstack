@@ -58,14 +58,13 @@ class SyncSQLRepository[T: DomainEntity, OrmT: OrmEntity](SQLMixin[T, OrmT]):
         db_entity = result.scalar_one_or_none()
         return self.to_domain_entity(db_entity) if db_entity else None
 
-    def create(self, entity: T, /) -> T:
+    def save(self, entity: T, /) -> None:
         values = self._to_database_values(entity)
         stmt = sqlalchemy.insert(self.orm_model_type).values(**values)
         self.session.execute(stmt)
         self._create_relations(entity)
-        return entity
 
-    def update(self, entity: T, /) -> T:
+    def update(self, entity: T, /) -> None:
         values = self._to_database_values(entity, exclude={"id"})
         stmt = (
             sqlalchemy.update(self.orm_model_type)
@@ -74,9 +73,8 @@ class SyncSQLRepository[T: DomainEntity, OrmT: OrmEntity](SQLMixin[T, OrmT]):
         )
         self.session.execute(stmt)
         self._update_relations(entity)
-        return entity
 
-    def delete(self, entity: T) -> None:
+    def remove(self, entity: T) -> None:
         self._delete_relations(entity)
         stmt = sqlalchemy.delete(self.orm_model_type).where(
             self.orm_model_type.id == entity.id

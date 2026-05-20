@@ -12,9 +12,9 @@ class _BaseFactory[T: DomainEntity](ABC):
         entity = self.build(**kwargs)
 
         with self._persistence_context():
-            created = self._repository.create(entity)
+            self._repository.save(entity)
 
-        return created
+        return entity
 
     def create_many(self, count: int, /, **kwargs: Any) -> list[T]:
         entities = [self.build(**kwargs) for _ in range(count)]
@@ -22,8 +22,8 @@ class _BaseFactory[T: DomainEntity](ABC):
 
         with self._persistence_context():
             for entity in entities:
-                created = self._repository.create(entity)
-                created_entities.append(created)
+                self._repository.save(entity)
+                created_entities.append(entity)
 
         return created_entities
 
