@@ -15,12 +15,16 @@ class SQLMixin[T: DomainEntity, OrmT: OrmEntity]:
     orm_model_type: type[OrmT]
     searchable_fields: tuple[str, ...] = ()
 
-    def _to_domain_entity(self, orm_entity: OrmT, /) -> T:
+    def to_domain_entity(self, orm_entity: OrmT, /) -> T:
         return self.domain_entity_type.model_validate(orm_entity)
 
     @property
-    def _load_options(self) -> list[ExecutableOption]:
+    def load_options(self) -> list[ExecutableOption]:
         return []
+
+    @staticmethod
+    def extra_excluded_fields() -> set[str]:
+        return set()
 
     def _to_database_values(
         self,
@@ -28,5 +32,5 @@ class SQLMixin[T: DomainEntity, OrmT: OrmEntity]:
         /,
         exclude: set[str] | None = None,
     ) -> dict[str, Any]:
-        exclude = exclude or set()
+        exclude = (exclude or set()) | self.extra_excluded_fields()
         return entity.model_dump(exclude=exclude)

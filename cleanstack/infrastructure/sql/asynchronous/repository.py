@@ -29,7 +29,7 @@ class AsyncSQLRepository[T: DomainEntity, OrmT: OrmEntity](SQLMixin[T, OrmT]):
         statement = StatementBuilder(
             self.orm_model_type,
             self.searchable_fields,
-            load_options=self._load_options,
+            load_options=self.load_options,
         ).apply(
             search=search,
             filters=filters,
@@ -45,18 +45,18 @@ class AsyncSQLRepository[T: DomainEntity, OrmT: OrmEntity](SQLMixin[T, OrmT]):
             size=pagination.size,
             pages=pagination.pages(total),
             total=total,
-            items=[self._to_domain_entity(item) for item in data_result],
+            items=[self.to_domain_entity(item) for item in data_result],
         )
 
     async def get_by_id(self, entity_id: EntityId, /) -> T | None:
         stmt = (
             sqlalchemy.select(self.orm_model_type)
             .where(self.orm_model_type.id == entity_id)
-            .options(*self._load_options)
+            .options(*self.load_options)
         )
         result = await self.session.execute(stmt)
         db_entity = result.scalar_one_or_none()
-        return self._to_domain_entity(db_entity) if db_entity else None
+        return self.to_domain_entity(db_entity) if db_entity else None
 
     async def create(self, entity: T, /) -> T:
         values = self._to_database_values(entity)

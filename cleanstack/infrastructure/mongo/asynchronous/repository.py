@@ -34,7 +34,7 @@ class AsyncMongoRepository[T: DomainEntity](MongoMixin[T]):
         pipeline = PipelineBuilder(
             self.domain_entity_type,
             self.searchable_fields,
-            lookup=self._lookup,
+            lookup=self.lookup,
         ).apply(
             search=search,
             filters=filters,
@@ -59,12 +59,12 @@ class AsyncMongoRepository[T: DomainEntity](MongoMixin[T]):
             size=pagination.size,
             pages=pagination.pages(total),
             total=total,
-            items=[self._to_domain_entity(item) for item in items],
+            items=[self.to_domain_entity(item) for item in items],
         )
 
     async def get_by_id(self, entity_id: EntityId, /) -> T | None:
         pipeline = [{"$match": {"_id": entity_id}}]
-        pipeline.extend(self._lookup)
+        pipeline.extend(self.lookup)
 
         cursor = await self.collection.aggregate(
             pipeline=pipeline,
@@ -72,10 +72,10 @@ class AsyncMongoRepository[T: DomainEntity](MongoMixin[T]):
         )
         result = await cursor.try_next()
 
-        return self._to_domain_entity(result) if result else None
+        return self.to_domain_entity(result) if result else None
 
     async def create(self, entity: T, /) -> T:
-        db_entity = self._to_database_entity(entity)
+        db_entity = self.to_database_entity(entity)
 
         result = await self.collection.insert_one(
             document=db_entity,
@@ -87,7 +87,7 @@ class AsyncMongoRepository[T: DomainEntity](MongoMixin[T]):
         return entity
 
     async def update(self, entity: T, /) -> T:
-        db_entity = self._to_database_entity(entity)
+        db_entity = self.to_database_entity(entity)
 
         result = await self.collection.replace_one(
             filter={"_id": entity.id},
