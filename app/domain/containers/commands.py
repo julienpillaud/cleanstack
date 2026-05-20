@@ -29,7 +29,8 @@ def create_container_command(
         name=data.name,
         nodes=[Node(id=uuid.uuid7(), label=tag) for tag in data.nodes],
     )
-    return context.container_repository.create(container)
+    context.container_repository.save(container)
+    return container
 
 
 def update_container_command(
@@ -48,7 +49,8 @@ def update_container_command(
             continue
         setattr(container, key, value)
 
-    return context.container_repository.update(container)
+    context.container_repository.update(container)
+    return container
 
 
 def delete_container_command(
@@ -60,4 +62,4 @@ def delete_container_command(
     if not container:
         raise NotFoundError("Container not found")
 
-    context.container_repository.delete(container)
+    context.container_repository.remove(container)

@@ -72,7 +72,7 @@ class SyncMongoRepository[T: DomainEntity](MongoMixin[T]):
         result = cursor.try_next()
         return self.to_domain_entity(result) if result else None
 
-    def create(self, entity: T, /) -> T:
+    def save(self, entity: T, /) -> None:
         db_entity = self.to_database_entity(entity)
 
         result = self.collection.insert_one(
@@ -82,9 +82,7 @@ class SyncMongoRepository[T: DomainEntity](MongoMixin[T]):
         if not result.acknowledged:
             raise MongoRepositoryError("Failed to insert entity")
 
-        return entity
-
-    def update(self, entity: T, /) -> T:
+    def update(self, entity: T, /) -> None:
         db_entity = self.to_database_entity(entity)
 
         result = self.collection.replace_one(
@@ -95,9 +93,7 @@ class SyncMongoRepository[T: DomainEntity](MongoMixin[T]):
         if not result.acknowledged:
             raise MongoRepositoryError("Failed to update entity")
 
-        return entity
-
-    def delete(self, entity: T, /) -> None:
+    def remove(self, entity: T, /) -> None:
         result = self.collection.delete_one(
             filter={"_id": entity.id},
             session=self.session,
