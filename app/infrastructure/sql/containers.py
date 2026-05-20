@@ -1,5 +1,3 @@
-from typing import Any
-
 import sqlalchemy
 from sqlalchemy.orm import selectinload
 from sqlalchemy.sql.base import ExecutableOption
@@ -15,18 +13,13 @@ class ContainerSQLMixin(SQLMixin[Container, OrmContainer]):
     orm_model_type = OrmContainer
 
     @property
-    def _load_options(self) -> list[ExecutableOption]:
+    def load_options(self) -> list[ExecutableOption]:
         # SELECT * FROM node WHERE container_id IN (...);
         return [selectinload(OrmContainer.nodes)]
 
-    def _to_database_values(
-        self,
-        entity: Container,
-        /,
-        exclude: set[str] | None = None,
-    ) -> dict[str, Any]:
-        exclude = exclude or set()
-        return entity.model_dump(exclude={*exclude, "nodes"})
+    @staticmethod
+    def extra_excluded_fields() -> set[str]:
+        return {"nodes"}
 
 
 class SyncContainerSQLRepository(
