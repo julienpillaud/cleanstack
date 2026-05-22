@@ -1,17 +1,17 @@
 from fastapi import status
 from fastapi.testclient import TestClient
 
-from tests.plugins.database import ItemFactory
+from tests.plugins.factories import Factory
 
 
 def test_pagination_request_less_than_total(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
 ) -> None:
     page = 1
     size = 5
     total = 9
-    item_factory.create_many(total)
+    factory.items.create_many(total)
 
     params: dict[str, str | int] = {
         "page": page,
@@ -28,13 +28,13 @@ def test_pagination_request_less_than_total(
 
 
 def test_pagination_request_more_than_total(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
 ) -> None:
     page = 2
     size = 5
     total = 9
-    item_factory.create_many(total)
+    factory.items.create_many(total)
 
     params: dict[str, str | int] = {
         "page": page,
@@ -51,13 +51,13 @@ def test_pagination_request_more_than_total(
 
 
 def test_pagination_out_of_range(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
 ) -> None:
     page = 3
     size = 5
     total = 9
-    item_factory.create_many(total)
+    factory.items.create_many(total)
 
     params: dict[str, str | int] = {
         "page": page,

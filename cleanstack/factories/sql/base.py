@@ -1,18 +1,28 @@
 from abc import ABC
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 
 from sqlalchemy.orm import Session
 
 from cleanstack.entities.base import DomainEntity
-from cleanstack.factories.base import _BaseFactory
+from cleanstack.factories.base import BaseFactory
 
 
-class BaseSQLFactory[T: DomainEntity](_BaseFactory[T], ABC):
-    def __init__(self, session: Session) -> None:
-        self.session = session
+class BaseSQLFactory[T: DomainEntity](BaseFactory[T], ABC):
+    def __init__(self, session_factory: Callable[[], Session]) -> None:
+        self.session_factory = session_factory
+        self._session: Session | None = None
 
     @contextmanager
     def _persistence_context(self) -> Iterator[None]:
-        yield
-        self.session.commit()
+        with self.session_factory() as session:
+            self._session = session
+            yield
+            session.commit()
+        self._session = None
+
+    @property
+    def session(self) -> Session:
+        if self._session is None:
+            raise RuntimeError()
+        return self._session

@@ -5,7 +5,7 @@ from fastapi import status
 from starlette.testclient import TestClient
 
 from cleanstack.entities import SortOrder
-from tests.plugins.database import ItemFactory
+from tests.plugins.factories import Factory
 
 
 @pytest.mark.parametrize(
@@ -16,7 +16,7 @@ from tests.plugins.database import ItemFactory
     ],
 )
 def test_sort_datetime(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
     direction: str,
     expected_indices: list[int],
@@ -27,9 +27,9 @@ def test_sort_datetime(
         base_time + datetime.timedelta(hours=1),
         base_time + datetime.timedelta(hours=2),
     ]
-    item_factory.create_many(1, datetime_field=dates[1])
-    item_factory.create_many(1, datetime_field=dates[2])
-    item_factory.create_many(1, datetime_field=dates[0])
+    factory.items.create_many(1, datetime_field=dates[1])
+    factory.items.create_many(1, datetime_field=dates[2])
+    factory.items.create_many(1, datetime_field=dates[0])
 
     params = {"sort": f"datetime_field[{direction}]"}
     response = client.get("/items", params=params)

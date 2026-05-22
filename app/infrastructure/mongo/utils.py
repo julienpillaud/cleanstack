@@ -17,9 +17,13 @@ class MongoResource(BaseModel):
     client: MongoClient[MongoDocument]
     database: Database[MongoDocument]
 
-    def close(self) -> None:
-        logger.info("MongoDB client close")
+    def release(self) -> None:
+        logger.info("MongoDB client released")
         self.client.close()
+
+    def reset(self) -> None:
+        for collection in self.database.list_collection_names():
+            self.database[collection].delete_many({})
 
 
 def create_mongo_resource(settings: Settings) -> MongoResource:

@@ -5,17 +5,17 @@ from fastapi import status
 from fastapi.testclient import TestClient
 
 from cleanstack.entities import FilterOperator
-from tests.plugins.database import ItemFactory
+from tests.plugins.factories import Factory
 
 
 def test_operator_eq(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
 ) -> None:
     count = 2
     field = uuid.uuid7()
-    item_factory.create_many(1)
-    item_factory.create_many(count, uuid_field=field)
+    factory.items.create_many(1)
+    factory.items.create_many(count, uuid_field=field)
 
     params = {"filter": f"uuid_field={field}"}
     response = client.get("/items", params=params)
@@ -26,14 +26,14 @@ def test_operator_eq(
 
 
 def test_operator_in(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
 ) -> None:
     count = 2
     fields = (uuid.uuid7(), uuid.uuid7())
-    item_factory.create_many(1)
-    item_factory.create_many(1, uuid_field=fields[0])
-    item_factory.create_many(1, uuid_field=fields[1])
+    factory.items.create_many(1)
+    factory.items.create_many(1, uuid_field=fields[0])
+    factory.items.create_many(1, uuid_field=fields[1])
 
     params = {"filter": f"uuid_field[in]={fields[0]},{fields[1]}"}
     response = client.get("/items", params=params)
@@ -44,16 +44,14 @@ def test_operator_in(
 
 
 def test_operator_not_in(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
 ) -> None:
     count = 1
     fields = (uuid.uuid7(), uuid.uuid7())
-    item_factory.create_many(
-        1,
-    )
-    item_factory.create_many(1, uuid_field=fields[0])
-    item_factory.create_many(1, uuid_field=fields[1])
+    factory.items.create_many(1)
+    factory.items.create_many(1, uuid_field=fields[0])
+    factory.items.create_many(1, uuid_field=fields[1])
 
     params = {"filter": f"uuid_field[nin]={fields[0]},{fields[1]}"}
     response = client.get("/items", params=params)

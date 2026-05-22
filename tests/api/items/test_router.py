@@ -5,16 +5,16 @@ from fastapi import status
 from fastapi.testclient import TestClient
 
 from app.domain.items.entities import ItemStatus
-from tests.plugins.database import ItemFactory
+from tests.plugins.factories import Factory
 from tests.utils import assert_datetime, assert_uuid
 
 
 def test_get_items(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
 ) -> None:
     count = 3
-    item_factory.create_many(count)
+    factory.items.create_many(count)
 
     response = client.get("/items")
 
@@ -25,10 +25,10 @@ def test_get_items(
 
 
 def test_get_item(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
 ) -> None:
-    item = item_factory.create_one()
+    item = factory.items.create_one()
 
     response = client.get(f"/items/{item.id}")
 
@@ -47,10 +47,10 @@ def test_get_item(
 
 
 def test_create_item(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
 ) -> None:
-    item = item_factory.build()
+    item = factory.items.build()
     item_data = item.model_dump(
         exclude={
             "id",
@@ -94,13 +94,13 @@ def test_create_item(
     ],
 )
 def test_update_item(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
     field: str,
     previous_value: Any,
     new_value: Any,
 ) -> None:
-    item = item_factory.create_one(**{field: previous_value})
+    item = factory.items.create_one(**{field: previous_value})
 
     response = client.patch(f"/items/{item.id}", json={field: new_value})
 
@@ -115,10 +115,10 @@ def test_update_item(
 
 
 def test_delete_item(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
 ) -> None:
-    item = item_factory.create_one()
+    item = factory.items.create_one()
 
     response = client.delete(f"/items/{item.id}")
 

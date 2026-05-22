@@ -3,7 +3,7 @@ from fastapi import status
 from fastapi.testclient import TestClient
 
 from cleanstack.entities import SortOrder
-from tests.plugins.database import ItemFactory
+from tests.plugins.factories import Factory
 
 
 @pytest.mark.parametrize(
@@ -21,7 +21,7 @@ from tests.plugins.database import ItemFactory
     ],
 )
 def test_sort_numeric(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
     field_name: str,
     values: list[int | float],
@@ -30,7 +30,7 @@ def test_sort_numeric(
 ) -> None:
     shuffled_values = [values[1], values[2], values[0]]
     for val in shuffled_values:
-        item_factory.create_one(**{field_name: val})
+        factory.items.create_one(**{field_name: val})
 
     params = {"sort": f"{field_name}[{direction}]"}
     response = client.get("/items", params=params)

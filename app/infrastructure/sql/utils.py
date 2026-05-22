@@ -6,6 +6,7 @@ from sqlalchemy import Engine, create_engine, text
 from sqlalchemy.orm import Session, sessionmaker
 
 from app.core.settings import Settings
+from cleanstack.infrastructure.sql.entities import OrmEntity
 from cleanstack.infrastructure.sql.logger import logger
 
 
@@ -15,9 +16,15 @@ class SQLResource(BaseModel):
     engine: Engine
     session_factory: sessionmaker[Session]
 
-    def close(self) -> None:
-        logger.info("SQL engine close")
+    def release(self) -> None:
+        logger.info("SQL engine released")
         self.engine.dispose()
+
+    def reset(self) -> None:
+        with self.session_factory() as session:
+            for table in reversed(OrmEntity.metadata.sorted_tables):
+                session.execute(table.delete())
+            session.commit()
 
 
 def create_sql_resource(settings: Settings) -> SQLResource:

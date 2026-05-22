@@ -32,8 +32,8 @@ def lifespan_factory(
 
         yield
 
-        mongo_resource.close()
-        sql_resource.close()
+        mongo_resource.release()
+        sql_resource.release()
 
         logger.info("Application shutdown complete")
 

@@ -3,17 +3,17 @@ from fastapi import status
 from fastapi.testclient import TestClient
 
 from cleanstack.entities import FilterOperator
-from tests.plugins.database import ItemFactory
+from tests.plugins.factories import Factory
 
 
 def test_operator_in(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
 ) -> None:
     count = 2
-    item_factory.create_many(1, int_field=1)
-    item_factory.create_many(1, int_field=2)
-    item_factory.create_many(1, int_field=3)
+    factory.items.create_many(1, int_field=1)
+    factory.items.create_many(1, int_field=2)
+    factory.items.create_many(1, int_field=3)
 
     params = {"filter": "int_field[in]=1,3"}
     response = client.get("/items", params=params)
@@ -24,13 +24,13 @@ def test_operator_in(
 
 
 def test_operator_nin(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
 ) -> None:
     count = 1
-    item_factory.create_many(1, int_field=1)
-    item_factory.create_many(1, int_field=2)
-    item_factory.create_many(1, int_field=3)
+    factory.items.create_many(1, int_field=1)
+    factory.items.create_many(1, int_field=2)
+    factory.items.create_many(1, int_field=3)
 
     params = {"filter": "int_field[nin]=1,2"}
     response = client.get("/items", params=params)
@@ -58,7 +58,7 @@ def test_operator_nin(
     ],
 )
 def test_others_operators(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
     field_name: str,
     values: list[int | float],
@@ -66,9 +66,9 @@ def test_others_operators(
     operator: str,
     expected_count: int,
 ) -> None:
-    item_factory.create_many(1, **{field_name: values[0]})
-    item_factory.create_many(2, **{field_name: values[1]})
-    item_factory.create_many(4, **{field_name: values[2]})
+    factory.items.create_many(1, **{field_name: values[0]})
+    factory.items.create_many(2, **{field_name: values[1]})
+    factory.items.create_many(4, **{field_name: values[2]})
 
     params = {"filter": f"{field_name}{operator}={target_value}"}
     response = client.get("/items", params=params)
@@ -88,13 +88,13 @@ def test_wrong_value(client: TestClient) -> None:
 
 
 def test_computed_field(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
 ) -> None:
     count = 1
     value = 2
-    item_factory.create_many(3, float_field=1)
-    item_factory.create_many(count, float_field=value)
+    factory.items.create_many(3, float_field=1)
+    factory.items.create_many(count, float_field=value)
 
     params = {"filter": f"computed_field={value * 2}"}
     response = client.get("/items", params=params)

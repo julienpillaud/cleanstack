@@ -3,16 +3,13 @@ from fastapi import status
 from fastapi.testclient import TestClient
 
 from cleanstack.entities import FilterOperator
-from tests.plugins.database import ItemFactory
+from tests.plugins.factories import Factory
 
 
-def test_operator_eq(
-    item_factory: ItemFactory,
-    client: TestClient,
-) -> None:
+def test_operator_eq(factory: Factory, client: TestClient) -> None:
     count = 2
-    item_factory.create_many(1, bool_field=True)
-    item_factory.create_many(count, bool_field=False)
+    factory.items.create_many(1, bool_field=True)
+    factory.items.create_many(count, bool_field=False)
 
     params = {"filter": "bool_field=false"}
     response = client.get("/items", params=params)
