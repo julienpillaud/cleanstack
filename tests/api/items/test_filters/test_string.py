@@ -3,17 +3,17 @@ from fastapi import status
 from fastapi.testclient import TestClient
 
 from cleanstack.entities import FilterOperator
-from tests.plugins.database import ItemFactory
+from tests.plugins.factories import Factory
 
 
 def test_operator_eq(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
 ) -> None:
     count = 2
     field = "included"
-    item_factory.create_many(1, string_field="excluded")
-    item_factory.create_many(count, string_field=field)
+    factory.items.create_many(1, string_field="excluded")
+    factory.items.create_many(count, string_field=field)
 
     params = {"filter": f"string_field={field}"}
     response = client.get("/items", params=params)
@@ -24,14 +24,14 @@ def test_operator_eq(
 
 
 def test_operator_in(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
 ) -> None:
     count = 2
     fields = ("included1", "included2")
-    item_factory.create_many(1, string_field="excluded")
-    item_factory.create_many(1, string_field=fields[0])
-    item_factory.create_many(1, string_field=fields[1])
+    factory.items.create_many(1, string_field="excluded")
+    factory.items.create_many(1, string_field=fields[0])
+    factory.items.create_many(1, string_field=fields[1])
 
     params = {"filter": f"string_field[in]={','.join(fields)}"}
     response = client.get("/items", params=params)
@@ -42,14 +42,14 @@ def test_operator_in(
 
 
 def test_operator_not_in(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
 ) -> None:
     count = 1
     fields = ("excluded1", "excluded2")
-    item_factory.create_many(1, string_field="excluded1")
-    item_factory.create_many(1, string_field="excluded2")
-    item_factory.create_many(1, string_field="included")
+    factory.items.create_many(1, string_field="excluded1")
+    factory.items.create_many(1, string_field="excluded2")
+    factory.items.create_many(1, string_field="included")
 
     params = {"filter": f"string_field[nin]={','.join(fields)}"}
     response = client.get("/items", params=params)

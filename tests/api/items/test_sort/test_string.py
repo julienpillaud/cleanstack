@@ -3,7 +3,7 @@ from fastapi import status
 from fastapi.testclient import TestClient
 
 from cleanstack.entities import SortOrder
-from tests.plugins.database import ItemFactory
+from tests.plugins.factories import Factory
 
 
 @pytest.mark.parametrize(
@@ -14,13 +14,13 @@ from tests.plugins.database import ItemFactory
     ],
 )
 def test_sort_string(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
     direction: str,
     expected: list[str],
 ) -> None:
     for name in ["Bob", "Charlie", "Alice"]:
-        item_factory.create_one(string_field=name)
+        factory.items.create_one(string_field=name)
 
     params = {"sort": f"string_field[{direction}]"}
     response = client.get("/items", params=params)

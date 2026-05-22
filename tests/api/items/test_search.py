@@ -1,18 +1,18 @@
 from fastapi import status
 from fastapi.testclient import TestClient
 
-from tests.plugins.database import ItemFactory
+from tests.plugins.factories import Factory
 
 
 def test_search(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
 ) -> None:
     total = 2
-    item_factory.create_many(3)
+    factory.items.create_many(3)
     string_field = "KeyWord In String Field"
     search = "keyword"
-    item_factory.create_many(total, string_field=string_field)
+    factory.items.create_many(total, string_field=string_field)
 
     params = {"search": search}
     response = client.get("/items", params=params)
@@ -26,10 +26,10 @@ def test_search(
 
 
 def test_search_no_results(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
 ) -> None:
-    item_factory.create_many(3)
+    factory.items.create_many(3)
     search = "nonexistent"
 
     params = {"search": search}

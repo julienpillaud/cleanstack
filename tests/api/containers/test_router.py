@@ -2,15 +2,12 @@ import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
 
-from tests.plugins.database import ContainerFactory
+from tests.plugins.factories import Factory
 from tests.utils import assert_is_uuid
 
 
-def test_create_container(
-    container_factory: ContainerFactory,
-    client: TestClient,
-) -> None:
-    container = container_factory.build()
+def test_create_container(factory: Factory, client: TestClient) -> None:
+    container = factory.containers.build()
     node_labels = [node.label for node in container.nodes]
     container_data = container.model_dump(exclude={"id", "nodes"})
     container_data["nodes"] = node_labels
@@ -37,10 +34,10 @@ def test_create_container(
 
 
 def test_update_container(
-    container_factory: ContainerFactory,
+    factory: Factory,
     client: TestClient,
 ) -> None:
-    container = container_factory.create_one()
+    container = factory.containers.create_one()
     new_name = "New Container Name"
 
     response = client.patch(f"/containers/{container.id}", json={"name": new_name})
@@ -66,12 +63,12 @@ def test_update_container(
     ],
 )
 def test_update_container_nodes(
-    container_factory: ContainerFactory,
+    factory: Factory,
     client: TestClient,
     initial_nodes: list[str],
     updated_nodes: list[str],
 ) -> None:
-    container = container_factory.create_one(nodes=initial_nodes)
+    container = factory.containers.create_one(nodes=initial_nodes)
 
     response = client.patch(
         f"/containers/{container.id}", json={"nodes": updated_nodes}
@@ -86,11 +83,8 @@ def test_update_container_nodes(
     assert {node["label"] for node in result["nodes"]} == set(updated_nodes)
 
 
-def test_delete_container(
-    container_factory: ContainerFactory,
-    client: TestClient,
-) -> None:
-    container = container_factory.create_one()
+def test_delete_container(factory: Factory, client: TestClient) -> None:
+    container = factory.containers.create_one()
 
     response = client.delete(f"/containers/{container.id}")
 

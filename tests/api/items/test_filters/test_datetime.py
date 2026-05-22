@@ -5,7 +5,7 @@ from fastapi import status
 from fastapi.testclient import TestClient
 
 from cleanstack.entities import FilterOperator
-from tests.plugins.database import ItemFactory
+from tests.plugins.factories import Factory
 
 
 @pytest.mark.parametrize(
@@ -19,14 +19,14 @@ from tests.plugins.database import ItemFactory
     ],
 )
 def test_comparison_operators(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
     operator: str,
     expected_count: int,
 ) -> None:
-    item_factory.create_many(1, datetime_field=datetime.datetime(2026, 1, 1, 8, 0))
-    item_factory.create_many(2, datetime_field=datetime.datetime(2026, 1, 1, 12, 0))
-    item_factory.create_many(4, datetime_field=datetime.datetime(2026, 1, 1, 20, 0))
+    factory.items.create_many(1, datetime_field=datetime.datetime(2026, 1, 1, 8, 0))
+    factory.items.create_many(2, datetime_field=datetime.datetime(2026, 1, 1, 12, 0))
+    factory.items.create_many(4, datetime_field=datetime.datetime(2026, 1, 1, 20, 0))
 
     target = "2026-01-01T12:00:00"
     op_suffix = f"[{operator}]" if operator != FilterOperator.EQ else ""

@@ -2,17 +2,17 @@ from fastapi import status
 from fastapi.testclient import TestClient
 
 from app.domain.items.entities import ItemStatus
-from tests.plugins.database import ItemFactory
+from tests.plugins.factories import Factory
 
 
 def test_operator_eq(
-    item_factory: ItemFactory,
+    factory: Factory,
     client: TestClient,
 ) -> None:
     count = 2
     field = ItemStatus.ACTIVE
-    item_factory.create_many(1, optional_field=ItemStatus.INACTIVE)
-    item_factory.create_many(count, optional_field=field)
+    factory.items.create_many(1, optional_field=ItemStatus.INACTIVE)
+    factory.items.create_many(count, optional_field=field)
 
     params = {"filter": f"optional_field={field}"}
     response = client.get("/items", params=params)
