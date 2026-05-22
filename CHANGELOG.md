@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.23.0](https://github.com/julienpillaud/cleanstack/compare/0.22.0...0.23.0) (2026-05-22)
+
+
+### Features
+
+* update factories ([#69](https://github.com/julienpillaud/cleanstack/issues/69)) ([c02fcf0](https://github.com/julienpillaud/cleanstack/commit/c02fcf07dec5894e049a64569ac80e7f2d90cce4))
+
 ## [0.22.0](https://github.com/julienpillaud/cleanstack/compare/0.21.1...0.22.0) (2026-05-20)
 
 
