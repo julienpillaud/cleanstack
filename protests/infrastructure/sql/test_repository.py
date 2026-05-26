@@ -21,7 +21,7 @@ async def test_create_item(
 
     async with AsyncSession(engine) as session:
         repository = AsyncItemSQLRepository(session=session)
-        await repository.create(new_item)
+        await repository.save(new_item)
         await session.commit()
 
     async with AsyncSession(engine) as session:
@@ -40,7 +40,7 @@ async def test_update_item(
 
     async with AsyncSession(engine) as session:
         repository = AsyncItemSQLRepository(session=session)
-        await repository.create(new_item)
+        await repository.save(new_item)
         await session.commit()
 
     async with AsyncSession(engine) as session:

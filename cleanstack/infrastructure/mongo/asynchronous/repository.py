@@ -74,7 +74,7 @@ class AsyncMongoRepository[T: DomainEntity](MongoMixin[T]):
 
         return self.to_domain_entity(result) if result else None
 
-    async def create(self, entity: T, /) -> T:
+    async def save(self, entity: T, /) -> None:
         db_entity = self.to_database_entity(entity)
 
         result = await self.collection.insert_one(
@@ -84,9 +84,7 @@ class AsyncMongoRepository[T: DomainEntity](MongoMixin[T]):
         if not result.acknowledged:
             raise MongoRepositoryError("Failed to insert entity")
 
-        return entity
-
-    async def update(self, entity: T, /) -> T:
+    async def update(self, entity: T, /) -> None:
         db_entity = self.to_database_entity(entity)
 
         result = await self.collection.replace_one(
@@ -97,9 +95,7 @@ class AsyncMongoRepository[T: DomainEntity](MongoMixin[T]):
         if not result.acknowledged:
             raise MongoRepositoryError("Failed to update entity")
 
-        return entity
-
-    async def delete(self, entity: T, /) -> None:
+    async def remove(self, entity: T, /) -> None:
         await self.collection.delete_one(
             filter={"_id": entity.id},
             session=self.session,

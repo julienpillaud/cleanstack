@@ -33,4 +33,5 @@ class OrmContainer(OrmEntity):
     __tablename__ = "container"
 
     name: Mapped[str]
-    nodes: Mapped[list[OrmNode]] = relationship()
+    # cascade is needed to avoid null value in column container_id
+    nodes: Mapped[list[OrmNode]] = relationship(cascade="all, delete-orphan")

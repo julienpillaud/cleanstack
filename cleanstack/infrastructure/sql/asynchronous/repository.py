@@ -58,36 +58,14 @@ class AsyncSQLRepository[T: DomainEntity, OrmT: OrmEntity](SQLMixin[T, OrmT]):
         db_entity = result.scalar_one_or_none()
         return self.to_domain_entity(db_entity) if db_entity else None
 
-    async def create(self, entity: T, /) -> T:
-        values = self._to_database_values(entity)
-        stmt = sqlalchemy.insert(self.orm_model_type).values(**values)
-        await self.session.execute(stmt)
-        await self._create_relations(entity)
-        return entity
+    async def save(self, entity: T, /) -> None:
+        orm_entity = self.to_orm_entity(entity)
+        self.session.add(orm_entity)
 
-    async def update(self, entity: T, /) -> T:
-        values = self._to_database_values(entity, exclude={"id"})
-        stmt = (
-            sqlalchemy.update(self.orm_model_type)
-            .where(self.orm_model_type.id == entity.id)
-            .values(**values)
-        )
-        await self.session.execute(stmt)
-        await self._update_relations(entity)
-        return entity
+    async def update(self, entity: T, /) -> None:
+        orm_entity = self.to_orm_entity(entity)
+        await self.session.merge(orm_entity)
 
-    async def delete(self, entity: T) -> None:
-        await self._delete_relations(entity)
-        stmt = sqlalchemy.delete(self.orm_model_type).where(
-            self.orm_model_type.id == entity.id
-        )
-        await self.session.execute(stmt)
-
-    async def _create_relations(self, entity: T, /) -> None:
-        pass
-
-    async def _update_relations(self, entity: T, /) -> None:
-        pass
-
-    async def _delete_relations(self, entity: T, /) -> None:
-        pass
+    async def remove(self, entity: T) -> None:
+        orm_entity = self.session.get(self.orm_model_type, entity)
+        await self.session.delete(orm_entity)
