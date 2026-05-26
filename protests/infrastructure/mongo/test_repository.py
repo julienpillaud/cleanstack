@@ -26,7 +26,7 @@ async def test_create_item(
 ) -> None:
     new_item = await item_factory()
 
-    await repository.create(new_item)
+    await repository.save(new_item)
     await session.commit_transaction()
 
     result = await database["items"].find_one({"_id": new_item.id})
@@ -50,7 +50,7 @@ async def test_update_item(
     repository: Annotated[AsyncItemMongoRepository, Use(get_item_repository)],
 ) -> None:
     new_item = await item_factory()
-    await repository.create(new_item)
+    await repository.save(new_item)
 
     new_item.string_field = "new_string_field"
     await repository.update(new_item)
@@ -66,7 +66,7 @@ async def test_get_item(
     repository: Annotated[AsyncItemMongoRepository, Use(get_item_repository)],
 ) -> None:
     new_item = await item_factory()
-    await repository.create(new_item)
+    await repository.save(new_item)
 
     result = await repository.get_by_id(new_item.id)
 
@@ -82,7 +82,7 @@ async def test_get_items(
     items_count = 3
     for _ in range(items_count):
         new_item = await item_factory()
-        await repository.create(new_item)
+        await repository.save(new_item)
 
     results = await repository.get_all()
 
@@ -97,9 +97,9 @@ async def test_delete_item(
     repository: Annotated[AsyncItemMongoRepository, Use(get_item_repository)],
 ) -> None:
     new_item = await item_factory()
-    await repository.create(new_item)
+    await repository.save(new_item)
 
-    await repository.delete(new_item)
+    await repository.remove(new_item)
 
     result = await database["items"].find_one({"_id": new_item.id})
     assert not result

@@ -59,33 +59,13 @@ class SyncSQLRepository[T: DomainEntity, OrmT: OrmEntity](SQLMixin[T, OrmT]):
         return self.to_domain_entity(db_entity) if db_entity else None
 
     def save(self, entity: T, /) -> None:
-        values = self._to_database_values(entity)
-        stmt = sqlalchemy.insert(self.orm_model_type).values(**values)
-        self.session.execute(stmt)
-        self._create_relations(entity)
+        orm_entity = self.to_orm_entity(entity)
+        self.session.add(orm_entity)
 
     def update(self, entity: T, /) -> None:
-        values = self._to_database_values(entity, exclude={"id"})
-        stmt = (
-            sqlalchemy.update(self.orm_model_type)
-            .where(self.orm_model_type.id == entity.id)
-            .values(**values)
-        )
-        self.session.execute(stmt)
-        self._update_relations(entity)
+        orm_entity = self.to_orm_entity(entity)
+        self.session.merge(orm_entity)
 
     def remove(self, entity: T) -> None:
-        self._delete_relations(entity)
-        stmt = sqlalchemy.delete(self.orm_model_type).where(
-            self.orm_model_type.id == entity.id
-        )
-        self.session.execute(stmt)
-
-    def _create_relations(self, entity: T, /) -> None:
-        pass
-
-    def _update_relations(self, entity: T, /) -> None:
-        pass
-
-    def _delete_relations(self, entity: T, /) -> None:
-        pass
+        orm_entity = self.session.get(self.orm_model_type, entity.id)
+        self.session.delete(orm_entity)
