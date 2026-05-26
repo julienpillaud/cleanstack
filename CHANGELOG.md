@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.24.0](https://github.com/julienpillaud/cleanstack/compare/0.23.0...0.24.0) (2026-05-26)
+
+
+### Features
+
+* simplify sql repository ([#71](https://github.com/julienpillaud/cleanstack/issues/71)) ([44bdc03](https://github.com/julienpillaud/cleanstack/commit/44bdc03bdff9b824eb54437806c871373c5aa35a))
+
 ## [0.23.0](https://github.com/julienpillaud/cleanstack/compare/0.22.0...0.23.0) (2026-05-22)
 
 
