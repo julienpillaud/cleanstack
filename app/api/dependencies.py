@@ -11,8 +11,6 @@ from starlette.requests import Request
 from app.core.context.mongo import MongoContext
 from app.core.context.sql import SQLContext
 from app.core.settings import RepositoryType, Settings
-from app.infrastructure.mongo.utils import managed_mongo_session
-from app.infrastructure.sql.utils import managed_sql_session
 from cleanstack.infrastructure.mongo import MongoDocument
 
 type Context = MongoContext | SQLContext
@@ -24,12 +22,12 @@ def get_settings() -> Settings:
 
 
 def get_sql_session(request: Request) -> Iterator[Session]:
-    with managed_sql_session(request.app.state.sql_session_factory) as session:
+    with request.app.state.sql_resource.session() as session:
         yield session
 
 
 def get_mongo_session(request: Request) -> Iterator[ClientSession]:
-    with managed_mongo_session(request.app.state.mongo_client) as session:
+    with request.app.state.mongo_resource.session() as session:
         yield session
 
 
@@ -41,7 +39,7 @@ def get_context(
 ) -> Context:
     match settings.repository_type:
         case RepositoryType.MONGO:
-            client: MongoClient[MongoDocument] = request.app.state.mongo_client
+            client: MongoClient[MongoDocument] = request.app.state.mongo_resource.client
             return MongoContext(
                 database=client[settings.mongo_database],
                 session=mongo_session,

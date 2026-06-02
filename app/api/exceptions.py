@@ -1,8 +1,8 @@
 from fastapi import FastAPI, status
-from fastapi.requests import Request
-from fastapi.responses import JSONResponse, PlainTextResponse, Response
+from starlette.requests import Request
+from starlette.responses import JSONResponse
 
-from cleanstack.domain.exceptions import (
+from cleanstack.domain import (
     BadRequestError,
     ConflictError,
     DomainError,
@@ -21,17 +21,16 @@ ERROR_MAPPING: dict[type[DomainError], int] = {
 
 
 def add_exception_handlers(app: FastAPI) -> None:
-
     @app.exception_handler(DomainError)
-    async def domain_exception_handler(request: Request, exc: DomainError) -> Response:
+    async def domain_exception_handler(
+        request: Request,
+        exc: DomainError,
+    ) -> JSONResponse:
+        status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
+
         for error_cls in type(exc).mro():
             if issubclass(error_cls, DomainError) and error_cls in ERROR_MAPPING:
-                return JSONResponse(
-                    status_code=ERROR_MAPPING[error_cls],
-                    content={"detail": str(exc)},
-                )
+                status_code = ERROR_MAPPING[error_cls]
+                break
 
-        return PlainTextResponse(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            content="Internal Server Error",
-        )
+        return JSONResponse(status_code=status_code, content={"detail": str(exc)})

@@ -17,6 +17,25 @@ class MongoResource(BaseModel):
     client: MongoClient[MongoDocument]
     database: Database[MongoDocument]
 
+    @classmethod
+    def from_settings(cls, settings: Settings, /) -> MongoResource:
+        client: MongoClient[MongoDocument] = MongoClient(
+            host=str(settings.mongo_uri),
+            uuidRepresentation="standard",
+        )
+        client.admin.command("ping")
+        logger.info("MongoDB client up")
+        return cls(
+            client=client,
+            database=client[settings.mongo_database],
+        )
+
+    @contextmanager
+    def session(self) -> Iterator[ClientSession]:
+        with self.client.start_session() as session:
+            with session.start_transaction():
+                yield session
+
     def release(self) -> None:
         logger.info("MongoDB client released")
         self.client.close()
@@ -24,25 +43,3 @@ class MongoResource(BaseModel):
     def reset(self) -> None:
         for collection in self.database.list_collection_names():
             self.database[collection].delete_many({})
-
-
-def create_mongo_resource(settings: Settings) -> MongoResource:
-    client: MongoClient[MongoDocument] = MongoClient(
-        host=str(settings.mongo_uri),
-        uuidRepresentation="standard",
-    )
-    client.admin.command("ping")
-    logger.info("MongoDB client up")
-    return MongoResource(
-        client=client,
-        database=client[settings.mongo_database],
-    )
-
-
-@contextmanager
-def managed_mongo_session(
-    client: MongoClient[MongoDocument],
-) -> Iterator[ClientSession]:
-    with client.start_session() as session:
-        with session.start_transaction():
-            yield session
