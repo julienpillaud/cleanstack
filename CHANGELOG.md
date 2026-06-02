@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.25.0](https://github.com/julienpillaud/cleanstack/compare/0.24.0...0.25.0) (2026-06-02)
+
+
+### Features
+
+* update resources handling ([#73](https://github.com/julienpillaud/cleanstack/issues/73)) ([cffdcfc](https://github.com/julienpillaud/cleanstack/commit/cffdcfc6dfc13f960ac64fc243cccdf1d85a1bf1))
+
 ## [0.24.0](https://github.com/julienpillaud/cleanstack/compare/0.23.0...0.24.0) (2026-05-26)
 
 
