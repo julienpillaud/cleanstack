@@ -4,7 +4,7 @@ from app.infrastructure.mongo.utils import MongoResource
 from app.infrastructure.sql.utils import SQLResource
 from tests.factories.containers import ContainerMongoFactory, ContainerSQLFactory
 from tests.factories.items import ItemMongoFactory, ItemSQLFactory
-from tests.plugins.database import ContainerFactory, ItemFactory, ResourceProtocol
+from tests.plugins.database import ContainerFactory, ItemFactory, Resource
 
 
 class Factory:
@@ -28,11 +28,9 @@ class Factory:
 
 
 @pytest.fixture
-def factory(db_resource: ResourceProtocol) -> Factory:
+def factory(db_resource: Resource) -> Factory:
     match db_resource:
         case MongoResource():
             return Factory.from_mongo_resource(db_resource)
         case SQLResource():
             return Factory.from_sql_resource(db_resource)
-        case _:
-            raise RuntimeError()

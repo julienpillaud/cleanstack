@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 
 from app.api.containers.router import router as containers_router
+from app.api.exceptions import add_exception_handlers
 from app.api.items.router import router as items_router
 from app.api.lifespan import lifespan_factory
 from app.core.settings import Settings
-from cleanstack.fastapi.exceptions import add_exception_handlers
 
 
 def create_fastapi_app(settings: Settings) -> FastAPI:
@@ -22,4 +22,5 @@ def create_fastapi_app(settings: Settings) -> FastAPI:
     add_exception_handlers(app=app)
     app.include_router(items_router)
     app.include_router(containers_router)
+
     return app

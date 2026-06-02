@@ -6,8 +6,8 @@ from fastapi import FastAPI
 
 from app.api.logger import logger
 from app.core.settings import Settings
-from app.infrastructure.mongo.utils import create_mongo_resource
-from app.infrastructure.sql.utils import create_sql_resource
+from app.infrastructure.mongo.utils import MongoResource
+from app.infrastructure.sql.utils import SQLResource
 
 
 def lifespan_factory(
@@ -18,13 +18,11 @@ def lifespan_factory(
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         start_time = time.perf_counter()
 
-        sql_resource = create_sql_resource(settings=settings)
-        app.state.sql_engine = sql_resource.engine
-        app.state.sql_session_factory = sql_resource.session_factory
+        sql_resource = SQLResource.from_settings(settings)
+        app.state.sql_resource = sql_resource
 
-        mongo_resource = create_mongo_resource(settings=settings)
-        app.state.mongo_client = mongo_resource.client
-        app.state.mongo_database = mongo_resource.database
+        mongo_resource = MongoResource.from_settings(settings)
+        app.state.mongo_resource = mongo_resource
 
         end_time = time.perf_counter()
         duration = end_time - start_time
