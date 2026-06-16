@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.26.0](https://github.com/julienpillaud/cleanstack/compare/0.25.0...0.26.0) (2026-06-16)
+
+
+### Features
+
+* refactor ([#76](https://github.com/julienpillaud/cleanstack/issues/76)) ([e0ff027](https://github.com/julienpillaud/cleanstack/commit/e0ff027bf56663bd61840de3c8a6ec27c7470f80))
+
 ## [0.25.0](https://github.com/julienpillaud/cleanstack/compare/0.24.0...0.25.0) (2026-06-02)
 
 
