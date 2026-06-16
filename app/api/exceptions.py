@@ -2,7 +2,7 @@ from fastapi import FastAPI, status
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from cleanstack.domain import (
+from app.domain.exceptions import (
     BadRequestError,
     ConflictError,
     DomainError,
@@ -10,6 +10,7 @@ from cleanstack.domain import (
     NotFoundError,
     UnprocessableContentError,
 )
+from cleanstack.exceptions import RepositoryError, get_status_error
 
 ERROR_MAPPING: dict[type[DomainError], int] = {
     BadRequestError: status.HTTP_400_BAD_REQUEST,
@@ -33,4 +34,12 @@ def add_exception_handlers(app: FastAPI) -> None:
                 status_code = ERROR_MAPPING[error_cls]
                 break
 
+        return JSONResponse(status_code=status_code, content={"detail": str(exc)})
+
+    @app.exception_handler(RepositoryError)
+    async def repository_exception_handler(
+        request: Request,
+        exc: RepositoryError,
+    ) -> JSONResponse:
+        status_code = get_status_error(exc)
         return JSONResponse(status_code=status_code, content={"detail": str(exc)})

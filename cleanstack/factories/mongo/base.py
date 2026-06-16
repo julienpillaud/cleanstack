@@ -4,12 +4,12 @@ from contextlib import contextmanager
 
 from pymongo.database import Database
 
-from cleanstack.entities.base import DomainEntity
+from cleanstack.entities.base import BaseEntity
 from cleanstack.factories.base import BaseFactory
-from cleanstack.infrastructure.mongo import MongoDocument
+from cleanstack.mongo import MongoDocument
 
 
-class BaseMongoFactory[T: DomainEntity](BaseFactory[T], ABC):
+class BaseMongoFactory[T: BaseEntity](BaseFactory[T], ABC):
     def __init__(self, database: Database[MongoDocument]) -> None:
         self.database = database
 

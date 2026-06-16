@@ -3,23 +3,23 @@ from typing import Self
 from pydantic.fields import ComputedFieldInfo, FieldInfo
 
 from cleanstack.entities import (
-    DomainEntity,
+    BaseEntity,
     FilterEntity,
     Pagination,
     SortEntity,
     SortOrder,
 )
-from cleanstack.infrastructure.exceptions import InvalidFieldError
-from cleanstack.infrastructure.mongo.types import MongoDocument
-from cleanstack.infrastructure.mongo.utils import (
+from cleanstack.exceptions import InvalidFieldError
+from cleanstack.mongo.types import MongoDocument
+from cleanstack.mongo.utils import (
     apply_operator,
     convert_field_name,
     get_filter_metadata,
 )
-from cleanstack.infrastructure.utils import convert_filter_value_generic
+from cleanstack.utils import convert_filter_value_generic
 
 
-class PipelineBuilder[T: DomainEntity]:
+class PipelineBuilder[T: BaseEntity]:
     def __init__(
         self,
         domain_entity_type: type[T],

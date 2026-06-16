@@ -11,7 +11,7 @@ from sqlalchemy.ext.asyncio import (
 
 from app.core.settings import Settings
 from app.infrastructure.sql.items import AsyncItemSQLRepository
-from cleanstack.infrastructure.sql.entities import OrmEntity
+from cleanstack.sql.entities import OrmEntity
 from protests.fixtures import get_settings
 
 

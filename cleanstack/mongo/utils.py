@@ -5,12 +5,10 @@ from typing import Any, TypeAliasType, Union, get_args, get_origin
 
 from pydantic.fields import ComputedFieldInfo, FieldInfo
 
-from cleanstack.entities import (
-    FilterOperator,
-)
-from cleanstack.infrastructure.exceptions import InvalidFilterError
-from cleanstack.infrastructure.mongo.types import MongoDocument
-from cleanstack.infrastructure.utils import FilterMetadata
+from cleanstack.entities import FilterOperator
+from cleanstack.exceptions import InvalidFilterError
+from cleanstack.mongo.types import MongoDocument
+from cleanstack.utils import FilterMetadata
 
 
 def iter_dicts(value: dict[Any, Any]) -> Iterator[dict[Any, Any]]:

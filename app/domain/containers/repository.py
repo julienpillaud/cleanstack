@@ -1,7 +1,7 @@
 from typing import Protocol
 
 from app.domain.containers.entities import Container
-from cleanstack.domain.repository import SyncRepositoryProtocol
+from app.domain.protocols import SyncRepositoryProtocol
 
 
 class SyncContainerRepositoryProtocol(SyncRepositoryProtocol[Container], Protocol): ...

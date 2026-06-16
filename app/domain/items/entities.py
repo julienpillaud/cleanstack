@@ -4,7 +4,7 @@ from enum import StrEnum
 from pydantic import BaseModel, computed_field
 
 from app.domain.entities import DateTime
-from cleanstack.entities import DomainEntity
+from cleanstack import BaseEntity
 
 
 class ItemStatus(StrEnum):
@@ -12,7 +12,7 @@ class ItemStatus(StrEnum):
     INACTIVE = "inactive"
 
 
-class Item(DomainEntity):
+class Item(BaseEntity):
     uuid_field: uuid.UUID
     string_field: str
     int_field: int

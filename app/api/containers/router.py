@@ -10,7 +10,7 @@ from app.domain.containers.commands import (
     update_container_command,
 )
 from app.domain.containers.entities import Container, ContainerCreate, ContainerUpdate
-from cleanstack.entities import EntityId
+from cleanstack import EntityId
 
 router = APIRouter(prefix="/containers", tags=["containers"])
 

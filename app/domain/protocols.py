@@ -1,12 +1,16 @@
 from typing import Protocol
 
-from cleanstack.entities.base import DomainEntity, EntityId
-from cleanstack.entities.filters import FilterEntity
-from cleanstack.entities.pagination import PaginatedResponse, Pagination
-from cleanstack.entities.sort import SortEntity
+from cleanstack import (
+    BaseEntity,
+    EntityId,
+    FilterEntity,
+    PaginatedResponse,
+    Pagination,
+    SortEntity,
+)
 
 
-class SyncRepositoryProtocol[T: DomainEntity](Protocol):
+class SyncRepositoryProtocol[T: BaseEntity](Protocol):
     def get_all(
         self,
         search: str | None = None,
@@ -24,7 +28,7 @@ class SyncRepositoryProtocol[T: DomainEntity](Protocol):
     def remove(self, entity: T, /) -> None: ...
 
 
-class AsyncRepositoryProtocol[T: DomainEntity](Protocol):
+class AsyncRepositoryProtocol[T: BaseEntity](Protocol):
     async def get_all(
         self,
         search: str | None = None,

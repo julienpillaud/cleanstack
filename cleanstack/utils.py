@@ -4,7 +4,7 @@ from typing import Any
 from pydantic import BaseModel
 
 from cleanstack.entities import FilterEntity, FilterOperator
-from cleanstack.infrastructure.exceptions import InvalidFilterError
+from cleanstack.exceptions import InvalidFilterError
 
 
 class FilterMetadata(BaseModel):

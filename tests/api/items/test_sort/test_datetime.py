@@ -4,7 +4,7 @@ import pytest
 from fastapi import status
 from starlette.testclient import TestClient
 
-from cleanstack.entities import SortOrder
+from cleanstack import SortOrder
 from tests.plugins.factories import Factory
 
 

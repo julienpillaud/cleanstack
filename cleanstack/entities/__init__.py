@@ -1,4 +1,4 @@
-from .base import DomainEntity as DomainEntity
+from .base import BaseEntity as BaseEntity
 from .base import EntityId as EntityId
 from .filters import FilterEntity as FilterEntity
 from .filters import FilterOperator as FilterOperator

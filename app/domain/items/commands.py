@@ -2,9 +2,9 @@ import datetime
 import uuid
 
 from app.domain.context import ContextProtocol
+from app.domain.exceptions import NotFoundError
 from app.domain.items.entities import Item, ItemCreate, ItemUpdate
-from cleanstack.domain import NotFoundError
-from cleanstack.entities import (
+from cleanstack import (
     EntityId,
     FilterEntity,
     PaginatedResponse,

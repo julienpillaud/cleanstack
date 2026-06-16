@@ -5,7 +5,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.domain.items.entities import ItemStatus
-from cleanstack.infrastructure.sql.entities import OrmEntity
+from cleanstack.sql.entities import OrmEntity
 
 
 class OrmItem(OrmEntity):

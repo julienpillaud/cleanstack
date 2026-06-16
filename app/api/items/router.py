@@ -14,7 +14,7 @@ from app.domain.items.commands import (
     update_item_command,
 )
 from app.domain.items.entities import Item, ItemCreate, ItemUpdate
-from cleanstack.entities import EntityId, FilterEntity, Pagination, SortEntity
+from cleanstack import EntityId, FilterEntity, Pagination, SortEntity
 
 router = APIRouter(prefix="/items", tags=["items"])
 

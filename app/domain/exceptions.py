@@ -1,9 +1,12 @@
+from app.domain.logger import logger
+
+
 class DomainError(Exception):
     """Base class for domain exceptions."""
 
     def __init__(self, message: str) -> None:
-        self.message = message
-        super().__init__(self.message)
+        logger.error(message)
+        super().__init__(message)
 
 
 class BadRequestError(DomainError):

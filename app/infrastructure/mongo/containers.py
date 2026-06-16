@@ -1,11 +1,7 @@
 from app.domain.containers.entities import Container
-from cleanstack.infrastructure.mongo import MongoMixin, SyncMongoRepository
+from cleanstack.mongo import SyncMongoRepository
 
 
-class ContainerMongoMixin(MongoMixin[Container]):
+class SyncContainerMongoRepository(SyncMongoRepository[Container]):
     domain_entity_type = Container
     collection_name = "containers"
-
-
-class SyncContainerMongoRepository(ContainerMongoMixin, SyncMongoRepository[Container]):
-    pass

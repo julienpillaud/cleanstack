@@ -6,8 +6,8 @@ from sqlalchemy import Engine, create_engine, text
 from sqlalchemy.orm import Session, sessionmaker
 
 from app.core.settings import Settings
-from cleanstack.infrastructure.sql.entities import OrmEntity
-from cleanstack.infrastructure.sql.logger import logger
+from app.infrastructure.sql.logger import logger
+from cleanstack.sql.entities import OrmEntity
 
 
 class SQLResource(BaseModel):

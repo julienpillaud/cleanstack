@@ -6,7 +6,7 @@ from pymongo.asynchronous.database import AsyncDatabase
 
 from app.domain.items.entities import Item
 from app.infrastructure.mongo.items import AsyncItemMongoRepository
-from cleanstack.infrastructure.mongo.types import MongoDocument
+from cleanstack.mongo import MongoDocument
 from protests.factories.items import get_item
 from protests.infrastructure.mongo.fixtures import (
     get_item_repository,

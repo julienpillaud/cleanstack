@@ -11,7 +11,7 @@ from starlette.requests import Request
 from app.core.context.mongo import MongoContext
 from app.core.context.sql import SQLContext
 from app.core.settings import RepositoryType, Settings
-from cleanstack.infrastructure.mongo import MongoDocument
+from cleanstack.mongo import MongoDocument
 
 type Context = MongoContext | SQLContext
 
