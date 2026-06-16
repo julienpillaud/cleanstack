@@ -3,11 +3,10 @@ from sqlalchemy.sql.base import ExecutableOption
 
 from app.domain.containers.entities import Container
 from app.infrastructure.sql.tables import OrmContainer, OrmNode
-from cleanstack.infrastructure.sql.base import SQLMixin
-from cleanstack.infrastructure.sql.synchronous.repository import SyncSQLRepository
+from cleanstack.sql import SyncSQLRepository
 
 
-class ContainerSQLMixin(SQLMixin[Container, OrmContainer]):
+class SyncContainerSQLRepository(SyncSQLRepository[Container, OrmContainer]):
     domain_entity_type = Container
     orm_model_type = OrmContainer
 
@@ -22,10 +21,3 @@ class ContainerSQLMixin(SQLMixin[Container, OrmContainer]):
     def load_options(self) -> list[ExecutableOption]:
         # SELECT * FROM node WHERE container_id IN (...);
         return [selectinload(OrmContainer.nodes)]
-
-
-class SyncContainerSQLRepository(
-    ContainerSQLMixin,
-    SyncSQLRepository[Container, OrmContainer],
-):
-    pass

@@ -2,9 +2,9 @@ import uuid
 
 from app.domain.containers.entities import Container, ContainerCreate, ContainerUpdate
 from app.domain.context import ContextProtocol
+from app.domain.exceptions import NotFoundError
 from app.domain.nodes.entities import Node
-from cleanstack.domain import NotFoundError
-from cleanstack.entities import EntityId
+from cleanstack import EntityId
 
 
 def get_container_command(

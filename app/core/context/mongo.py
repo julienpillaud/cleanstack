@@ -8,7 +8,7 @@ from app.domain.context import ContextProtocol
 from app.domain.items.repository import SyncItemRepositoryProtocol
 from app.infrastructure.mongo.containers import SyncContainerMongoRepository
 from app.infrastructure.mongo.items import SyncItemMongoRepository
-from cleanstack.infrastructure.mongo import MongoDocument
+from cleanstack.mongo import MongoDocument
 
 
 class MongoContext(ContextProtocol):

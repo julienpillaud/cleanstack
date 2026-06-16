@@ -4,7 +4,7 @@ import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
 
-from cleanstack.entities import FilterOperator
+from cleanstack import FilterOperator
 from tests.plugins.factories import Factory
 
 

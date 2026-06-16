@@ -16,8 +16,8 @@ from sqlalchemy import (
 from cleanstack.entities import (
     FilterOperator,
 )
-from cleanstack.infrastructure.exceptions import InvalidFilterError
-from cleanstack.infrastructure.utils import FilterMetadata
+from cleanstack.exceptions import InvalidFilterError
+from cleanstack.utils import FilterMetadata
 
 CONVERTERS: dict[type[Any], Any] = {
     Boolean: lambda value: value == "true",

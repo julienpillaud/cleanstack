@@ -4,10 +4,10 @@ from sqlalchemy import Column, Select, func, or_, select
 from sqlalchemy.sql.base import ExecutableOption
 
 from cleanstack.entities import FilterEntity, Pagination, SortEntity, SortOrder
-from cleanstack.infrastructure.exceptions import InvalidFilterError
-from cleanstack.infrastructure.sql.entities import OrmEntity
-from cleanstack.infrastructure.sql.utils import apply_operator, get_filter_metadata
-from cleanstack.infrastructure.utils import convert_filter_value_generic
+from cleanstack.exceptions import InvalidFilterError
+from cleanstack.sql.entities import OrmEntity
+from cleanstack.sql.utils import apply_operator, get_filter_metadata
+from cleanstack.utils import convert_filter_value_generic
 
 
 class StatementBuilder[T: OrmEntity]:

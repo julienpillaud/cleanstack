@@ -1,24 +1,24 @@
 import sqlalchemy
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 
 from cleanstack.entities import (
-    DomainEntity,
+    BaseEntity,
     EntityId,
     FilterEntity,
     PaginatedResponse,
     Pagination,
     SortEntity,
 )
-from cleanstack.infrastructure.sql.base import SQLMixin
-from cleanstack.infrastructure.sql.builder import StatementBuilder
-from cleanstack.infrastructure.sql.entities import OrmEntity
+from cleanstack.sql.builder import StatementBuilder
+from cleanstack.sql.entities import OrmEntity
+from cleanstack.sql.mixin import SQLMixin
 
 
-class AsyncSQLRepository[T: DomainEntity, OrmT: OrmEntity](SQLMixin[T, OrmT]):
-    def __init__(self, session: AsyncSession) -> None:
+class SyncSQLRepository[T: BaseEntity, OrmT: OrmEntity](SQLMixin[T, OrmT]):
+    def __init__(self, session: Session) -> None:
         self.session = session
 
-    async def get_all(
+    def get_all(
         self,
         search: str | None = None,
         filters: list[FilterEntity] | None = None,
@@ -37,8 +37,8 @@ class AsyncSQLRepository[T: DomainEntity, OrmT: OrmEntity](SQLMixin[T, OrmT]):
             pagination=pagination,
         )
 
-        total = await self.session.scalar(statement.count) or 0
-        data_result = await self.session.scalars(statement.data)
+        total = self.session.scalar(statement.count) or 0
+        data_result = self.session.scalars(statement.data)
 
         return PaginatedResponse(
             page=pagination.page,
@@ -48,24 +48,24 @@ class AsyncSQLRepository[T: DomainEntity, OrmT: OrmEntity](SQLMixin[T, OrmT]):
             items=[self.to_domain_entity(item) for item in data_result],
         )
 
-    async def get_by_id(self, entity_id: EntityId, /) -> T | None:
+    def get_by_id(self, entity_id: EntityId, /) -> T | None:
         stmt = (
             sqlalchemy.select(self.orm_model_type)
             .where(self.orm_model_type.id == entity_id)
             .options(*self.load_options)
         )
-        result = await self.session.execute(stmt)
+        result = self.session.execute(stmt)
         db_entity = result.scalar_one_or_none()
         return self.to_domain_entity(db_entity) if db_entity else None
 
-    async def save(self, entity: T, /) -> None:
+    def save(self, entity: T, /) -> None:
         orm_entity = self.to_orm_entity(entity)
         self.session.add(orm_entity)
 
-    async def update(self, entity: T, /) -> None:
+    def update(self, entity: T, /) -> None:
         orm_entity = self.to_orm_entity(entity)
-        await self.session.merge(orm_entity)
+        self.session.merge(orm_entity)
 
-    async def remove(self, entity: T) -> None:
-        orm_entity = self.session.get(self.orm_model_type, entity)
-        await self.session.delete(orm_entity)
+    def remove(self, entity: T) -> None:
+        orm_entity = self.session.get(self.orm_model_type, entity.id)
+        self.session.delete(orm_entity)

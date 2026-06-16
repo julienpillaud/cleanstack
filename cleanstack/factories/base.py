@@ -3,11 +3,11 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from typing import Any
 
-from cleanstack.domain.repository import SyncRepositoryProtocol
-from cleanstack.entities.base import DomainEntity
+from app.domain.protocols import SyncRepositoryProtocol
+from cleanstack.entities.base import BaseEntity
 
 
-class BaseFactory[T: DomainEntity](ABC):
+class BaseFactory[T: BaseEntity](ABC):
     def create_one(self, **kwargs: Any) -> T:
         entity = self.build(**kwargs)
 

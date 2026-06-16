@@ -2,7 +2,7 @@ import math
 
 from pydantic import BaseModel, NonNegativeInt, PositiveInt
 
-from cleanstack.entities.base import DomainEntity
+from cleanstack.entities import BaseEntity
 
 DEFAULT_PAGINATION_SIZE = 100
 
@@ -19,7 +19,7 @@ class Pagination(BaseModel):
         return math.ceil(total / self.size)
 
 
-class PaginatedResponse[T: DomainEntity](BaseModel):
+class PaginatedResponse[T: BaseEntity](BaseModel):
     page: PositiveInt
     size: PositiveInt
     pages: NonNegativeInt

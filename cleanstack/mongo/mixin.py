@@ -1,13 +1,9 @@
-from cleanstack.entities import DomainEntity
-from cleanstack.infrastructure.mongo.types import MongoDocument
-from cleanstack.infrastructure.mongo.utils import normalize_ids
+from cleanstack.entities import BaseEntity
+from cleanstack.mongo.types import MongoDocument
+from cleanstack.mongo.utils import normalize_ids
 
 
-class MongoRepositoryError(Exception):
-    pass
-
-
-class MongoMixin[T: DomainEntity]:
+class MongoMixin[T: BaseEntity]:
     domain_entity_type: type[T]
     collection_name: str
     searchable_fields: tuple[str, ...] = ()

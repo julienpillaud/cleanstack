@@ -8,7 +8,7 @@ from pymongo.asynchronous.database import AsyncDatabase
 
 from app.core.settings import Settings
 from app.infrastructure.mongo.items import AsyncItemMongoRepository
-from cleanstack.infrastructure.mongo.types import MongoDocument
+from cleanstack.mongo import MongoDocument
 from protests.fixtures import get_settings
 
 

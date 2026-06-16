@@ -1,10 +1,10 @@
 from pydantic import BaseModel
 
 from app.domain.nodes.entities import Node
-from cleanstack.entities import DomainEntity
+from cleanstack import BaseEntity
 
 
-class Container(DomainEntity):
+class Container(BaseEntity):
     name: str
     nodes: list[Node]  # One-to-many relationship
 

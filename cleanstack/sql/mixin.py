@@ -1,14 +1,10 @@
 from sqlalchemy.sql.base import ExecutableOption
 
-from cleanstack.entities import DomainEntity
-from cleanstack.infrastructure.sql.entities import OrmEntity
+from cleanstack.entities import BaseEntity
+from cleanstack.sql.entities import OrmEntity
 
 
-class SQLRepositoryError(Exception):
-    pass
-
-
-class SQLMixin[T: DomainEntity, OrmT: OrmEntity]:
+class SQLMixin[T: BaseEntity, OrmT: OrmEntity]:
     domain_entity_type: type[T]
     orm_model_type: type[OrmT]
     searchable_fields: tuple[str, ...] = ()

@@ -7,8 +7,8 @@ from pymongo.client_session import ClientSession
 from pymongo.database import Database
 
 from app.core.settings import Settings
-from cleanstack.infrastructure.mongo import MongoDocument
-from cleanstack.infrastructure.mongo.logger import logger
+from app.infrastructure.mongo.logger import logger
+from cleanstack.mongo import MongoDocument
 
 
 class MongoResource(BaseModel):
