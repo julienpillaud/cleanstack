@@ -9,7 +9,6 @@ from cleanstack.entities import (
     Pagination,
     SortEntity,
 )
-from cleanstack.mongo.builder import PipelineBuilder
 from cleanstack.mongo.mixin import MongoMixin
 from cleanstack.mongo.types import MongoDocument
 
@@ -31,11 +30,7 @@ class SyncMongoRepository[T: BaseEntity](MongoMixin[T]):
         pagination: Pagination | None = None,
     ) -> PaginatedResponse[T]:
         pagination = pagination or Pagination()
-        pipeline = PipelineBuilder(
-            self.domain_entity_type,
-            self.searchable_fields,
-            lookup=self.lookup,
-        ).apply(
+        pipeline = self._build_pipeline(
             search=search,
             filters=filters,
             sort=sort,
