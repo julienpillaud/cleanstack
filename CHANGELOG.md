@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.27.0](https://github.com/julienpillaud/cleanstack/compare/0.26.0...0.27.0) (2026-06-17)
+
+
+### Features
+
+* make possible to override hooks pipeline ([#78](https://github.com/julienpillaud/cleanstack/issues/78)) ([faf7f5b](https://github.com/julienpillaud/cleanstack/commit/faf7f5b20127297a8cd18723d153c808fea4b579))
+
 ## [0.26.0](https://github.com/julienpillaud/cleanstack/compare/0.25.0...0.26.0) (2026-06-16)
 
 
