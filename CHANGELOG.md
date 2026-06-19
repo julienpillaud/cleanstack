@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.27.1](https://github.com/julienpillaud/cleanstack/compare/0.27.0...0.27.1) (2026-06-19)
+
+
+### Bug Fixes
+
+* remove specific type for paginated response ([#80](https://github.com/julienpillaud/cleanstack/issues/80)) ([ef94d3f](https://github.com/julienpillaud/cleanstack/commit/ef94d3f469a3b2f0a9678e85d45a08a27f053c9e))
+
 ## [0.27.0](https://github.com/julienpillaud/cleanstack/compare/0.26.0...0.27.0) (2026-06-17)
 
 
