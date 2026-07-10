@@ -1,7 +1,7 @@
 from collections.abc import AsyncIterator
 from typing import Annotated
 
-from protest import Use, fixture
+from apte import Use, fixture
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
@@ -12,7 +12,7 @@ from sqlalchemy.ext.asyncio import (
 from app.core.settings import Settings
 from app.infrastructure.sql.items import AsyncItemSQLRepository
 from cleanstack.sql.entities import OrmEntity
-from protests.fixtures import get_settings
+from tests_apte.fixtures import get_settings
 
 
 @fixture()

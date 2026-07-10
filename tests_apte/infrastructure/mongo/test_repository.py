@@ -1,20 +1,20 @@
 from typing import Annotated
 
-from protest import FixtureFactory, ProTestSuite, Use
+from apte import ApteSuite, FixtureFactory, Use
 from pymongo.asynchronous.client_session import AsyncClientSession
 from pymongo.asynchronous.database import AsyncDatabase
 
 from app.domain.items.entities import Item
 from app.infrastructure.mongo.items import AsyncItemMongoRepository
 from cleanstack.mongo import MongoDocument
-from protests.factories.items import get_item
-from protests.infrastructure.mongo.fixtures import (
+from tests_apte.factories.items import get_item
+from tests_apte.infrastructure.mongo.fixtures import (
     get_item_repository,
     get_mongo_database,
     get_mongo_session,
 )
 
-mongo_repo_suite = ProTestSuite("Mongo repository", tags=["repository"])
+mongo_repo_suite = ApteSuite("Mongo repository", tags=["repository"])
 
 
 @mongo_repo_suite.test()
