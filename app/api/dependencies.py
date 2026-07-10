@@ -18,7 +18,7 @@ type Context = MongoContext | SQLContext
 
 @lru_cache
 def get_settings() -> Settings:
-    return Settings()  # ty:ignore[missing-argument]
+    return Settings()
 
 
 def get_sql_session(request: Request) -> Iterator[Session]:
