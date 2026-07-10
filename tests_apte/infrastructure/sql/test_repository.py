@@ -1,15 +1,15 @@
 from typing import Annotated
 
-from protest import FixtureFactory, ProTestSuite, Use
+from apte import ApteSuite, FixtureFactory, Use
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 
 from app.domain.items.entities import Item
 from app.infrastructure.sql.items import AsyncItemSQLRepository
 from app.infrastructure.sql.tables import OrmItem
-from protests.factories.items import get_item
-from protests.infrastructure.sql.fixtures import get_engine
+from tests_apte.factories.items import get_item
+from tests_apte.infrastructure.sql.fixtures import get_engine
 
-sql_repo_suite = ProTestSuite("SQL repository", tags=["repository"])
+sql_repo_suite = ApteSuite("SQL repository", tags=["repository"])
 
 
 @sql_repo_suite.test()

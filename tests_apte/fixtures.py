@@ -1,4 +1,4 @@
-from protest import fixture
+from apte import fixture
 from pydantic import SecretStr
 
 from app.core.settings import AppEnvironment, Settings

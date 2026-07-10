@@ -39,13 +39,9 @@ wheels = [
 [[package]]
 name = "apte"
 version = "0.3.1"
-source = { registry = "https://pypi.org/simple" }
+source = { git = "https://github.com/renaudcepre/apte.git?tag=apte-v0.3.1#53b45a914416c7d8e5f14e75942acc82828a014e" }
 dependencies = [
     { name = "typing-extensions" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/11/21/e1318161f2566f0efe8b2e1d84cd7ba55feec6e179d62dcd4015d9a370ee/apte-0.3.1.tar.gz", hash = "sha256:eee2eed825b6c3f3e88a563ef75587f12eebaa31cff6c1bbf7c9396c7580a9f7", size = 110301, upload-time = "2026-06-25T04:00:57.229Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/0f/b3/7b0755e783730549503679c2bad816cfe90b298d2fea411af6e3dcce50a2/apte-0.3.1-py3-none-any.whl", hash = "sha256:788ffd425266547ed061879133cb1ac18e018fac74afb2dbeb03033ee8007f86", size = 131856, upload-time = "2026-06-25T04:00:55.613Z" },
 ]
 
 [[package]]
@@ -128,7 +124,7 @@ provides-extras = ["mongo", "sql"]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "apte" },
+    { name = "apte", git = "https://github.com/renaudcepre/apte.git?tag=apte-v0.3.1" },
     { name = "fastapi", specifier = ">=0.139.0" },
     { name = "httpx2", specifier = ">=2.5.0" },
     { name = "mypy", specifier = "==2.2.0" },

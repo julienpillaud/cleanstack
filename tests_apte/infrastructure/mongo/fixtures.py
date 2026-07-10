@@ -1,7 +1,7 @@
 from collections.abc import AsyncIterator
 from typing import Annotated
 
-from protest import Use, fixture
+from apte import Use, fixture
 from pymongo import AsyncMongoClient
 from pymongo.asynchronous.client_session import AsyncClientSession
 from pymongo.asynchronous.database import AsyncDatabase
@@ -9,7 +9,7 @@ from pymongo.asynchronous.database import AsyncDatabase
 from app.core.settings import Settings
 from app.infrastructure.mongo.items import AsyncItemMongoRepository
 from cleanstack.mongo import MongoDocument
-from protests.fixtures import get_settings
+from tests_apte.fixtures import get_settings
 
 
 @fixture()

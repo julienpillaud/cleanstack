@@ -29,7 +29,7 @@ dev = [
 ]
 
 [tool.uv.sources]
-protest = { git = "https://github.com/renaudcepre/protest.git", tag = "protest-v0.2.0" }
+apte = { git = "https://github.com/renaudcepre/apte.git", tag = "apte-v0.3.1" }
 
 [tool.setuptools.packages.find]
 include = ["cleanstack*"]

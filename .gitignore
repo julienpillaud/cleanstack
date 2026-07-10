@@ -7,8 +7,8 @@ wheels/
 *.egg-info/
 
 # Cache
+.apte/
 .mypy_cache/
-.protest/
 .pytest_cache/
 .ruff_cache/
 
