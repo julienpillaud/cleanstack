@@ -7,7 +7,7 @@ from app.domain.nodes.entities import Node
 from cleanstack import EntityId
 
 
-async def get_container_command(
+async def get_container(
     context: ContextProtocol,
     /,
     container_id: EntityId,
@@ -19,7 +19,7 @@ async def get_container_command(
     return container
 
 
-async def create_container_command(
+async def create_container(
     context: ContextProtocol,
     /,
     data: ContainerCreate,
@@ -33,7 +33,7 @@ async def create_container_command(
     return container
 
 
-async def update_container_command(
+async def update_container(
     context: ContextProtocol,
     /,
     container_id: EntityId,
@@ -53,7 +53,7 @@ async def update_container_command(
     return container
 
 
-async def delete_container_command(
+async def delete_container(
     context: ContextProtocol,
     /,
     container_id: EntityId,

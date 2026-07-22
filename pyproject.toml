@@ -9,10 +9,10 @@ dependencies = [
 
 [project.optional-dependencies]
 mongo = [
-    "pymongo>=4.16.0",
+    "pymongo>=4.17.0",
 ]
 sql = [
-    "psycopg[binary]>=3.3.3",
+    "psycopg[binary]>=3.3.4",
     "sqlalchemy[asyncio]>=2.0.51",
 ]
 
