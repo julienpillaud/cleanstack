@@ -13,7 +13,7 @@ from cleanstack import (
 )
 
 
-async def get_items_command(
+async def get_items(
     context: ContextProtocol,
     /,
     search: str | None = None,
@@ -29,7 +29,7 @@ async def get_items_command(
     )
 
 
-async def get_item_command(context: ContextProtocol, /, item_id: EntityId) -> Item:
+async def get_item(context: ContextProtocol, /, item_id: EntityId) -> Item:
     item = await context.item_repository.get_by_id(item_id)
     if not item:
         raise NotFoundError("Item not found")
@@ -37,7 +37,7 @@ async def get_item_command(context: ContextProtocol, /, item_id: EntityId) -> It
     return item
 
 
-async def create_item_command(context: ContextProtocol, /, data: ItemCreate) -> Item:
+async def create_item(context: ContextProtocol, /, data: ItemCreate) -> Item:
     # Explicitly write all fields for clarity
     item = Item(
         id=uuid.uuid7(),
@@ -54,7 +54,7 @@ async def create_item_command(context: ContextProtocol, /, data: ItemCreate) -> 
     return item
 
 
-async def update_item_command(
+async def update_item(
     context: ContextProtocol,
     /,
     item_id: EntityId,
@@ -71,7 +71,7 @@ async def update_item_command(
     return item
 
 
-async def delete_item_command(context: ContextProtocol, /, item_id: EntityId) -> None:
+async def delete_item(context: ContextProtocol, /, item_id: EntityId) -> None:
     item = await context.item_repository.get_by_id(item_id)
     if not item:
         raise NotFoundError("Item not found")
