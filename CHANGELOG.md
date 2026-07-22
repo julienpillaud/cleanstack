@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.28.0](https://github.com/julienpillaud/cleanstack/compare/0.27.1...0.28.0) (2026-07-22)
+
+
+### Features
+
+* rename to use cases ([#85](https://github.com/julienpillaud/cleanstack/issues/85)) ([84f6759](https://github.com/julienpillaud/cleanstack/commit/84f6759be4b144a7d88453dc5e745cccf12a77bf))
+* update domain ([#83](https://github.com/julienpillaud/cleanstack/issues/83)) ([fd528b1](https://github.com/julienpillaud/cleanstack/commit/fd528b14e101b62c05b8eda309f80ab4977b13a1))
+
 ## [0.27.1](https://github.com/julienpillaud/cleanstack/compare/0.27.0...0.27.1) (2026-06-19)
 
 
