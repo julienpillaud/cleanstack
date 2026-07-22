@@ -13,7 +13,7 @@ from cleanstack import (
 )
 
 
-def get_items_command(
+async def get_items_command(
     context: ContextProtocol,
     /,
     search: str | None = None,
@@ -21,7 +21,7 @@ def get_items_command(
     sort: list[SortEntity] | None = None,
     pagination: Pagination | None = None,
 ) -> PaginatedResponse[Item]:
-    return context.item_repository.get_all(
+    return await context.item_repository.get_all(
         search=search,
         filters=filters,
         sort=sort,
@@ -29,15 +29,15 @@ def get_items_command(
     )
 
 
-def get_item_command(context: ContextProtocol, /, item_id: EntityId) -> Item:
-    item = context.item_repository.get_by_id(item_id)
+async def get_item_command(context: ContextProtocol, /, item_id: EntityId) -> Item:
+    item = await context.item_repository.get_by_id(item_id)
     if not item:
         raise NotFoundError("Item not found")
 
     return item
 
 
-def create_item_command(context: ContextProtocol, /, data: ItemCreate) -> Item:
+async def create_item_command(context: ContextProtocol, /, data: ItemCreate) -> Item:
     # Explicitly write all fields for clarity
     item = Item(
         id=uuid.uuid7(),
@@ -50,30 +50,30 @@ def create_item_command(context: ContextProtocol, /, data: ItemCreate) -> Item:
         strenum_field=data.strenum_field,
         optional_field=data.optional_field,
     )
-    context.item_repository.save(item)
+    await context.item_repository.save(item)
     return item
 
 
-def update_item_command(
+async def update_item_command(
     context: ContextProtocol,
     /,
     item_id: EntityId,
     data: ItemUpdate,
 ) -> Item:
-    item = context.item_repository.get_by_id(item_id)
+    item = await context.item_repository.get_by_id(item_id)
     if not item:
         raise NotFoundError("Item not found")
 
     for key, value in data.model_dump(exclude_unset=True).items():
         setattr(item, key, value)
 
-    context.item_repository.update(item)
+    await context.item_repository.update(item)
     return item
 
 
-def delete_item_command(context: ContextProtocol, /, item_id: EntityId) -> None:
-    item = context.item_repository.get_by_id(item_id)
+async def delete_item_command(context: ContextProtocol, /, item_id: EntityId) -> None:
+    item = await context.item_repository.get_by_id(item_id)
     if not item:
         raise NotFoundError("Item not found")
 
-    context.item_repository.remove(item)
+    await context.item_repository.remove(item)

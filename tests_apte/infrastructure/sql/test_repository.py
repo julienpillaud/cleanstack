@@ -4,7 +4,7 @@ from apte import ApteSuite, FixtureFactory, Use
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 
 from app.domain.items.entities import Item
-from app.infrastructure.sql.items import AsyncItemSQLRepository
+from app.infrastructure.sql.items import ItemSQLRepository
 from app.infrastructure.sql.tables import OrmItem
 from tests_apte.factories.items import get_item
 from tests_apte.infrastructure.sql.fixtures import get_engine
@@ -20,7 +20,7 @@ async def test_create_item(
     new_item = await item_factory()
 
     async with AsyncSession(engine) as session:
-        repository = AsyncItemSQLRepository(session=session)
+        repository = ItemSQLRepository(session=session)
         await repository.save(new_item)
         await session.commit()
 
@@ -39,12 +39,12 @@ async def test_update_item(
     new_item = await item_factory()
 
     async with AsyncSession(engine) as session:
-        repository = AsyncItemSQLRepository(session=session)
+        repository = ItemSQLRepository(session=session)
         await repository.save(new_item)
         await session.commit()
 
     async with AsyncSession(engine) as session:
-        repository = AsyncItemSQLRepository(session=session)
+        repository = ItemSQLRepository(session=session)
         updated_item = new_item
         updated_item.string_field = "new_string_field"
         await repository.update(updated_item)

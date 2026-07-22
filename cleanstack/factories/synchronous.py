@@ -8,7 +8,7 @@ from cleanstack.entities.base import BaseEntity
 
 
 class BaseFactory[T: BaseEntity](ABC):
-    def create_one(self, **kwargs: Any) -> T:
+    def create_one(self, **kwargs: Any) -> T:  # noqa: ANN401
         entity = self.build(**kwargs)
 
         with self._persistence_context():
@@ -16,7 +16,7 @@ class BaseFactory[T: BaseEntity](ABC):
 
         return entity
 
-    def create_many(self, count: int, /, **kwargs: Any) -> list[T]:
+    def create_many(self, count: int, /, **kwargs: Any) -> list[T]:  # noqa: ANN401
         entities = [self.build(**kwargs) for _ in range(count)]
         created_entities: list[T] = []
 
@@ -28,7 +28,7 @@ class BaseFactory[T: BaseEntity](ABC):
         return created_entities
 
     @abstractmethod
-    def build(self, **kwargs: Any) -> T: ...
+    def build(self, **kwargs: Any) -> T: ...  # noqa: ANN401
 
     @contextmanager
     @abstractmethod

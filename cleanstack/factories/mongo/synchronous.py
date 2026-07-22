@@ -5,7 +5,7 @@ from contextlib import contextmanager
 from pymongo.database import Database
 
 from cleanstack.entities.base import BaseEntity
-from cleanstack.factories.base import BaseFactory
+from cleanstack.factories.synchronous import BaseFactory
 from cleanstack.mongo import MongoDocument
 
 

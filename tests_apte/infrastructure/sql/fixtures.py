@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import (
 )
 
 from app.core.settings import Settings
-from app.infrastructure.sql.items import AsyncItemSQLRepository
+from app.infrastructure.sql.items import ItemSQLRepository
 from cleanstack.sql.entities import OrmEntity
 from tests_apte.fixtures import get_settings
 
@@ -50,5 +50,5 @@ async def get_sql_session(
 @fixture()
 async def get_sql_item_repository(
     session: Annotated[AsyncSession, Use(get_sql_session)],
-) -> AsyncItemSQLRepository:
-    return AsyncItemSQLRepository(session=session)
+) -> ItemSQLRepository:
+    return ItemSQLRepository(session=session)

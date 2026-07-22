@@ -47,7 +47,7 @@ def get_filter_metadata(column: Column[Any]) -> FilterMetadata:
 
 
 def apply_operator(
-    value: Any,
+    value: Any,  # noqa: ANN401
     operator: FilterOperator,
     column: Column[Any],
 ) -> ColumnElement[bool]:

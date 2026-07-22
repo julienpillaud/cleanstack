@@ -7,7 +7,7 @@ from pymongo.asynchronous.client_session import AsyncClientSession
 from pymongo.asynchronous.database import AsyncDatabase
 
 from app.core.settings import Settings
-from app.infrastructure.mongo.items import AsyncItemMongoRepository
+from app.infrastructure.mongo.items import ItemMongoRepository
 from cleanstack.mongo import MongoDocument
 from tests_apte.fixtures import get_settings
 
@@ -48,5 +48,5 @@ async def get_mongo_session(
 async def get_item_repository(
     database: Annotated[AsyncDatabase[MongoDocument], Use(get_mongo_database)],
     session: Annotated[AsyncClientSession, Use(get_mongo_session)],
-) -> AsyncItemMongoRepository:
-    return AsyncItemMongoRepository(database=database, session=session)
+) -> ItemMongoRepository:
+    return ItemMongoRepository(database=database, session=session)

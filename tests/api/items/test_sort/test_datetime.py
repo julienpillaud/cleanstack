@@ -2,7 +2,7 @@ import datetime
 
 import pytest
 from fastapi import status
-from starlette.testclient import TestClient
+from httpx2 import AsyncClient
 
 from cleanstack import SortOrder
 from tests.plugins.factories import Factory
@@ -15,9 +15,10 @@ from tests.plugins.factories import Factory
         (SortOrder.DESC, [2, 1, 0]),
     ],
 )
-def test_sort_datetime(
+@pytest.mark.anyio
+async def test_sort_datetime(
     factory: Factory,
-    client: TestClient,
+    client: AsyncClient,
     direction: str,
     expected_indices: list[int],
 ) -> None:
@@ -27,12 +28,12 @@ def test_sort_datetime(
         base_time + datetime.timedelta(hours=1),
         base_time + datetime.timedelta(hours=2),
     ]
-    factory.items.create_many(1, datetime_field=dates[1])
-    factory.items.create_many(1, datetime_field=dates[2])
-    factory.items.create_many(1, datetime_field=dates[0])
+    await factory.items.create_many(1, datetime_field=dates[1])
+    await factory.items.create_many(1, datetime_field=dates[2])
+    await factory.items.create_many(1, datetime_field=dates[0])
 
     params = {"sort": f"datetime_field[{direction}]"}
-    response = client.get("/items", params=params)
+    response = await client.get("/items", params=params)
 
     assert response.status_code == status.HTTP_200_OK
     result = response.json()

@@ -1,7 +1,7 @@
 from app.domain.containers.entities import Container
-from cleanstack.mongo import SyncMongoRepository
+from cleanstack.mongo import AsyncMongoRepository
 
 
-class SyncContainerMongoRepository(SyncMongoRepository[Container]):
+class ContainerMongoRepository(AsyncMongoRepository[Container]):
     domain_entity_type = Container
     collection_name = "containers"

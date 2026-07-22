@@ -7,19 +7,19 @@ from app.domain.nodes.entities import Node
 from cleanstack import EntityId
 
 
-def get_container_command(
+async def get_container_command(
     context: ContextProtocol,
     /,
     container_id: EntityId,
 ) -> Container:
-    container = context.container_repository.get_by_id(container_id)
+    container = await context.container_repository.get_by_id(container_id)
     if not container:
         raise NotFoundError("Container not found")
 
     return container
 
 
-def create_container_command(
+async def create_container_command(
     context: ContextProtocol,
     /,
     data: ContainerCreate,
@@ -29,17 +29,17 @@ def create_container_command(
         name=data.name,
         nodes=[Node(id=uuid.uuid7(), label=tag) for tag in data.nodes],
     )
-    context.container_repository.save(container)
+    await context.container_repository.save(container)
     return container
 
 
-def update_container_command(
+async def update_container_command(
     context: ContextProtocol,
     /,
     container_id: EntityId,
     data: ContainerUpdate,
 ) -> Container:
-    container = context.container_repository.get_by_id(container_id)
+    container = await context.container_repository.get_by_id(container_id)
     if not container:
         raise NotFoundError("Container not found")
 
@@ -49,17 +49,17 @@ def update_container_command(
             continue
         setattr(container, key, value)
 
-    context.container_repository.update(container)
+    await context.container_repository.update(container)
     return container
 
 
-def delete_container_command(
+async def delete_container_command(
     context: ContextProtocol,
     /,
     container_id: EntityId,
 ) -> None:
-    container = context.container_repository.get_by_id(container_id)
+    container = await context.container_repository.get_by_id(container_id)
     if not container:
         raise NotFoundError("Container not found")
 
-    context.container_repository.remove(container)
+    await context.container_repository.remove(container)

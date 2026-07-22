@@ -1,18 +1,19 @@
 import pytest
 from fastapi import status
-from fastapi.testclient import TestClient
+from httpx2 import AsyncClient
 
 from tests.plugins.factories import Factory
 from tests.utils import assert_is_uuid
 
 
-def test_create_container(factory: Factory, client: TestClient) -> None:
+@pytest.mark.anyio
+async def test_create_container(factory: Factory, client: AsyncClient) -> None:
     container = factory.containers.build()
     node_labels = [node.label for node in container.nodes]
     container_data = container.model_dump(exclude={"id", "nodes"})
     container_data["nodes"] = node_labels
 
-    response = client.post("/containers", json=container_data)
+    response = await client.post("/containers", json=container_data)
 
     assert response.status_code == status.HTTP_201_CREATED
     result = response.json()
@@ -23,7 +24,7 @@ def test_create_container(factory: Factory, client: TestClient) -> None:
         assert_is_uuid(node["id"])
         assert node["label"] in node_labels
 
-    get_response = client.get(f"/containers/{container_id}")
+    get_response = await client.get(f"/containers/{container_id}")
     assert get_response.status_code == status.HTTP_200_OK
     get_result = get_response.json()
     assert get_result["id"] == container_id
@@ -33,20 +34,23 @@ def test_create_container(factory: Factory, client: TestClient) -> None:
         assert node["label"] in node_labels
 
 
-def test_update_container(
+@pytest.mark.anyio
+async def test_update_container(
     factory: Factory,
-    client: TestClient,
+    client: AsyncClient,
 ) -> None:
-    container = factory.containers.create_one()
+    container = await factory.containers.create_one()
     new_name = "New Container Name"
 
-    response = client.patch(f"/containers/{container.id}", json={"name": new_name})
+    response = await client.patch(
+        f"/containers/{container.id}", json={"name": new_name}
+    )
 
     assert response.status_code == status.HTTP_200_OK
     result = response.json()
     assert result["name"] == new_name
 
-    get_response = client.get(f"/containers/{container.id}")
+    get_response = await client.get(f"/containers/{container.id}")
     assert get_response.status_code == status.HTTP_200_OK
     get_result = get_response.json()
     assert get_result["name"] == new_name
@@ -62,20 +66,21 @@ def test_update_container(
         (["label1"], ["label2"]),
     ],
 )
-def test_update_container_nodes(
+@pytest.mark.anyio
+async def test_update_container_nodes(
     factory: Factory,
-    client: TestClient,
+    client: AsyncClient,
     initial_nodes: list[str],
     updated_nodes: list[str],
 ) -> None:
-    container = factory.containers.create_one(nodes=initial_nodes)
+    container = await factory.containers.create_one(nodes=initial_nodes)
 
-    response = client.patch(
+    response = await client.patch(
         f"/containers/{container.id}", json={"nodes": updated_nodes}
     )
     assert response.status_code == status.HTTP_200_OK
 
-    get_response = client.get(f"/containers/{container.id}")
+    get_response = await client.get(f"/containers/{container.id}")
     assert get_response.status_code == status.HTTP_200_OK
     result = get_response.json()
 
@@ -83,12 +88,13 @@ def test_update_container_nodes(
     assert {node["label"] for node in result["nodes"]} == set(updated_nodes)
 
 
-def test_delete_container(factory: Factory, client: TestClient) -> None:
-    container = factory.containers.create_one()
+@pytest.mark.anyio
+async def test_delete_container(factory: Factory, client: AsyncClient) -> None:
+    container = await factory.containers.create_one()
 
-    response = client.delete(f"/containers/{container.id}")
+    response = await client.delete(f"/containers/{container.id}")
 
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
-    get_response = client.get(f"/containers/{container.id}")
+    get_response = await client.get(f"/containers/{container.id}")
     assert get_response.status_code == status.HTTP_404_NOT_FOUND

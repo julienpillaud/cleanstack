@@ -1,8 +1,9 @@
-from typing import Annotated, Any
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, status
 
-from app.api.dependencies import Context, get_context
+from app.api.dependencies import get_domain
+from app.core.domain import Domain
 from app.domain.containers.commands import (
     create_container_command,
     delete_container_command,
@@ -16,33 +17,35 @@ router = APIRouter(prefix="/containers", tags=["containers"])
 
 
 @router.get("/{container_id}")
-def get_container(
-    context: Annotated[Context, Depends(get_context)],
+async def get_container(
+    domain: Annotated[Domain, Depends(get_domain)],
     container_id: EntityId,
-) -> Any:
-    return get_container_command(context, container_id=container_id)
+) -> Container:
+    return await domain.run(get_container_command, container_id=container_id)
 
 
-@router.post("", response_model=Container, status_code=status.HTTP_201_CREATED)
-def create_container(
-    context: Annotated[Context, Depends(get_context)],
+@router.post("", status_code=status.HTTP_201_CREATED)
+async def create_container(
+    domain: Annotated[Domain, Depends(get_domain)],
     data: ContainerCreate,
-) -> Any:
-    return create_container_command(context, data=data)
+) -> Container:
+    return await domain.run(create_container_command, data=data)
 
 
-@router.patch("/{container_id}", response_model=Container)
-def update_container(
-    context: Annotated[Context, Depends(get_context)],
+@router.patch("/{container_id}")
+async def update_container(
+    domain: Annotated[Domain, Depends(get_domain)],
     container_id: EntityId,
     data: ContainerUpdate,
-) -> Any:
-    return update_container_command(context, container_id=container_id, data=data)
+) -> Container:
+    return await domain.run(
+        update_container_command, container_id=container_id, data=data
+    )
 
 
 @router.delete("/{container_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_container(
-    context: Annotated[Context, Depends(get_context)],
+async def delete_container(
+    domain: Annotated[Domain, Depends(get_domain)],
     container_id: EntityId,
 ) -> None:
-    delete_container_command(context, container_id=container_id)
+    await domain.run(delete_container_command, container_id=container_id)

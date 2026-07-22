@@ -16,7 +16,7 @@ class FilterMetadata(BaseModel):
 def convert_filter_value_generic(
     filter_entity: FilterEntity,
     metadata: FilterMetadata,
-) -> Any:
+) -> Any:  # noqa: ANN401
     if isinstance(filter_entity.value, list):
         return [
             cast_filter_value_generic(
@@ -37,7 +37,7 @@ def cast_filter_value_generic(
     value: str,
     operator: FilterOperator,
     metadata: FilterMetadata,
-) -> Any:
+) -> Any:  # noqa: ANN401
     if metadata.is_discrete and operator not in (
         FilterOperator.EQ,
         FilterOperator.IN,

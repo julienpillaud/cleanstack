@@ -5,7 +5,7 @@ from pymongo.asynchronous.client_session import AsyncClientSession
 from pymongo.asynchronous.database import AsyncDatabase
 
 from app.domain.items.entities import Item
-from app.infrastructure.mongo.items import AsyncItemMongoRepository
+from app.infrastructure.mongo.items import ItemMongoRepository
 from cleanstack.mongo import MongoDocument
 from tests_apte.factories.items import get_item
 from tests_apte.infrastructure.mongo.fixtures import (
@@ -22,7 +22,7 @@ async def test_create_item(
     item_factory: Annotated[FixtureFactory[Item], Use(get_item)],
     database: Annotated[AsyncDatabase[MongoDocument], Use(get_mongo_database)],
     session: Annotated[AsyncClientSession, Use(get_mongo_session)],
-    repository: Annotated[AsyncItemMongoRepository, Use(get_item_repository)],
+    repository: Annotated[ItemMongoRepository, Use(get_item_repository)],
 ) -> None:
     new_item = await item_factory()
 
@@ -47,7 +47,7 @@ async def test_create_item(
 @mongo_repo_suite.test()
 async def test_update_item(
     item_factory: Annotated[FixtureFactory[Item], Use(get_item)],
-    repository: Annotated[AsyncItemMongoRepository, Use(get_item_repository)],
+    repository: Annotated[ItemMongoRepository, Use(get_item_repository)],
 ) -> None:
     new_item = await item_factory()
     await repository.save(new_item)
@@ -63,7 +63,7 @@ async def test_update_item(
 @mongo_repo_suite.test()
 async def test_get_item(
     item_factory: Annotated[FixtureFactory[Item], Use(get_item)],
-    repository: Annotated[AsyncItemMongoRepository, Use(get_item_repository)],
+    repository: Annotated[ItemMongoRepository, Use(get_item_repository)],
 ) -> None:
     new_item = await item_factory()
     await repository.save(new_item)
@@ -77,7 +77,7 @@ async def test_get_item(
 @mongo_repo_suite.test()
 async def test_get_items(
     item_factory: Annotated[FixtureFactory[Item], Use(get_item)],
-    repository: Annotated[AsyncItemMongoRepository, Use(get_item_repository)],
+    repository: Annotated[ItemMongoRepository, Use(get_item_repository)],
 ) -> None:
     items_count = 3
     for _ in range(items_count):
@@ -94,7 +94,7 @@ async def test_get_items(
 async def test_delete_item(
     item_factory: Annotated[FixtureFactory[Item], Use(get_item)],
     database: Annotated[AsyncDatabase[MongoDocument], Use(get_mongo_database)],
-    repository: Annotated[AsyncItemMongoRepository, Use(get_item_repository)],
+    repository: Annotated[ItemMongoRepository, Use(get_item_repository)],
 ) -> None:
     new_item = await item_factory()
     await repository.save(new_item)

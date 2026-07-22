@@ -1,39 +1,35 @@
 import pytest
 from fastapi import status
-from fastapi.testclient import TestClient
+from httpx2 import AsyncClient
 
 from cleanstack import FilterOperator
 from tests.plugins.factories import Factory
 
 
-def test_operator_in(
-    factory: Factory,
-    client: TestClient,
-) -> None:
+@pytest.mark.anyio
+async def test_operator_in(factory: Factory, client: AsyncClient) -> None:
     count = 2
-    factory.items.create_many(1, int_field=1)
-    factory.items.create_many(1, int_field=2)
-    factory.items.create_many(1, int_field=3)
+    await factory.items.create_many(1, int_field=1)
+    await factory.items.create_many(1, int_field=2)
+    await factory.items.create_many(1, int_field=3)
 
     params = {"filter": "int_field[in]=1,3"}
-    response = client.get("/items", params=params)
+    response = await client.get("/items", params=params)
 
     assert response.status_code == status.HTTP_200_OK
     result = response.json()
     assert len(result["items"]) == count
 
 
-def test_operator_nin(
-    factory: Factory,
-    client: TestClient,
-) -> None:
+@pytest.mark.anyio
+async def test_operator_nin(factory: Factory, client: AsyncClient) -> None:
     count = 1
-    factory.items.create_many(1, int_field=1)
-    factory.items.create_many(1, int_field=2)
-    factory.items.create_many(1, int_field=3)
+    await factory.items.create_many(1, int_field=1)
+    await factory.items.create_many(1, int_field=2)
+    await factory.items.create_many(1, int_field=3)
 
     params = {"filter": "int_field[nin]=1,2"}
-    response = client.get("/items", params=params)
+    response = await client.get("/items", params=params)
 
     assert response.status_code == status.HTTP_200_OK
     result = response.json()
@@ -57,47 +53,47 @@ def test_operator_nin(
         (f"[{FilterOperator.GT}]", 4),
     ],
 )
-def test_others_operators(
+@pytest.mark.anyio
+async def test_others_operators(
     factory: Factory,
-    client: TestClient,
+    client: AsyncClient,
     field_name: str,
     values: list[int | float],
     target_value: int | float,
     operator: str,
     expected_count: int,
 ) -> None:
-    factory.items.create_many(1, **{field_name: values[0]})
-    factory.items.create_many(2, **{field_name: values[1]})
-    factory.items.create_many(4, **{field_name: values[2]})
+    await factory.items.create_many(1, **{field_name: values[0]})
+    await factory.items.create_many(2, **{field_name: values[1]})
+    await factory.items.create_many(4, **{field_name: values[2]})
 
     params = {"filter": f"{field_name}{operator}={target_value}"}
-    response = client.get("/items", params=params)
+    response = await client.get("/items", params=params)
 
     assert response.status_code == status.HTTP_200_OK
     result = response.json()
     assert len(result["items"]) == expected_count
 
 
-def test_wrong_value(client: TestClient) -> None:
+@pytest.mark.anyio
+async def test_wrong_value(client: AsyncClient) -> None:
     params = {"filter": "int_field=bad"}
-    response = client.get("/items", params=params)
+    response = await client.get("/items", params=params)
 
     assert response.status_code == status.HTTP_422_UNPROCESSABLE_CONTENT
     result = response.json()
     assert result == {"detail": "Invalid value format"}
 
 
-def test_computed_field(
-    factory: Factory,
-    client: TestClient,
-) -> None:
+@pytest.mark.anyio
+async def test_computed_field(factory: Factory, client: AsyncClient) -> None:
     count = 1
     value = 2
-    factory.items.create_many(3, float_field=1)
-    factory.items.create_many(count, float_field=value)
+    await factory.items.create_many(3, float_field=1)
+    await factory.items.create_many(count, float_field=value)
 
     params = {"filter": f"computed_field={value * 2}"}
-    response = client.get("/items", params=params)
+    response = await client.get("/items", params=params)
 
     assert response.status_code == status.HTTP_200_OK
     result = response.json()

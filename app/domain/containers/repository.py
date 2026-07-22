@@ -1,7 +1,7 @@
 from typing import Protocol
 
 from app.domain.containers.entities import Container
-from app.domain.protocols import SyncRepositoryProtocol
+from app.domain.protocols import AsyncRepositoryProtocol
 
 
-class SyncContainerRepositoryProtocol(SyncRepositoryProtocol[Container], Protocol): ...
+class ContainerRepositoryProtocol(AsyncRepositoryProtocol[Container], Protocol): ...

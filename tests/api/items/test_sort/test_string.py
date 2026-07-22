@@ -1,6 +1,6 @@
 import pytest
 from fastapi import status
-from fastapi.testclient import TestClient
+from httpx2 import AsyncClient
 
 from cleanstack import SortOrder
 from tests.plugins.factories import Factory
@@ -13,17 +13,18 @@ from tests.plugins.factories import Factory
         (SortOrder.DESC, ["Charlie", "Bob", "Alice"]),
     ],
 )
-def test_sort_string(
+@pytest.mark.anyio
+async def test_sort_string(
     factory: Factory,
-    client: TestClient,
+    client: AsyncClient,
     direction: str,
     expected: list[str],
 ) -> None:
     for name in ["Bob", "Charlie", "Alice"]:
-        factory.items.create_one(string_field=name)
+        await factory.items.create_one(string_field=name)
 
     params = {"sort": f"string_field[{direction}]"}
-    response = client.get("/items", params=params)
+    response = await client.get("/items", params=params)
 
     assert response.status_code == status.HTTP_200_OK
     result = response.json()

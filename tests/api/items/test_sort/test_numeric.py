@@ -1,6 +1,6 @@
 import pytest
 from fastapi import status
-from fastapi.testclient import TestClient
+from httpx2 import AsyncClient
 
 from cleanstack import SortOrder
 from tests.plugins.factories import Factory
@@ -20,9 +20,10 @@ from tests.plugins.factories import Factory
         (SortOrder.DESC, True),
     ],
 )
-def test_sort_numeric(
+@pytest.mark.anyio
+async def test_sort_numeric(
     factory: Factory,
-    client: TestClient,
+    client: AsyncClient,
     field_name: str,
     values: list[int | float],
     direction: SortOrder,
@@ -30,10 +31,10 @@ def test_sort_numeric(
 ) -> None:
     shuffled_values = [values[1], values[2], values[0]]
     for val in shuffled_values:
-        factory.items.create_one(**{field_name: val})
+        await factory.items.create_one(**{field_name: val})
 
     params = {"sort": f"{field_name}[{direction}]"}
-    response = client.get("/items", params=params)
+    response = await client.get("/items", params=params)
 
     assert response.status_code == status.HTTP_200_OK
     result = response.json()

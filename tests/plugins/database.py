@@ -1,4 +1,4 @@
-from collections.abc import Iterator
+from collections.abc import AsyncIterator
 
 import pytest
 
@@ -14,23 +14,23 @@ type Resource = MongoResource | SQLResource
 
 
 @pytest.fixture(scope="session")
-def init_resource(settings: Settings) -> Iterator[Resource]:
+async def init_resource(settings: Settings) -> AsyncIterator[Resource]:
     resource: Resource
 
     match settings.repository_type:
         case RepositoryType.MONGO:
-            resource = MongoResource.from_settings(settings)
+            resource = await MongoResource.from_settings(settings)
         case RepositoryType.SQL:
-            resource = SQLResource.from_settings(settings)
-            resource.create_all()
+            resource = await SQLResource.from_settings(settings)
+            await resource.init()
 
     yield resource
 
-    resource.release()
+    await resource.release()
 
 
 @pytest.fixture
-def db_resource(init_resource: Resource) -> Iterator[Resource]:
+async def db_resource(init_resource: Resource) -> AsyncIterator[Resource]:
     yield init_resource
 
-    init_resource.reset()
+    await init_resource.reset()
