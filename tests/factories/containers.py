@@ -3,10 +3,10 @@ from typing import Any
 
 from app.domain.containers.entities import Container
 from app.domain.nodes.entities import Node
-from app.infrastructure.mongo.containers import SyncContainerMongoRepository
-from app.infrastructure.sql.containers import SyncContainerSQLRepository
-from cleanstack.factories.mongo import BaseMongoFactory
-from cleanstack.factories.sql import BaseSQLFactory
+from app.infrastructure.mongo.containers import ContainerMongoRepository
+from app.infrastructure.sql.containers import ContainerSQLRepository
+from cleanstack.factories.mongo.asynchronous import BaseMongoFactory
+from cleanstack.factories.sql.asynchronous import BaseSQLFactory
 from tests.factories.utils import faker
 
 
@@ -17,7 +17,7 @@ def generate_nodes(labels: list[str] | None = None, /) -> list[Node]:
     return [Node(id=uuid.uuid7(), label=label) for label in labels]
 
 
-def generate_container(**kwargs: Any) -> Container:
+def generate_container(**kwargs: Any) -> Container:  # noqa: ANN401
     return Container(
         id=kwargs.get("id", uuid.uuid7()),
         name=kwargs.get("name", faker.random_string()),
@@ -26,18 +26,18 @@ def generate_container(**kwargs: Any) -> Container:
 
 
 class ContainerMongoFactory(BaseMongoFactory[Container]):
-    def build(self, **kwargs: Any) -> Container:
+    def build(self, **kwargs: Any) -> Container:  # noqa: ANN401
         return generate_container(**kwargs)
 
     @property
-    def _repository(self) -> SyncContainerMongoRepository:
-        return SyncContainerMongoRepository(database=self.database)
+    def _repository(self) -> ContainerMongoRepository:
+        return ContainerMongoRepository(database=self.database)
 
 
 class ContainerSQLFactory(BaseSQLFactory[Container]):
-    def build(self, **kwargs: Any) -> Container:
+    def build(self, **kwargs: Any) -> Container:  # noqa: ANN401
         return generate_container(**kwargs)
 
     @property
-    def _repository(self) -> SyncContainerSQLRepository:
-        return SyncContainerSQLRepository(session=self.session)
+    def _repository(self) -> ContainerSQLRepository:
+        return ContainerSQLRepository(session=self.session)

@@ -1,18 +1,19 @@
 import pytest
 from fastapi import status
-from fastapi.testclient import TestClient
+from httpx2 import AsyncClient
 
 from cleanstack import FilterOperator
 from tests.plugins.factories import Factory
 
 
-def test_operator_eq(factory: Factory, client: TestClient) -> None:
+@pytest.mark.anyio
+async def test_operator_eq(factory: Factory, client: AsyncClient) -> None:
     count = 2
-    factory.items.create_many(1, bool_field=True)
-    factory.items.create_many(count, bool_field=False)
+    await factory.items.create_many(1, bool_field=True)
+    await factory.items.create_many(count, bool_field=False)
 
     params = {"filter": "bool_field=false"}
-    response = client.get("/items", params=params)
+    response = await client.get("/items", params=params)
 
     assert response.status_code == status.HTTP_200_OK
     result = response.json()
@@ -28,21 +29,23 @@ def test_operator_eq(factory: Factory, client: TestClient) -> None:
         FilterOperator.GT,
     ),
 )
-def test_unsupported_operator(
-    client: TestClient,
+@pytest.mark.anyio
+async def test_unsupported_operator(
+    client: AsyncClient,
     operator: FilterOperator,
 ) -> None:
     params = {"filter": f"bool_field[{operator}]=false"}
-    response = client.get("/items", params=params)
+    response = await client.get("/items", params=params)
 
     assert response.status_code == status.HTTP_422_UNPROCESSABLE_CONTENT
     result = response.json()
     assert result == {"detail": "Unsupported operator"}
 
 
-def test_wrong_value(client: TestClient) -> None:
+@pytest.mark.anyio
+async def test_wrong_value(client: AsyncClient) -> None:
     params = {"filter": "bool_field=bad"}
-    response = client.get("/items", params=params)
+    response = await client.get("/items", params=params)
 
     assert response.status_code == status.HTTP_422_UNPROCESSABLE_CONTENT
     result = response.json()

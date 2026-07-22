@@ -45,7 +45,7 @@ CONVERTERS: dict[type[Any], Any] = {
 }
 
 
-def resolve_annotation(field_info: FieldInfo) -> Any:
+def resolve_annotation(field_info: FieldInfo) -> Any:  # noqa: ANN401
     annotation = field_info.annotation
     if not annotation:
         raise InvalidFilterError("Unsupported type")
@@ -93,7 +93,7 @@ def get_filter_metadata(field_info: FieldInfo | ComputedFieldInfo, /) -> FilterM
     )
 
 
-def apply_operator(value: Any, operator: FilterOperator) -> MongoDocument:
+def apply_operator(value: Any, operator: FilterOperator) -> MongoDocument:  # noqa: ANN401
     match operator:
         case FilterOperator.EQ:
             return {"$eq": value}

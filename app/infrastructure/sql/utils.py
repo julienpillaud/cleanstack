@@ -1,10 +1,13 @@
-from collections.abc import Iterator
-from contextlib import contextmanager
-
 from pydantic import BaseModel, ConfigDict
-from sqlalchemy import Engine, create_engine, text
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
 
+from app.core.domain import TransactionProtocol
 from app.core.settings import Settings
 from app.infrastructure.sql.logger import logger
 from cleanstack.sql.entities import OrmEntity
@@ -13,47 +16,58 @@ from cleanstack.sql.entities import OrmEntity
 class SQLResource(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    engine: Engine
-    session_factory: sessionmaker[Session]
+    engine: AsyncEngine
+    session_factory: async_sessionmaker[AsyncSession]
 
     @classmethod
-    def from_settings(cls, settings: Settings, /) -> SQLResource:
-        engine = create_engine(
+    async def from_settings(cls, settings: Settings, /) -> SQLResource:
+        engine = create_async_engine(
             url=str(settings.postgres_dsn),
             **settings.postgres_params,
         )
-        with engine.connect() as connection:
-            connection.execute(text("SELECT 1"))
+        async with engine.connect() as connection:
+            await connection.execute(text("SELECT 1"))
         logger.info("SQL engine up")
         return cls(
             engine=engine,
-            session_factory=sessionmaker(bind=engine),
+            session_factory=async_sessionmaker(bind=engine),
         )
 
-    def create_all(self) -> None:
-        OrmEntity.metadata.drop_all(self.engine)
-        OrmEntity.metadata.create_all(self.engine)
-
-    @contextmanager
-    def session(self) -> Iterator[Session]:
-        _session = self.session_factory()
-        try:
-            yield _session
-            _session.commit()
-            logger.info("Commit ok")
-        except Exception as error:
-            logger.error(f"Rollback due to {error}")
-            _session.rollback()
-            raise
-        finally:
-            _session.close()
-
-    def release(self) -> None:
+    async def release(self) -> None:
         logger.info("SQL engine released")
-        self.engine.dispose()
+        await self.engine.dispose()
 
-    def reset(self) -> None:
-        with self.session_factory() as session:
+    async def init(self) -> None:
+        async with self.engine.begin() as connection:
+            await connection.run_sync(OrmEntity.metadata.drop_all)
+            await connection.run_sync(OrmEntity.metadata.create_all)
+
+    async def reset(self) -> None:
+        async with self.session_factory() as session:
             for table in reversed(OrmEntity.metadata.sorted_tables):
-                session.execute(table.delete())
-            session.commit()
+                await session.execute(table.delete())
+            await session.commit()
+
+
+class SQLTransaction(TransactionProtocol):
+    def __init__(self, resource: SQLResource, /) -> None:
+        self.resource = resource
+        self.session: AsyncSession | None = None
+
+    async def start(self) -> None:
+        self.session = self.resource.session_factory()
+
+    async def end(self, error: BaseException | None) -> None:
+        if not self.session:
+            return
+
+        if self.session.is_active:
+            if error:
+                await self.session.rollback()
+                logger.warning(f"Transaction rollback: {type(error).__name__}({error})")
+            else:
+                await self.session.commit()
+                logger.info("Transaction committed")
+
+        await self.session.close()
+        self.session = None

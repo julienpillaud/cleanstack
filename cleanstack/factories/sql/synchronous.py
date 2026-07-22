@@ -5,7 +5,7 @@ from contextlib import contextmanager
 from sqlalchemy.orm import Session
 
 from cleanstack.entities.base import BaseEntity
-from cleanstack.factories.base import BaseFactory
+from cleanstack.factories.synchronous import BaseFactory
 
 
 class BaseSQLFactory[T: BaseEntity](BaseFactory[T], ABC):

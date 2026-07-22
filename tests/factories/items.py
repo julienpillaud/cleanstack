@@ -2,14 +2,14 @@ import uuid
 from typing import Any
 
 from app.domain.items.entities import Item, ItemStatus
-from app.infrastructure.mongo.items import SyncItemMongoRepository
-from app.infrastructure.sql.items import SyncItemSQLRepository
-from cleanstack.factories.mongo import BaseMongoFactory
-from cleanstack.factories.sql import BaseSQLFactory
+from app.infrastructure.mongo.items import ItemMongoRepository
+from app.infrastructure.sql.items import ItemSQLRepository
+from cleanstack.factories.mongo.asynchronous import BaseMongoFactory
+from cleanstack.factories.sql.asynchronous import BaseSQLFactory
 from tests.factories.utils import faker
 
 
-def generate_item(**kwargs: Any) -> Item:
+def generate_item(**kwargs: Any) -> Item:  # noqa: ANN401
     return Item(
         id=kwargs["id"] if "id" in kwargs else uuid.uuid7(),
         uuid_field=kwargs.get("uuid_field", uuid.uuid7()),
@@ -27,18 +27,18 @@ def generate_item(**kwargs: Any) -> Item:
 
 
 class ItemMongoFactory(BaseMongoFactory[Item]):
-    def build(self, **kwargs: Any) -> Item:
+    def build(self, **kwargs: Any) -> Item:  # noqa: ANN401
         return generate_item(**kwargs)
 
     @property
-    def _repository(self) -> SyncItemMongoRepository:
-        return SyncItemMongoRepository(database=self.database)
+    def _repository(self) -> ItemMongoRepository:
+        return ItemMongoRepository(database=self.database)
 
 
 class ItemSQLFactory(BaseSQLFactory[Item]):
-    def build(self, **kwargs: Any) -> Item:
+    def build(self, **kwargs: Any) -> Item:  # noqa: ANN401
         return generate_item(**kwargs)
 
     @property
-    def _repository(self) -> SyncItemSQLRepository:
-        return SyncItemSQLRepository(session=self.session)
+    def _repository(self) -> ItemSQLRepository:
+        return ItemSQLRepository(session=self.session)

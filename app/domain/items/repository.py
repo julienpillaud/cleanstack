@@ -1,10 +1,7 @@
 from typing import Protocol
 
 from app.domain.items.entities import Item
-from app.domain.protocols import AsyncRepositoryProtocol, SyncRepositoryProtocol
+from app.domain.protocols import AsyncRepositoryProtocol
 
 
-class SyncItemRepositoryProtocol(SyncRepositoryProtocol[Item], Protocol): ...
-
-
-class AsyncItemRepositoryProtocol(AsyncRepositoryProtocol[Item], Protocol): ...
+class ItemRepositoryProtocol(AsyncRepositoryProtocol[Item], Protocol): ...

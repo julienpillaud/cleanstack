@@ -3,10 +3,10 @@ from sqlalchemy.sql.base import ExecutableOption
 
 from app.domain.containers.entities import Container
 from app.infrastructure.sql.tables import OrmContainer, OrmNode
-from cleanstack.sql import SyncSQLRepository
+from cleanstack.sql import AsyncSQLRepository
 
 
-class SyncContainerSQLRepository(SyncSQLRepository[Container, OrmContainer]):
+class ContainerSQLRepository(AsyncSQLRepository[Container, OrmContainer]):
     domain_entity_type = Container
     orm_model_type = OrmContainer
 

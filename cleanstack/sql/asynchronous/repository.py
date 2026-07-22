@@ -67,5 +67,5 @@ class AsyncSQLRepository[T: BaseEntity, OrmT: OrmEntity](SQLMixin[T, OrmT]):
         await self.session.merge(orm_entity)
 
     async def remove(self, entity: T) -> None:
-        orm_entity = self.session.get(self.orm_model_type, entity)
+        orm_entity = await self.session.get(self.orm_model_type, entity.id)
         await self.session.delete(orm_entity)
