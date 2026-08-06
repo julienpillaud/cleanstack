@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.29.0](https://github.com/julienpillaud/cleanstack/compare/0.28.0...0.29.0) (2026-08-06)
+
+
+### Features
+
+* update dependencies ([#86](https://github.com/julienpillaud/cleanstack/issues/86)) ([68914ba](https://github.com/julienpillaud/cleanstack/commit/68914bab68a0a1429702f1a15b825f6900242f0e))
+
 ## [0.28.0](https://github.com/julienpillaud/cleanstack/compare/0.27.1...0.28.0) (2026-07-22)
 
 
