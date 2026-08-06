@@ -4,28 +4,28 @@ name = "cleanstack"
 dynamic = ["version"]
 requires-python = ">=3.14"
 dependencies = [
-    "pydantic>=2.13.4",
+    "pydantic>=2.13",
 ]
 
 [project.optional-dependencies]
 mongo = [
-    "pymongo>=4.17.0",
+    "pymongo>=4.17",
 ]
 sql = [
-    "psycopg[binary]>=3.3.4",
-    "sqlalchemy[asyncio]>=2.0.51",
+    "psycopg[binary]>=3.3",
+    "sqlalchemy[asyncio]>=2.0",
 ]
 
 [dependency-groups]
 dev = [
     "mypy==2.3.0",
     "pytest==9.1.1",
-    "ruff==0.15.22",
-    "ty==0.0.62",
+    "ruff==0.16.1",
+    "ty==0.0.68",
     "apte",
-    "fastapi==0.139.2",
+    "fastapi[standard]==0.141.1",
     "pydantic-settings==2.14.2",
-    "httpx2==2.7.0",
+    "httpx2==2.9.1",
     "asgi-lifespan==2.1.0",
 ]
 
@@ -52,6 +52,7 @@ select = [
 ignore = [
     "PLR0911", # Too many return statements (7 > 6)
     "PLR0913", # Too many arguments in function definition (6 > 5)
+    "PLR0917", # Too many positional arguments (7 > 5)
 ]
 
 [tool.ty.terminal]
