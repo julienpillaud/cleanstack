@@ -30,7 +30,7 @@ class SyncMongoRepository[T: BaseEntity](MongoMixin[T]):
         pagination: Pagination | None = None,
     ) -> PaginatedResponse[T]:
         pagination = pagination or Pagination()
-        pipeline = self._build_pipeline(
+        pipeline = self.build_pipeline(
             search=search,
             filters=filters,
             sort=sort,

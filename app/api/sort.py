@@ -5,7 +5,7 @@ from fastapi import HTTPException, Query, status
 
 from cleanstack.entities import SortEntity, SortOrder
 
-DIRECTIONS = "|".join(value for value in SortOrder)
+DIRECTIONS = "|".join(list(SortOrder))
 SORT_PATTERN = re.compile(
     r"^([a-zA-Z0-9_]+)"  # Start with the field
     r"\["

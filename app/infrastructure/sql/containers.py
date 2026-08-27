@@ -10,7 +10,7 @@ class ContainerSQLRepository(AsyncSQLRepository[Container, OrmContainer]):
     domain_entity_type = Container
     orm_model_type = OrmContainer
 
-    def to_orm_entity(self, entity: Container) -> OrmContainer:
+    def to_database_entity(self, entity: Container) -> OrmContainer:
         return OrmContainer(
             id=entity.id,
             name=entity.name,
