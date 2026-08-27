@@ -1,3 +1,5 @@
+from typing import cast
+
 from pydantic import BaseModel
 from pydantic.fields import ComputedFieldInfo, FieldInfo
 
@@ -80,7 +82,7 @@ class MongoMixin[T: BaseEntity]:
 
         return [{"$sort": sort_pipeline}]
 
-    def _build_pipeline(
+    def build_pipeline(
         self,
         *,
         search: str | None = None,
@@ -106,10 +108,10 @@ class MongoMixin[T: BaseEntity]:
     def _get_field(self, field: str, /) -> FieldInfo | ComputedFieldInfo:
         field_info = self.domain_entity_type.model_fields.get(field)
         if field_info:
-            return field_info
+            return cast(FieldInfo, field_info)
 
         computed_field_info = self.domain_entity_type.model_computed_fields.get(field)
         if computed_field_info:
-            return computed_field_info
+            return cast(ComputedFieldInfo, computed_field_info)
 
         raise InvalidFieldError("Invalid field")

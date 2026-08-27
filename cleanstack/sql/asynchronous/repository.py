@@ -9,7 +9,6 @@ from cleanstack.entities import (
     Pagination,
     SortEntity,
 )
-from cleanstack.sql.builder import StatementBuilder
 from cleanstack.sql.entities import OrmEntity
 from cleanstack.sql.mixin import SQLMixin
 
@@ -26,11 +25,7 @@ class AsyncSQLRepository[T: BaseEntity, OrmT: OrmEntity](SQLMixin[T, OrmT]):
         pagination: Pagination | None = None,
     ) -> PaginatedResponse[T]:
         pagination = pagination or Pagination()
-        statement = StatementBuilder(
-            self.orm_model_type,
-            self.searchable_fields,
-            load_options=self.load_options,
-        ).apply(
+        statement = self.build_statement(
             search=search,
             filters=filters,
             sort=sort,
@@ -59,11 +54,11 @@ class AsyncSQLRepository[T: BaseEntity, OrmT: OrmEntity](SQLMixin[T, OrmT]):
         return self.to_domain_entity(db_entity) if db_entity else None
 
     async def save(self, entity: T, /) -> None:
-        orm_entity = self.to_orm_entity(entity)
+        orm_entity = self.to_database_entity(entity)
         self.session.add(orm_entity)
 
     async def update(self, entity: T, /) -> None:
-        orm_entity = self.to_orm_entity(entity)
+        orm_entity = self.to_database_entity(entity)
         await self.session.merge(orm_entity)
 
     async def remove(self, entity: T) -> None:
