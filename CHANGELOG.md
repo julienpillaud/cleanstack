@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.30.0](https://github.com/julienpillaud/cleanstack/compare/0.29.0...0.30.0) (2026-08-27)
+
+
+### Features
+
+* update sql mixin ([#88](https://github.com/julienpillaud/cleanstack/issues/88)) ([07044b6](https://github.com/julienpillaud/cleanstack/commit/07044b629373ea7257a02a9c3f886274059a40f2))
+
 ## [0.29.0](https://github.com/julienpillaud/cleanstack/compare/0.28.0...0.29.0) (2026-08-06)
 
 
