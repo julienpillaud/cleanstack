@@ -17,7 +17,7 @@ class ContainerMongoRepository(ContainerRepositoryProtocol):
         database: AsyncDatabase[MongoDocument],
         session: AsyncClientSession | None = None,
     ) -> None:
-        self.repository = AsyncMongoRepository[Container].from_spec(
+        self.repository = AsyncMongoRepository[Container].from_binding(
             binding=self,
             database=database,
             session=session,

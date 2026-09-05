@@ -17,7 +17,7 @@ class ItemMongoRepository(ItemRepositoryProtocol):
         database: AsyncDatabase[MongoDocument],
         session: AsyncClientSession | None = None,
     ) -> None:
-        self.repository = AsyncMongoRepository[Item].from_spec(
+        self.repository = AsyncMongoRepository[Item].from_binding(
             binding=self,
             database=database,
             session=session,

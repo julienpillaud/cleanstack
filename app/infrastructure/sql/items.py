@@ -14,7 +14,7 @@ class ItemSQLRepository(ItemRepositoryProtocol):
 
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
-        self.repository = AsyncSQLRepository[Item, OrmItem].from_spec(
+        self.repository = AsyncSQLRepository[Item, OrmItem].from_binding(
             binding=self,
             session=session,
         )

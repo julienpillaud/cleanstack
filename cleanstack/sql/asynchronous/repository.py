@@ -27,7 +27,7 @@ class AsyncSQLRepository[T: BaseEntity, OrmT: OrmEntity](SQLMixin[T, OrmT]):
         self.session = session
 
     @classmethod
-    def from_spec(
+    def from_binding(
         cls,
         binding: SQLBinding[T, OrmT],
         session: AsyncSession,
