@@ -38,7 +38,6 @@ async def get_item(context: ContextProtocol, /, item_id: EntityId) -> Item:
 
 
 async def create_item(context: ContextProtocol, /, data: ItemCreate) -> Item:
-    # Explicitly write all fields for clarity
     item = Item(
         id=uuid.uuid7(),
         uuid_field=uuid.uuid7(),

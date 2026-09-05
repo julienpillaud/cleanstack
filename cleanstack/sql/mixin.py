@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Protocol
 
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy import Column, ColumnElement, Select, String, func, or_, select
@@ -13,6 +13,15 @@ from cleanstack.sql.utils import apply_operator, get_filter_metadata
 from cleanstack.utils import convert_filter_value_generic
 
 
+class SQLBinding[T: BaseEntity, OrmT: OrmEntity](Protocol):
+    @property
+    def domain_entity_type(self) -> type[T]: ...
+    @property
+    def orm_model_type(self) -> type[OrmT]: ...
+    @property
+    def searchable_fields(self) -> tuple[str, ...]: ...
+
+
 class Statement[OrmT: OrmEntity](BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
     data: Select[tuple[OrmT]]
@@ -22,7 +31,7 @@ class Statement[OrmT: OrmEntity](BaseModel):
 class SQLMixin[T: BaseEntity, OrmT: OrmEntity]:
     domain_entity_type: type[T]
     orm_model_type: type[OrmT]
-    searchable_fields: tuple[str, ...] = ()
+    searchable_fields: tuple[str, ...]
 
     def to_domain_entity(self, orm_entity: OrmT, /) -> T:
         return self.domain_entity_type.model_validate(orm_entity)

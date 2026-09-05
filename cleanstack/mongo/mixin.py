@@ -1,4 +1,4 @@
-from typing import cast
+from typing import Protocol
 
 from pydantic import BaseModel
 from pydantic.fields import ComputedFieldInfo, FieldInfo
@@ -14,6 +14,15 @@ from cleanstack.mongo.utils import (
     normalize_ids,
 )
 from cleanstack.utils import convert_filter_value_generic
+
+
+class MongoBinding[T: BaseEntity](Protocol):
+    @property
+    def domain_entity_type(self) -> type[T]: ...
+    @property
+    def collection_name(self) -> str: ...
+    @property
+    def searchable_fields(self) -> tuple[str, ...]: ...
 
 
 class Pipeline(BaseModel):
@@ -108,10 +117,10 @@ class MongoMixin[T: BaseEntity]:
     def _get_field(self, field: str, /) -> FieldInfo | ComputedFieldInfo:
         field_info = self.domain_entity_type.model_fields.get(field)
         if field_info:
-            return cast(FieldInfo, field_info)
+            return field_info  # ty: ignore[unsound-return-statement]
 
         computed_field_info = self.domain_entity_type.model_computed_fields.get(field)
         if computed_field_info:
-            return cast(ComputedFieldInfo, computed_field_info)
+            return computed_field_info  # ty: ignore[unsound-return-statement]
 
         raise InvalidFieldError("Invalid field")

@@ -1,10 +1,13 @@
 from abc import ABC, abstractmethod
 from collections.abc import Iterator
 from contextlib import contextmanager
-from typing import Any
+from typing import Any, Protocol
 
-from app.domain.protocols import SyncRepositoryProtocol
 from cleanstack.entities.base import BaseEntity
+
+
+class SyncRepositoryProtocol[T: BaseEntity](Protocol):
+    def save(self, entity: T, /) -> None: ...
 
 
 class BaseFactory[T: BaseEntity](ABC):
