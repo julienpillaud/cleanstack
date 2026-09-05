@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.31.1](https://github.com/julienpillaud/cleanstack/compare/0.31.0...0.31.1) (2026-09-05)
+
+
+### Bug Fixes
+
+* rename method ([#92](https://github.com/julienpillaud/cleanstack/issues/92)) ([f7e73cb](https://github.com/julienpillaud/cleanstack/commit/f7e73cb555ca5d602aa3eb074aeda51c80b86bec))
+
 ## [0.31.0](https://github.com/julienpillaud/cleanstack/compare/0.30.0...0.31.0) (2026-09-05)
 
 
