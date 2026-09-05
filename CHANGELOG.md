@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.31.0](https://github.com/julienpillaud/cleanstack/compare/0.30.0...0.31.0) (2026-09-05)
+
+
+### Features
+
+* refactor repository protocols ([#90](https://github.com/julienpillaud/cleanstack/issues/90)) ([a8497d6](https://github.com/julienpillaud/cleanstack/commit/a8497d6037277b0fa465a3affe2432152500a528))
+
 ## [0.30.0](https://github.com/julienpillaud/cleanstack/compare/0.29.0...0.30.0) (2026-08-27)
 
 
