@@ -1,7 +1,14 @@
 from typing import Protocol
 
 from app.domain.containers.entities import Container
-from app.domain.protocols import AsyncRepositoryProtocol
+from cleanstack import EntityId
 
 
-class ContainerRepositoryProtocol(AsyncRepositoryProtocol[Container], Protocol): ...
+class ContainerRepositoryProtocol(Protocol):
+    async def get_by_id(self, entity_id: EntityId, /) -> Container | None: ...
+
+    async def save(self, entity: Container, /) -> None: ...
+
+    async def update(self, entity: Container, /) -> None: ...
+
+    async def remove(self, entity: Container, /) -> None: ...

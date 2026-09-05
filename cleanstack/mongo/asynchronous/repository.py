@@ -9,18 +9,39 @@ from cleanstack.entities import (
     Pagination,
     SortEntity,
 )
-from cleanstack.mongo.mixin import MongoMixin
+from cleanstack.mongo.mixin import MongoBinding, MongoMixin
 from cleanstack.mongo.types import MongoDocument
 
 
 class AsyncMongoRepository[T: BaseEntity](MongoMixin[T]):
     def __init__(
         self,
+        domain_entity_type: type[T],
+        collection_name: str,
+        searchable_fields: tuple[str, ...],
         database: AsyncDatabase[MongoDocument],
         session: AsyncClientSession | None = None,
     ) -> None:
+        self.domain_entity_type = domain_entity_type
+        self.collection_name = collection_name
+        self.searchable_fields = searchable_fields
         self.collection = database[self.collection_name]
         self.session = session
+
+    @classmethod
+    def from_spec(
+        cls,
+        binding: MongoBinding[T],
+        database: AsyncDatabase[MongoDocument],
+        session: AsyncClientSession | None = None,
+    ) -> AsyncMongoRepository[T]:
+        return cls(
+            domain_entity_type=binding.domain_entity_type,
+            collection_name=binding.collection_name,
+            searchable_fields=binding.searchable_fields,
+            database=database,
+            session=session,
+        )
 
     async def get_all(
         self,

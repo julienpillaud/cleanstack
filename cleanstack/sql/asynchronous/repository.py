@@ -10,12 +10,34 @@ from cleanstack.entities import (
     SortEntity,
 )
 from cleanstack.sql.entities import OrmEntity
-from cleanstack.sql.mixin import SQLMixin
+from cleanstack.sql.mixin import SQLBinding, SQLMixin
 
 
 class AsyncSQLRepository[T: BaseEntity, OrmT: OrmEntity](SQLMixin[T, OrmT]):
-    def __init__(self, session: AsyncSession) -> None:
+    def __init__(
+        self,
+        domain_entity_type: type[T],
+        orm_model_type: type[OrmT],
+        searchable_fields: tuple[str, ...],
+        session: AsyncSession,
+    ) -> None:
+        self.domain_entity_type = domain_entity_type
+        self.orm_model_type = orm_model_type
+        self.searchable_fields = searchable_fields
         self.session = session
+
+    @classmethod
+    def from_spec(
+        cls,
+        binding: SQLBinding[T, OrmT],
+        session: AsyncSession,
+    ) -> AsyncSQLRepository[T, OrmT]:
+        return cls(
+            domain_entity_type=binding.domain_entity_type,
+            orm_model_type=binding.orm_model_type,
+            searchable_fields=binding.searchable_fields,
+            session=session,
+        )
 
     async def get_all(
         self,

@@ -1,10 +1,13 @@
 from abc import ABC, abstractmethod
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import Any
+from typing import Any, Protocol
 
-from app.domain.protocols import AsyncRepositoryProtocol
 from cleanstack.entities.base import BaseEntity
+
+
+class AsyncRepositoryProtocol[T: BaseEntity](Protocol):
+    async def save(self, entity: T, /) -> None: ...
 
 
 class BaseFactory[T: BaseEntity](ABC):

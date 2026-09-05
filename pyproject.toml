@@ -20,8 +20,8 @@ sql = [
 dev = [
     "mypy==2.3.1",
     "pytest==9.1.1",
-    "ruff==0.16.4",
-    "ty==0.0.75",
+    "ruff==0.16.6",
+    "ty==0.0.78",
     "apte",
     "fastapi[standard]==0.141.1",
     "pydantic-settings==2.15.0",
