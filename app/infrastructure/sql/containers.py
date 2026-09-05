@@ -30,7 +30,7 @@ class ContainerSQLRepository(ContainerRepositoryProtocol):
 
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
-        self.repository = ContainerSQLAdapter.from_spec(
+        self.repository = ContainerSQLAdapter.from_binding(
             binding=self,
             session=session,
         )

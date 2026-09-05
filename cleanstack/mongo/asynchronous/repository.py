@@ -29,7 +29,7 @@ class AsyncMongoRepository[T: BaseEntity](MongoMixin[T]):
         self.session = session
 
     @classmethod
-    def from_spec(
+    def from_binding(
         cls,
         binding: MongoBinding[T],
         database: AsyncDatabase[MongoDocument],
