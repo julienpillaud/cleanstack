@@ -1,5 +1,5 @@
 from abc import ABC
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
 from pymongo.asynchronous.database import AsyncDatabase
@@ -14,5 +14,5 @@ class BaseMongoFactory[T: BaseEntity](BaseFactory[T], ABC):
         self.database = database
 
     @asynccontextmanager
-    async def _persistence_context(self) -> AsyncIterator[None]:
+    async def _persistence_context(self) -> AsyncGenerator[None]:
         yield

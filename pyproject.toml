@@ -4,33 +4,33 @@ name = "cleanstack"
 dynamic = ["version"]
 requires-python = ">=3.14"
 dependencies = [
-    "pydantic>=2.13",
+    "pydantic>=2.14",
 ]
 
 [project.optional-dependencies]
 mongo = [
-    "pymongo>=4.17",
+    "pymongo>=4.18",
 ]
 sql = [
     "psycopg[binary]>=3.3",
-    "sqlalchemy[asyncio]>=2.0",
+    "sqlalchemy[asyncio]>=2.1",
 ]
 
 [dependency-groups]
 dev = [
-    "mypy==2.3.1",
+    "mypy==2.4.0",
     "pytest==9.1.1",
-    "ruff==0.16.6",
-    "ty==0.0.78",
+    "ruff==0.17.0",
+    "ty==0.0.86",
     "apte",
-    "fastapi[standard]==0.141.1",
+    "fastapi[standard]==0.143.0",
     "pydantic-settings==2.15.0",
-    "httpx2==2.12.0",
+    "httpx2==2.13.1",
     "asgi-lifespan==2.1.0",
 ]
 
 [tool.uv.sources]
-apte = { git = "https://github.com/renaudcepre/apte.git", tag = "apte-v0.3.1" }
+apte = { git = "https://github.com/renaudcepre/apte.git", tag = "apte-v0.3.2" }
 
 [tool.setuptools.packages.find]
 include = ["cleanstack*"]

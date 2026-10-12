@@ -1,7 +1,7 @@
 import pytest
 
-from app.infrastructure.mongo.utils import MongoResource
-from app.infrastructure.sql.utils import SQLResource
+from app.infrastructure.mongo.resource import MongoResource
+from app.infrastructure.sql.resource import SQLResource
 from tests.factories.containers import ContainerMongoFactory, ContainerSQLFactory
 from tests.factories.items import ItemMongoFactory, ItemSQLFactory
 from tests.plugins.database import ContainerFactory, ItemFactory, Resource

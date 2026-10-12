@@ -1,4 +1,4 @@
-from collections.abc import AsyncIterator, Callable
+from collections.abc import AsyncIterator
 from functools import lru_cache
 from typing import Annotated
 
@@ -7,11 +7,11 @@ from starlette.requests import Request
 
 from app.core.context.mongo import MongoContext, MongoContextProvider
 from app.core.context.sql import SQLContext, SQLContextProvider
-from app.core.domain import Domain, DomainContext, TransactionProtocol
+from app.core.domain import Domain, DomainScope
+from app.core.protocols import ContextProviderProtocol, UnitOfWorkProtocol
 from app.core.settings import RepositoryType, Settings
-from app.domain.context import ContextProtocol
-from app.infrastructure.mongo.utils import MongoTransaction
-from app.infrastructure.sql.utils import SQLTransaction
+from app.infrastructure.mongo.uow import MongoUnitOfWork
+from app.infrastructure.sql.uow import SQLUnitOfWork
 
 type Context = MongoContext | SQLContext
 
@@ -21,22 +21,22 @@ def get_settings() -> Settings:
     return Settings()
 
 
-def get_transaction(
+def get_uow(
     request: Request,
     settings: Annotated[Settings, Depends(get_settings)],
-) -> TransactionProtocol:
+) -> UnitOfWorkProtocol:
     match settings.repository_type:
         case RepositoryType.SQL:
-            sql_engine = request.app.state.sql_resource
-            return SQLTransaction(sql_engine)
+            sql_resource = request.app.state.sql_resource
+            return SQLUnitOfWork(sql_resource)
         case RepositoryType.MONGO:
             mongo_resource = request.app.state.mongo_resource
-            return MongoTransaction(mongo_resource)
+            return MongoUnitOfWork(mongo_resource)
 
 
 def get_context_provider(
     settings: Annotated[Settings, Depends(get_settings)],
-) -> Callable[[TransactionProtocol], ContextProtocol]:
+) -> ContextProviderProtocol:
     match settings.repository_type:
         case RepositoryType.SQL:
             return SQLContextProvider()
@@ -44,15 +44,27 @@ def get_context_provider(
             return MongoContextProvider()
 
 
-async def get_domain(
-    transaction: Annotated[TransactionProtocol, Depends(get_transaction)],
-    context_provider: Annotated[
-        Callable[[TransactionProtocol], ContextProtocol],
-        Depends(get_context_provider),
-    ],
-) -> AsyncIterator[Domain]:
-    async with DomainContext(
-        transaction=transaction,
-        context_provider=context_provider,
-    ) as domain:
-        yield domain
+class DomainProvider:
+    def __init__(self, *, transactional: bool = False) -> None:
+        self.transactional = transactional
+
+    async def __call__(
+        self,
+        uow: Annotated[UnitOfWorkProtocol, Depends(get_uow)],
+        context_provider: Annotated[
+            ContextProviderProtocol, Depends(get_context_provider)
+        ],
+    ) -> AsyncIterator[Domain]:
+        async with DomainScope(
+            uow=uow,
+            context_provider=context_provider,
+            transactional=self.transactional,
+        ) as domain:
+            yield domain
+
+
+QueryDomain = Annotated[Domain, Depends(DomainProvider(), scope="function")]
+CommandDomain = Annotated[
+    Domain,
+    Depends(DomainProvider(transactional=True), scope="function"),
+]

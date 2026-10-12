@@ -1,5 +1,5 @@
 from abc import ABC
-from collections.abc import Iterator
+from collections.abc import Generator
 from contextlib import contextmanager
 
 from pymongo.database import Database
@@ -14,5 +14,5 @@ class BaseMongoFactory[T: BaseEntity](BaseFactory[T], ABC):
         self.database = database
 
     @contextmanager
-    def _persistence_context(self) -> Iterator[None]:
+    def _persistence_context(self) -> Generator[None]:
         yield

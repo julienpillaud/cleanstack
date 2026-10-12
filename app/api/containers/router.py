@@ -1,9 +1,6 @@
-from typing import Annotated
+from fastapi import APIRouter, status
 
-from fastapi import APIRouter, Depends, status
-
-from app.api.dependencies import get_domain
-from app.core.domain import Domain
+from app.api.dependencies import CommandDomain, QueryDomain
 from app.domain.containers.entities import Container, ContainerCreate, ContainerUpdate
 from app.domain.containers.use_cases import (
     create_container,
@@ -18,7 +15,7 @@ router = APIRouter(prefix="/containers", tags=["containers"])
 
 @router.get("/{container_id}")
 async def get_container_endpoint(
-    domain: Annotated[Domain, Depends(get_domain)],
+    domain: QueryDomain,
     container_id: EntityId,
 ) -> Container:
     return await domain.run(get_container, container_id=container_id)
@@ -26,7 +23,7 @@ async def get_container_endpoint(
 
 @router.post("", status_code=status.HTTP_201_CREATED)
 async def create_container_endpoint(
-    domain: Annotated[Domain, Depends(get_domain)],
+    domain: CommandDomain,
     data: ContainerCreate,
 ) -> Container:
     return await domain.run(create_container, data=data)
@@ -34,7 +31,7 @@ async def create_container_endpoint(
 
 @router.patch("/{container_id}")
 async def update_container_endpoint(
-    domain: Annotated[Domain, Depends(get_domain)],
+    domain: CommandDomain,
     container_id: EntityId,
     data: ContainerUpdate,
 ) -> Container:
@@ -43,7 +40,7 @@ async def update_container_endpoint(
 
 @router.delete("/{container_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_container_endpoint(
-    domain: Annotated[Domain, Depends(get_domain)],
+    domain: CommandDomain,
     container_id: EntityId,
 ) -> None:
     await domain.run(delete_container, container_id=container_id)

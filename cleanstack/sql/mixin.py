@@ -24,8 +24,8 @@ class SQLBinding[T: BaseEntity, OrmT: OrmEntity](Protocol):
 
 class Statement[OrmT: OrmEntity](BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
-    data: Select[tuple[OrmT]]
-    count: Select[tuple[int]]
+    data: Select[OrmT]
+    count: Select[int]
 
 
 class SQLMixin[T: BaseEntity, OrmT: OrmEntity]:

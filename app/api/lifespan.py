@@ -1,13 +1,13 @@
 import time
-from collections.abc import AsyncIterator, Callable
+from collections.abc import AsyncGenerator, Callable
 from contextlib import AbstractAsyncContextManager, asynccontextmanager
 
 from fastapi import FastAPI
 
 from app.core.logger import logger
 from app.core.settings import AppEnvironment, Settings
-from app.infrastructure.mongo.utils import MongoResource
-from app.infrastructure.sql.utils import SQLResource
+from app.infrastructure.mongo.resource import MongoResource
+from app.infrastructure.sql.resource import SQLResource
 
 
 def lifespan_factory(
@@ -15,7 +15,7 @@ def lifespan_factory(
 ) -> Callable[[FastAPI], AbstractAsyncContextManager[None]]:
 
     @asynccontextmanager
-    async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
         start_time = time.perf_counter()
 
         app.state.sql_resource = await SQLResource.from_settings(settings)

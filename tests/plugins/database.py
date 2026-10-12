@@ -3,8 +3,8 @@ from collections.abc import AsyncIterator
 import pytest
 
 from app.core.settings import RepositoryType, Settings
-from app.infrastructure.mongo.utils import MongoResource
-from app.infrastructure.sql.utils import SQLResource
+from app.infrastructure.mongo.resource import MongoResource
+from app.infrastructure.sql.resource import SQLResource
 from tests.factories.containers import ContainerMongoFactory, ContainerSQLFactory
 from tests.factories.items import ItemMongoFactory, ItemSQLFactory
 

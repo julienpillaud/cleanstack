@@ -117,10 +117,10 @@ class MongoMixin[T: BaseEntity]:
     def _get_field(self, field: str, /) -> FieldInfo | ComputedFieldInfo:
         field_info = self.domain_entity_type.model_fields.get(field)
         if field_info:
-            return field_info  # ty: ignore[unsound-return-statement]
+            return field_info
 
         computed_field_info = self.domain_entity_type.model_computed_fields.get(field)
         if computed_field_info:
-            return computed_field_info  # ty: ignore[unsound-return-statement]
+            return computed_field_info
 
         raise InvalidFieldError("Invalid field")
