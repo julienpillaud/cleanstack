@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.32.0](https://github.com/julienpillaud/cleanstack/compare/0.31.1...0.32.0) (2026-10-12)
+
+
+### Features
+
+* refactor domain ([#95](https://github.com/julienpillaud/cleanstack/issues/95)) ([653c582](https://github.com/julienpillaud/cleanstack/commit/653c5825aee4e56a76dc91fbe93ec2ff56f9493b))
+
 ## [0.31.1](https://github.com/julienpillaud/cleanstack/compare/0.31.0...0.31.1) (2026-09-05)
 
 
