@@ -1,5 +1,5 @@
 from abc import ABC
-from collections.abc import Callable, Iterator
+from collections.abc import Callable, Generator
 from contextlib import contextmanager
 
 from sqlalchemy.orm import Session
@@ -14,7 +14,7 @@ class BaseSQLFactory[T: BaseEntity](BaseFactory[T], ABC):
         self._session: Session | None = None
 
     @contextmanager
-    def _persistence_context(self) -> Iterator[None]:
+    def _persistence_context(self) -> Generator[None]:
         with self.session_factory() as session:
             self._session = session
             yield

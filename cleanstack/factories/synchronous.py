@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from collections.abc import Iterator
+from collections.abc import Generator
 from contextlib import contextmanager
 from typing import Any, Protocol
 
@@ -35,7 +35,7 @@ class BaseFactory[T: BaseEntity](ABC):
 
     @contextmanager
     @abstractmethod
-    def _persistence_context(self) -> Iterator[None]: ...
+    def _persistence_context(self) -> Generator[None]: ...
 
     @property
     @abstractmethod

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from typing import Any, Protocol
 
@@ -35,7 +35,7 @@ class BaseFactory[T: BaseEntity](ABC):
 
     @asynccontextmanager
     @abstractmethod
-    def _persistence_context(self) -> AsyncIterator[None]: ...
+    def _persistence_context(self) -> AsyncGenerator[None]: ...
 
     @property
     @abstractmethod

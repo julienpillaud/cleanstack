@@ -1,18 +1,18 @@
 from functools import cached_property
 
-from app.core.domain import TransactionProtocol
+from app.core.protocols import UnitOfWorkProtocol
 from app.domain.containers.repository import ContainerRepositoryProtocol
 from app.domain.context import ContextProtocol
 from app.domain.items.repository import ItemRepositoryProtocol
 from app.infrastructure.mongo.containers import ContainerMongoRepository
 from app.infrastructure.mongo.items import ItemMongoRepository
-from app.infrastructure.mongo.utils import MongoTransaction
+from app.infrastructure.mongo.uow import MongoUnitOfWork
 
 
 class MongoContext(ContextProtocol):
-    def __init__(self, transaction: MongoTransaction) -> None:
-        self.database = transaction.resource.database
-        self.session = transaction.session
+    def __init__(self, uow: MongoUnitOfWork) -> None:
+        self.database = uow.resource.database
+        self.session = uow.session
 
     @cached_property
     def item_repository(self) -> ItemRepositoryProtocol:
@@ -30,8 +30,8 @@ class MongoContext(ContextProtocol):
 
 
 class MongoContextProvider:
-    def __call__(self, transaction: TransactionProtocol) -> MongoContext:
-        if not isinstance(transaction, MongoTransaction):
+    def __call__(self, uow: UnitOfWorkProtocol) -> MongoContext:
+        if not isinstance(uow, MongoUnitOfWork):
             raise RuntimeError()
 
-        return MongoContext(transaction=transaction)
+        return MongoContext(uow=uow)

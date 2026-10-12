@@ -39,11 +39,11 @@ class StatementBuilder[T: OrmEntity]:
         return self
 
     @property
-    def count(self) -> Select[tuple[int]]:
+    def count(self) -> Select[int]:
         return self._count_stmt
 
     @property
-    def data(self) -> Select[tuple[T]]:
+    def data(self) -> Select[T]:
         return self._stmt
 
     def _get_field(self, field: str, /) -> Column[Any]:
@@ -54,7 +54,7 @@ class StatementBuilder[T: OrmEntity]:
 
         return column
 
-    def _get_count_stmt(self) -> Select[tuple[int]]:
+    def _get_count_stmt(self) -> Select[int]:
         return select(func.count()).select_from(self._stmt.subquery())
 
     def _apply_search(self, search: str | None, /) -> None:

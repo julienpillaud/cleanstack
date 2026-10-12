@@ -1,5 +1,5 @@
 from abc import ABC
-from collections.abc import AsyncIterator, Callable
+from collections.abc import AsyncGenerator, Callable
 from contextlib import asynccontextmanager
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -14,7 +14,7 @@ class BaseSQLFactory[T: BaseEntity](BaseFactory[T], ABC):
         self._session: AsyncSession | None = None
 
     @asynccontextmanager
-    async def _persistence_context(self) -> AsyncIterator[None]:
+    async def _persistence_context(self) -> AsyncGenerator[None]:
         async with self.session_factory() as session:
             self._session = session
             yield
